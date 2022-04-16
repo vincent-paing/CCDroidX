@@ -1,20 +1,11 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 fun DependencyHandler.retrofit() {
-  implementation(Retrofit.core)
-  implementation(Retrofit.simplexml_converter)
-
   implementation(OkHttp.client)
   implementation(OkHttp.logger)
+  implementation("org.simpleframework:simple-xml:2.7.1")
   testImplementation(OkHttp.mock_web_server)
   testImplementation(OkHttp.mock_web_server)
-}
-
-object Retrofit {
-  private const val version = "2.9.0"
-
-  const val core = "com.squareup.retrofit2:retrofit:$version"
-  const val simplexml_converter = "com.squareup.retrofit2:converter-simplexml:$version"
 }
 
 object OkHttp {

@@ -51,14 +51,15 @@ android {
 
 dependencies {
   coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.1.5")
-
-  implementation(Material.material)
+  implementation("com.jakewharton.timber:timber:5.0.1")
 
   androidX()
   androidXArch()
   androidXActivity()
   androidXFragment()
   androidXNavigation()
+
+  implementation(Material.material)
 
   retrofit()
   coroutine()

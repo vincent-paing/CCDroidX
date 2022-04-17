@@ -4,7 +4,7 @@ fun DependencyHandler.androidXNavigation() {
   implementation(AndroidXNavigation.fragment_ktx)
   implementation(AndroidXNavigation.ui_ktx)
   testImplementation(AndroidXNavigation.testing)
-  kapt(AndroidXNavigation.runtime_ktx)
+  androidTestImplementation(AndroidXNavigation.testing)
 }
 
 

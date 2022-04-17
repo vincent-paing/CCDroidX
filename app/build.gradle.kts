@@ -3,6 +3,7 @@ plugins {
   kotlin("android")
   kotlin("kapt")
   id("com.squareup.sqldelight")
+  id("androidx.navigation.safeargs.kotlin")
 }
 
 android {

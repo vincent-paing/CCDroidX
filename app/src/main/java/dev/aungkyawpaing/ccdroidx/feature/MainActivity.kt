@@ -3,6 +3,7 @@ package dev.aungkyawpaing.ccdroidx.feature
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import dev.aungkyawpaing.ccdroidx.R
+import dev.aungkyawpaing.ccdroidx.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

@@ -3,6 +3,7 @@
     package="dev.aungkyawpaing.ccdroidx">
 
     <application
+        android:name=".CCDroidXApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CCDroidX">
         <activity
-            android:name=".MainActivity"
+            android:name=".feature.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

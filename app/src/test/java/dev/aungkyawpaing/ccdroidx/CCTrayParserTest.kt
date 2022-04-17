@@ -199,4 +199,5 @@ class CCTrayParserTest {
     val actual = CCTrayParser.parseResponse(input)
     Assert.assertEquals(expected, actual)
   }
+
 }

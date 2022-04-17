@@ -15,8 +15,8 @@ object CCTrayParser {
         name = it.name!!,
         activity = when (it.activity) {
           "Sleeping" -> BuildState.SLEEPING
-          "BUILDING" -> BuildState.BUILDING
-          "CHECKING_MODIFICATIONS" -> BuildState.CHECKING_MODIFICATIONS
+          "Building" -> BuildState.BUILDING
+          "CheckingModifications" -> BuildState.CHECKING_MODIFICATIONS
           else -> throw IllegalArgumentException()
         },
         lastBuildStatus = when (it.lastBuildStatus) {

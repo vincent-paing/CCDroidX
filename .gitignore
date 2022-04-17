@@ -276,6 +276,7 @@ obj/
 .idea/gradle.xml
 .idea/jarRepositories.xml
 .idea/navEditor.xml
+.idea/git_toolbox_prj.xml
 
 # Legacy Eclipse project files
 .classpath

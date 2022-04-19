@@ -1,8 +1,7 @@
-package dev.aungkyawpaing.ccdroidx
+package dev.aungkyawpaing.ccdroidx.api
 
 import dev.aungkyawpaing.ccdroidx.data.BuildState
 import dev.aungkyawpaing.ccdroidx.data.BuildStatus
-import dev.aungkyawpaing.ccdroidx.data.CCTrayParser
 import dev.aungkyawpaing.ccdroidx.data.Project
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -38,11 +37,11 @@ class CCTrayParserTest {
         lastBuildStatus = BuildStatus.EXCEPTION,
         lastBuildLabel = "8",
         lastBuildTime = ZonedDateTime.of(
-          2005, 9, 28, 10, 30, 34, 636216000,
+          2005, 9, 28, 10, 30, 34, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         nextBuildTime = ZonedDateTime.of(
-          2005, 10, 4, 14, 31, 52, 450924800,
+          2005, 10, 4, 14, 31, 52, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         webUrl = "http://mrtickle/ccnet/"
@@ -76,11 +75,11 @@ class CCTrayParserTest {
         lastBuildStatus = BuildStatus.SUCCESS,
         lastBuildLabel = "8",
         lastBuildTime = ZonedDateTime.of(
-          2005, 9, 28, 10, 30, 34, 636216000,
+          2005, 9, 28, 10, 30, 34, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         nextBuildTime = ZonedDateTime.of(
-          2005, 10, 4, 14, 31, 52, 450924800,
+          2005, 10, 4, 14, 31, 52, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         webUrl = "http://mrtickle/ccnet/"
@@ -114,11 +113,11 @@ class CCTrayParserTest {
         lastBuildStatus = BuildStatus.FAILURE,
         lastBuildLabel = "8",
         lastBuildTime = ZonedDateTime.of(
-          2005, 9, 28, 10, 30, 34, 636216000,
+          2005, 9, 28, 10, 30, 34, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         nextBuildTime = ZonedDateTime.of(
-          2005, 10, 4, 14, 31, 52, 450924800,
+          2005, 10, 4, 14, 31, 52, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         webUrl = "http://mrtickle/ccnet/"
@@ -152,11 +151,11 @@ class CCTrayParserTest {
         lastBuildStatus = BuildStatus.UNKNOWN,
         lastBuildLabel = "8",
         lastBuildTime = ZonedDateTime.of(
-          2005, 9, 28, 10, 30, 34, 636216000,
+          2005, 9, 28, 10, 30, 34, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         nextBuildTime = ZonedDateTime.of(
-          2005, 10, 4, 14, 31, 52, 450924800,
+          2005, 10, 4, 14, 31, 52, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         webUrl = "http://mrtickle/ccnet/"
@@ -188,7 +187,7 @@ class CCTrayParserTest {
         lastBuildStatus = BuildStatus.FAILURE,
         lastBuildLabel = null,
         lastBuildTime = ZonedDateTime.of(
-          2005, 9, 28, 10, 30, 34, 636216000,
+          2005, 9, 28, 10, 30, 34, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         nextBuildTime = null,
@@ -200,4 +199,69 @@ class CCTrayParserTest {
     Assert.assertEquals(expected, actual)
   }
 
+  @Test
+  fun testTravisXml() {
+    val input = """
+      <Projects>
+          <Project 
+              name="vincent-paing/myanmar-phonenumber-kt"
+              activity="Sleeping"
+              lastBuildStatus="Success"
+              lastBuildLabel="26"
+              lastBuildTime="2021-09-16T14:36:51.000+0000"
+              webUrl="https://app.travis-ci.com/vincent-paing/myanmar-phonenumber-kt"/>
+      </Projects>
+        """.trimIndent().toResponseBody("application/xml".toMediaType())
+
+    val expected = listOf(
+      Project(
+        name = "vincent-paing/myanmar-phonenumber-kt",
+        activity = BuildState.SLEEPING,
+        lastBuildStatus = BuildStatus.SUCCESS,
+        lastBuildLabel = "26",
+        lastBuildTime = ZonedDateTime.of(
+          2021, 9, 16, 14, 36, 51, 0,
+          ZoneId.ofOffset("", ZoneOffset.of("+00:00"))
+        ),
+        nextBuildTime = null,
+        webUrl = "https://app.travis-ci.com/vincent-paing/myanmar-phonenumber-kt"
+      )
+    )
+
+    val actual = CCTrayParser.parseResponse(input)
+    Assert.assertEquals(expected, actual)
+  }
+
+  @Test
+  fun testCircleCiXml() {
+    val input = """
+      <Projects>
+          <Project 
+              name="circleci/ex"
+              activity="Sleeping"
+              webUrl="https://circleci.com/gh/circleci/ex/tree/main"
+              lastBuildLabel="2730"
+              lastBuildStatus="Success"
+              lastBuildTime="2022-04-18T19:29:37.845Z"/>
+      </Projects>
+        """.trimIndent().toResponseBody("application/xml".toMediaType())
+
+    val expected = listOf(
+      Project(
+        name = "circleci/ex",
+        activity = BuildState.SLEEPING,
+        lastBuildStatus = BuildStatus.SUCCESS,
+        lastBuildLabel = "2730",
+        lastBuildTime = ZonedDateTime.of(
+          2022, 4, 18, 19, 29, 37, 0,
+          ZoneId.ofOffset("", ZoneOffset.of("+00:00"))
+        ),
+        nextBuildTime = null,
+        webUrl = "https://circleci.com/gh/circleci/ex/tree/main"
+      )
+    )
+
+    val actual = CCTrayParser.parseResponse(input)
+    Assert.assertEquals(expected, actual)
+  }
 }

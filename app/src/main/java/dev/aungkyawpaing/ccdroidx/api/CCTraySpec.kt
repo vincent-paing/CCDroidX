@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.data
+package dev.aungkyawpaing.ccdroidx.api
 
 import org.simpleframework.xml.Attribute
 import org.simpleframework.xml.ElementList
@@ -6,7 +6,7 @@ import org.simpleframework.xml.Root
 
 @Root(strict = false, name = "Projects")
 class CCTrayProjects {
-  @field:ElementList(name = "Project", inline = true,required = false)
+  @field:ElementList(name = "Project", inline = true, required = false)
   var project: List<CCTrayProject>? = null
 }
 

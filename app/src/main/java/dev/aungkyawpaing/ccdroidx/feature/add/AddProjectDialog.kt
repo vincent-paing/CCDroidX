@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.databinding.AddProjectDialogBinding
-
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AddProjectDialog : DialogFragment() {
@@ -40,11 +41,15 @@ class AddProjectDialog : DialogFragment() {
     super.onViewCreated(view, savedInstanceState)
 
     binding.buttonNext.setOnClickListener {
-      viewModel.getProjectsFromFeed()
+      viewModel.getProjectsFromFeed(binding.textFieldFeedUrl.text.toString())
     }
 
     binding.buttonCancel.setOnClickListener {
       this.dismiss()
+    }
+
+    viewModel.projectListLiveEvent.observe(viewLifecycleOwner) { projectList ->
+      Timber.i(projectList.toString())
     }
   }
 

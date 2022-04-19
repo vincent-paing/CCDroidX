@@ -3,12 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_project_list"
-    app:startDestination="@id/fragmentProductList">
+    app:startDestination="@id/fragmentProjectList">
 
     <fragment
-        android:id="@+id/fragmentProductList"
-        android:name="dev.aungkyawpaing.ccdroidx.feature.ProductListFragment"
-        android:label="fragment_product_list"
-        tools:layout="@layout/fragment_product_list" />
+        android:id="@+id/fragmentProjectList"
+        android:name="dev.aungkyawpaing.ccdroidx.feature.ProjectListFragment"
+        android:label="fragment_project_list"
+        tools:layout="@layout/fragment_project_list">
+        <action
+            android:id="@+id/action_fragmentProjectList_to_addProjectDialog"
+            app:destination="@id/addProjectDialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/addProjectDialog"
+        android:name="dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog"
+        android:label="AddProjectDialog"
+        tools:layout="@layout/add_project_dialog" />
+
 
 </navigation>

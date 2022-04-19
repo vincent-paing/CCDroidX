@@ -21,6 +21,15 @@ fun DependencyHandler.testImplementation(depName: String) {
   add("testImplementation", depName)
 }
 
+
+fun DependencyHandler.kaptTest(depName: String) {
+  add("kaptTest", depName)
+}
+
 fun DependencyHandler.androidTestImplementation(depName: String) {
   add("androidTestImplementation", depName)
+}
+
+fun DependencyHandler.kaptAndroidTest(depName: String) {
+  add("kaptAndroidTest", depName)
 }

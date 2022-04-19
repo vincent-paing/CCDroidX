@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CCDroidX</string>
+
+    <string name="add_new_project">Add New Project</string>
+    <string name="feed_url">Feed url</string>
+    <string name="next">Next</string>
 </resources>

@@ -4,6 +4,7 @@ plugins {
   kotlin("kapt")
   id("com.squareup.sqldelight")
   id("androidx.navigation.safeargs.kotlin")
+  id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -22,7 +23,6 @@ android {
     buildFeatures {
       viewBinding = true
     }
-
 
   }
 
@@ -43,6 +43,14 @@ android {
   }
 }
 
+kapt {
+  correctErrorTypes = true
+}
+
+hilt {
+  enableAggregatingTask = true
+}
+
 //sqldelight {
 //  database("CCDroidXDb") {
 //    packageName = "dev.aungkyawpaing.ccdroidx"
@@ -61,6 +69,8 @@ dependencies {
   androidXNavigation()
 
   implementation(Material.material)
+
+  daggerHilt()
 
   retrofit()
   coroutine()

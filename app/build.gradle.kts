@@ -2,6 +2,7 @@ plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
+  id("kotlin-parcelize")
   id("com.squareup.sqldelight")
   id("androidx.navigation.safeargs.kotlin")
   id("dagger.hilt.android.plugin")
@@ -78,4 +79,5 @@ dependencies {
 
   testImplementation("junit:junit:4.13.2")
   androidXTest()
+  mockK()
 }

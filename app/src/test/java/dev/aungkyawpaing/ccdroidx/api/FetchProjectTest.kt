@@ -28,7 +28,7 @@ class FetchProjectTest {
   var coroutineTestRule = CoroutineTestRule()
 
   @Test
-  fun testParseResponseCorrectly() = coroutineTestRule.scope.runTest {
+  fun testParseResponseCorrectly() = runTest {
     val server = MockWebServer()
 
     server.enqueue(

@@ -23,6 +23,19 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
   private val pending =
     AtomicBoolean(false)
 
+  override fun observeForever(observer: Observer<in T>) {
+    if (hasActiveObservers()) {
+      Timber.w(
+        "Multiple observers registered but only one will be notified of changes."
+      )
+    }
+    super.observeForever { value ->
+      if (pending.compareAndSet(true, false)) {
+        observer.onChanged(value)
+      }
+    }
+  }
+
   @MainThread
   override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
     if (hasActiveObservers()) {

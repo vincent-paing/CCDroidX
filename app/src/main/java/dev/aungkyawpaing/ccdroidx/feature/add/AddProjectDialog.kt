@@ -1,6 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature.add
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +51,21 @@ class AddProjectDialog : DialogFragment() {
 
     viewModel.projectListLiveEvent.observe(viewLifecycleOwner) { projectList ->
       Timber.i(projectList.toString())
+      MaterialAlertDialogBuilder(requireContext())
+        .setTitle(R.string.select_project)
+        .setItems(
+          projectList.map {
+            it.name
+          }.toTypedArray()
+        ) { dialog, which ->
+          Timber.i(projectList[which].toString())
+          dialog.dismiss()
+        }
+        .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+          dialog.dismiss()
+        }
+        .create()
+        .show()
     }
   }
 
@@ -57,6 +73,5 @@ class AddProjectDialog : DialogFragment() {
     _binding = null
     super.onDestroyView()
   }
-
 
 }

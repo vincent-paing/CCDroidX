@@ -52,12 +52,14 @@ hilt {
   enableAggregatingTask = true
 }
 
-//sqldelight {
-//  database("CCDroidXDb") {
-//    packageName = "dev.aungkyawpaing.ccdroidx"
-//    dialect = "sqlite:3.24"
-//  }
-//}
+sqldelight {
+  database("CCDroidXDb") {
+    packageName = "dev.aungkyawpaing.ccdroidx"
+    dialect = "sqlite:3.24"
+    sourceFolders = listOf("sqldelight")
+    schemaOutputDirectory = file("build/dbs")
+  }
+}
 
 dependencies {
   coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.1.5")

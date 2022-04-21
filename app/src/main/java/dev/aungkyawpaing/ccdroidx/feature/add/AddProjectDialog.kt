@@ -58,7 +58,7 @@ class AddProjectDialog : DialogFragment() {
             it.name
           }.toTypedArray()
         ) { dialog, which ->
-          Timber.i(projectList[which].toString())
+          viewModel.onSelectProject(projectList[which])
           dialog.dismiss()
         }
         .setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -66,6 +66,10 @@ class AddProjectDialog : DialogFragment() {
         }
         .create()
         .show()
+    }
+
+    viewModel.dismissLiveEvent.observe(viewLifecycleOwner) {
+      dismiss()
     }
   }
 

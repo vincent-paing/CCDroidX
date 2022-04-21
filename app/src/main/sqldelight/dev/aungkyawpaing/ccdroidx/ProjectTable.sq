@@ -1,0 +1,21 @@
+import dev.aungkyawpaing.ccdroidx.data.BuildState;
+import dev.aungkyawpaing.ccdroidx.data.BuildStatus;
+import java.time.ZonedDateTime;
+
+CREATE TABLE ProjectTable (
+    name TEXT NOT NULL,
+    activity TEXT AS BuildState  NOT NULL,
+    lastBuildStatus TEXT AS BuildStatus NOT NULL,
+    lastBuildLabel TEXT,
+    lastBuildTime INTEGER AS ZonedDateTime NOT NULL,
+    nextBuildTime INTEGER AS ZonedDateTime,
+    webUrl TEXT NOT NULL,
+    feedUrl TEXT NOT NULL,
+    PRIMARY KEY (webUrl, feedUrl)
+);
+
+insertOrReplace:
+INSERT OR REPLACE INTO ProjectTable VALUES ?;
+
+selectAll:
+SELECT * FROM ProjectTable;

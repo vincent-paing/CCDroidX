@@ -1,11 +1,17 @@
 package dev.aungkyawpaing.ccdroidx.data
 
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import dev.aungkyawpaing.ccdroidx.CCDroidXDb
 import dev.aungkyawpaing.ccdroidx.ProjectTable
+import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ProjectRepo @Inject constructor(
-  private val db: CCDroidXDb
+  private val db: CCDroidXDb,
+  private val dispatcherProvider: DispatcherProvider
 ) {
 
   fun insertProject(project: Project) {
@@ -21,6 +27,25 @@ class ProjectRepo @Inject constructor(
         feedUrl = ""
       )
     )
+  }
+
+  fun getAll(): Flow<List<Project>> {
+    return db.projectTableQueries.selectAll()
+      .asFlow()
+      .mapToList(dispatcherProvider.default())
+      .map { projectTables ->
+        projectTables.map { projectTable ->
+          Project(
+            name = projectTable.name,
+            activity = projectTable.activity,
+            lastBuildStatus = projectTable.lastBuildStatus,
+            lastBuildLabel = projectTable.lastBuildLabel,
+            lastBuildTime = projectTable.lastBuildTime,
+            nextBuildTime = projectTable.nextBuildTime,
+            webUrl = projectTable.webUrl,
+          )
+        }
+      }
   }
 
 }

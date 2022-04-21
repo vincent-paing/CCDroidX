@@ -28,12 +28,7 @@ internal object DbModule {
   fun database(driver: SqlDriver): CCDroidXDb {
     return CCDroidXDb(
       driver = driver,
-      ProjectTableAdapter = ProjectTable.Adapter(
-        activityAdapter = EnumColumnAdapter(),
-        lastBuildStatusAdapter = EnumColumnAdapter(),
-        lastBuildTimeAdapter = ZonedDateTimeColumnAdapter,
-        nextBuildTimeAdapter = ZonedDateTimeColumnAdapter
-      )
+      ProjectTableAdapter = projectTableAdapter
     )
   }
 }

@@ -55,4 +55,8 @@
     <color name="md_theme_dark_inversePrimary">#825500</color>
     <color name="md_theme_dark_shadow">#000000</color>
     <color name="md_theme_dark_primaryInverse">#825500</color>
+
+    <color name="build_success">#4BB543</color>
+    <color name="build_fail">#B3261E</color>
+    <color name="build_in_progress">#FFEB3B</color>
 </resources>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentProjectList"
-        android:name="dev.aungkyawpaing.ccdroidx.feature.ProjectListFragment"
+        android:name="dev.aungkyawpaing.ccdroidx.feature.projectlist.ProjectListFragment"
         android:label="fragment_project_list"
         tools:layout="@layout/fragment_project_list">
         <action

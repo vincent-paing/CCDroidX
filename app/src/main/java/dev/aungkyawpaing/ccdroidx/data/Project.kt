@@ -12,7 +12,8 @@ data class Project(
   val lastBuildLabel: String?,
   val lastBuildTime: ZonedDateTime,
   val nextBuildTime: ZonedDateTime?,
-  val webUrl: String
+  val webUrl: String,
+  val feedUrl: String
 ) : Parcelable
 
 @Parcelize

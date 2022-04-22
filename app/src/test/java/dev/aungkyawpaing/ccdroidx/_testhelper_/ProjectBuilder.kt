@@ -16,7 +16,8 @@ object ProjectBuilder {
       lastBuildLabel = null,
       lastBuildTime = ZonedDateTime.of(2022, 4, 21, 0, 0, 0, 0, ZoneId.of("UTC")),
       nextBuildTime = null,
-      webUrl = "https://example.com/master"
+      webUrl = "https://example.com/master",
+      feedUrl = "https://www.example.com/cc.xml"
     )
   }
 }

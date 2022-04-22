@@ -51,8 +51,10 @@ class FetchProjectTest {
 
     server.start()
 
-    val url = server.url("")
+    val url = server.url("").toString()
     val fetchProject = FetchProject(OkHttpClient())
+
+    val actual = fetchProject.requestForProjectList(url)
 
     val expected = listOf(
       Project(
@@ -65,10 +67,10 @@ class FetchProjectTest {
           ZoneId.ofOffset("", ZoneOffset.of("+00:00"))
         ),
         nextBuildTime = null,
-        webUrl = "https://circleci.com/gh/circleci/ex/tree/main"
+        webUrl = "https://circleci.com/gh/circleci/ex/tree/main",
+        feedUrl = url
       )
     )
-    val actual = fetchProject.requestForProjectList(url.toString())
 
     Assert.assertEquals(expected, actual)
 

@@ -1,7 +1,6 @@
 package dev.aungkyawpaing.ccdroidx
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.squareup.sqldelight.sqlite.driver.JdbcDriver
 import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.api.FetchProject
@@ -11,16 +10,16 @@ import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.yield
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AddProjectViewModelTest {
 
   @get:Rule

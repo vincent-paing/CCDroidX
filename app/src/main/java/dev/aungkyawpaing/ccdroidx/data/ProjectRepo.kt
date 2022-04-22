@@ -24,7 +24,7 @@ class ProjectRepo @Inject constructor(
         lastBuildTime = project.lastBuildTime,
         nextBuildTime = project.nextBuildTime,
         webUrl = project.webUrl,
-        feedUrl = ""
+        feedUrl = project.feedUrl
       )
     )
   }
@@ -43,6 +43,7 @@ class ProjectRepo @Inject constructor(
             lastBuildTime = projectTable.lastBuildTime,
             nextBuildTime = projectTable.nextBuildTime,
             webUrl = projectTable.webUrl,
+            feedUrl = projectTable.feedUrl
           )
         }
       }

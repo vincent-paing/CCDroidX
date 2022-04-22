@@ -4,6 +4,9 @@ import dev.aungkyawpaing.ccdroidx.data.BuildState
 import dev.aungkyawpaing.ccdroidx.data.BuildStatus
 import dev.aungkyawpaing.ccdroidx.data.Project
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
 import org.junit.Test
@@ -16,7 +19,17 @@ class CCTrayParserTest {
 
   @Test
   fun testParseSleepingActivityAndExceptionStatus() {
-    val input = """
+    val input = Response.Builder()
+      .request(
+        Request.Builder()
+          .url("https://www.example.com/cc.xml")
+          .build()
+      )
+      .protocol(Protocol.HTTP_1_1)
+      .code(200)
+      .message("")
+      .body(
+        """
           <Projects>
               <Project
                   name="SvnTest"
@@ -29,6 +42,8 @@ class CCTrayParserTest {
 
           </Projects>
         """.trimIndent().toResponseBody("application/xml".toMediaType())
+      )
+      .build()
 
     val expected = listOf(
       Project(
@@ -44,7 +59,8 @@ class CCTrayParserTest {
           2005, 10, 4, 14, 31, 52, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
-        webUrl = "http://mrtickle/ccnet/"
+        webUrl = "http://mrtickle/ccnet/",
+        feedUrl = "https://www.example.com/cc.xml"
       )
     )
 
@@ -54,7 +70,17 @@ class CCTrayParserTest {
 
   @Test
   fun testParseBuildingActivityAndSuccessStatus() {
-    val input = """
+    val input = Response.Builder()
+      .request(
+        Request.Builder()
+          .url("https://www.example.com/cc.xml")
+          .build()
+      )
+      .protocol(Protocol.HTTP_1_1)
+      .code(200)
+      .message("")
+      .body(
+        """
           <Projects>
               <Project
                   name="SvnTest"
@@ -67,6 +93,7 @@ class CCTrayParserTest {
 
           </Projects>
         """.trimIndent().toResponseBody("application/xml".toMediaType())
+      ).build()
 
     val expected = listOf(
       Project(
@@ -82,7 +109,8 @@ class CCTrayParserTest {
           2005, 10, 4, 14, 31, 52, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
-        webUrl = "http://mrtickle/ccnet/"
+        webUrl = "http://mrtickle/ccnet/",
+        feedUrl = "https://www.example.com/cc.xml"
       )
     )
 
@@ -92,7 +120,17 @@ class CCTrayParserTest {
 
   @Test
   fun testParseCheckingModificationsActivityAndFailureStatus() {
-    val input = """
+    val input = Response.Builder()
+      .request(
+        Request.Builder()
+          .url("https://www.example.com/cc.xml")
+          .build()
+      )
+      .protocol(Protocol.HTTP_1_1)
+      .code(200)
+      .message("")
+      .body(
+        """
           <Projects>
               <Project
                   name="SvnTest"
@@ -105,6 +143,7 @@ class CCTrayParserTest {
 
           </Projects>
         """.trimIndent().toResponseBody("application/xml".toMediaType())
+      ).build()
 
     val expected = listOf(
       Project(
@@ -120,7 +159,8 @@ class CCTrayParserTest {
           2005, 10, 4, 14, 31, 52, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
-        webUrl = "http://mrtickle/ccnet/"
+        webUrl = "http://mrtickle/ccnet/",
+        feedUrl = "https://www.example.com/cc.xml"
       )
     )
 
@@ -130,7 +170,17 @@ class CCTrayParserTest {
 
   @Test
   fun testParseUnknownStatus() {
-    val input = """
+    val input = Response.Builder()
+      .request(
+        Request.Builder()
+          .url("https://www.example.com/cc.xml")
+          .build()
+      )
+      .protocol(Protocol.HTTP_1_1)
+      .code(200)
+      .message("")
+      .body(
+        """
           <Projects>
               <Project
                   name="SvnTest"
@@ -143,6 +193,7 @@ class CCTrayParserTest {
 
           </Projects>
         """.trimIndent().toResponseBody("application/xml".toMediaType())
+      ).build()
 
     val expected = listOf(
       Project(
@@ -158,7 +209,8 @@ class CCTrayParserTest {
           2005, 10, 4, 14, 31, 52, 0,
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
-        webUrl = "http://mrtickle/ccnet/"
+        webUrl = "http://mrtickle/ccnet/",
+        feedUrl = "https://www.example.com/cc.xml"
       )
     )
 
@@ -168,7 +220,17 @@ class CCTrayParserTest {
 
   @Test
   fun testOptionalLabelAndNextBuildTime() {
-    val input = """
+    val input = Response.Builder()
+      .request(
+        Request.Builder()
+          .url("https://www.example.com/cc.xml")
+          .build()
+      )
+      .protocol(Protocol.HTTP_1_1)
+      .code(200)
+      .message("")
+      .body(
+        """
           <Projects>
               <Project
                   name="SvnTest"
@@ -179,6 +241,7 @@ class CCTrayParserTest {
 
           </Projects>
         """.trimIndent().toResponseBody("application/xml".toMediaType())
+      ).build()
 
     val expected = listOf(
       Project(
@@ -191,7 +254,8 @@ class CCTrayParserTest {
           ZoneId.ofOffset("", ZoneOffset.of("+01:00"))
         ),
         nextBuildTime = null,
-        webUrl = "http://mrtickle/ccnet/"
+        webUrl = "http://mrtickle/ccnet/",
+        feedUrl = "https://www.example.com/cc.xml"
       )
     )
 
@@ -201,7 +265,17 @@ class CCTrayParserTest {
 
   @Test
   fun testTravisXml() {
-    val input = """
+    val input = Response.Builder()
+      .request(
+        Request.Builder()
+          .url("https://www.example.com/cc.xml")
+          .build()
+      )
+      .protocol(Protocol.HTTP_1_1)
+      .code(200)
+      .message("")
+      .body(
+        """
       <Projects>
           <Project 
               name="vincent-paing/myanmar-phonenumber-kt"
@@ -212,6 +286,7 @@ class CCTrayParserTest {
               webUrl="https://app.travis-ci.com/vincent-paing/myanmar-phonenumber-kt"/>
       </Projects>
         """.trimIndent().toResponseBody("application/xml".toMediaType())
+      ).build()
 
     val expected = listOf(
       Project(
@@ -224,7 +299,8 @@ class CCTrayParserTest {
           ZoneId.ofOffset("", ZoneOffset.of("+00:00"))
         ),
         nextBuildTime = null,
-        webUrl = "https://app.travis-ci.com/vincent-paing/myanmar-phonenumber-kt"
+        webUrl = "https://app.travis-ci.com/vincent-paing/myanmar-phonenumber-kt",
+        feedUrl = "https://www.example.com/cc.xml"
       )
     )
 
@@ -234,7 +310,17 @@ class CCTrayParserTest {
 
   @Test
   fun testCircleCiXml() {
-    val input = """
+    val input = Response.Builder()
+      .request(
+        Request.Builder()
+          .url("https://www.example.com/cc.xml")
+          .build()
+      )
+      .protocol(Protocol.HTTP_1_1)
+      .code(200)
+      .message("")
+      .body(
+        """
       <Projects>
           <Project 
               name="circleci/ex"
@@ -245,6 +331,7 @@ class CCTrayParserTest {
               lastBuildTime="2022-04-18T19:29:37.845Z"/>
       </Projects>
         """.trimIndent().toResponseBody("application/xml".toMediaType())
+      ).build()
 
     val expected = listOf(
       Project(
@@ -257,7 +344,8 @@ class CCTrayParserTest {
           ZoneId.ofOffset("", ZoneOffset.of("+00:00"))
         ),
         nextBuildTime = null,
-        webUrl = "https://circleci.com/gh/circleci/ex/tree/main"
+        webUrl = "https://circleci.com/gh/circleci/ex/tree/main",
+        feedUrl = "https://www.example.com/cc.xml"
       )
     )
 

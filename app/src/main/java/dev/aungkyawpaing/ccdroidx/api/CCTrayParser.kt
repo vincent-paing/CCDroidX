@@ -3,6 +3,7 @@ package dev.aungkyawpaing.ccdroidx.api
 import dev.aungkyawpaing.ccdroidx.data.BuildState
 import dev.aungkyawpaing.ccdroidx.data.BuildStatus
 import dev.aungkyawpaing.ccdroidx.data.Project
+import okhttp3.Response
 import okhttp3.ResponseBody
 import org.simpleframework.xml.core.Persister
 import java.time.ZonedDateTime
@@ -21,9 +22,9 @@ object CCTrayParser {
     return ZonedDateTime.parse(dateTimeString, formatter).with(ChronoField.MILLI_OF_SECOND, 0)
   }
 
-  fun parseResponse(body: ResponseBody): List<Project> {
+  fun parseResponse(response: Response): List<Project> {
     val serializer = Persister()
-    val data = serializer.read(CCTrayProjects::class.java, body.byteStream())
+    val data = serializer.read(CCTrayProjects::class.java, response.body?.byteStream())
     return data.project?.map {
       Project(
         name = it.name!!,
@@ -42,7 +43,8 @@ object CCTrayParser {
         lastBuildLabel = it.lastBuildLabel,
         lastBuildTime = parseDateTime(it.lastBuildTime!!),
         nextBuildTime = it.nextBuildTime?.let { nextBuildTime -> parseDateTime(nextBuildTime) },
-        webUrl = it.webUrl!!
+        webUrl = it.webUrl!!,
+        feedUrl = response.request.url.toUrl().toString()
       )
     } ?: emptyList()
   }

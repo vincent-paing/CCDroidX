@@ -9,13 +9,13 @@ class FetchProject @Inject constructor(
   private val client: OkHttpClient
 ) {
 
-  suspend fun requestForProjectList(url: String): List<Project> {
+  fun requestForProjectList(url: String): List<Project> {
     val request = Request.Builder()
       .url(url)
       .build();
 
     client.newCall(request).executeOrThrow().use { response ->
-      return CCTrayParser.parseResponse(response.body ?: throw NetworkException())
+      return CCTrayParser.parseResponse(response ?: throw NetworkException())
     }
   }
 }

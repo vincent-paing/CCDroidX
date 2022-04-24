@@ -5,4 +5,5 @@
     <string name="select_project">Select Project</string>
     <string name="feed_url">Feed url</string>
     <string name="next">Next</string>
+    <string name="last_synced_x">Last synced %s</string>
 </resources>

@@ -1,14 +1,11 @@
 package dev.aungkyawpaing.ccdroidx.feature.projectlist
 
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.ShapeDrawable
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.elevation.SurfaceColors
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.data.BuildState
 import dev.aungkyawpaing.ccdroidx.data.BuildStatus
@@ -16,6 +13,7 @@ import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.ItemProjectBinding
 import dev.aungkyawpaing.ccdroidx.utils.extensions.diffCallBackWith
 import dev.aungkyawpaing.ccdroidx.utils.extensions.inflater
+import org.ocpsoft.prettytime.PrettyTime
 
 
 class ProjectListAdapter :
@@ -39,6 +37,8 @@ class ProjectListAdapter :
   class ProjectViewHolder(
     private val binding: ItemProjectBinding
   ) : RecyclerView.ViewHolder(binding.root) {
+
+    private val prettyTime = PrettyTime()
 
     fun bind(item: Project) {
 
@@ -67,6 +67,8 @@ class ProjectListAdapter :
       binding.apply {
         tvProjectName.text = item.name
         viewBuildStatus.background = shape
+        tvLastSyncTime.text =
+          itemView.context.getString(R.string.last_synced_x, prettyTime.format(item.lastSyncedTime))
       }
     }
 

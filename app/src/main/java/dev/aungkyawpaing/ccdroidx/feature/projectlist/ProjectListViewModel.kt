@@ -23,4 +23,11 @@ class ProjectListViewModel @Inject constructor(
 
   val projectListLiveData = projectRepo.getAll().asLiveData()
 
+  fun onDeleteProject(project: Project) {
+    viewModelScope.launch {
+      projectRepo.delete(project)
+    }
+
+  }
+
 }

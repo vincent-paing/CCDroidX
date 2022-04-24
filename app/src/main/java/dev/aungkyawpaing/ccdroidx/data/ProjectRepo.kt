@@ -8,6 +8,7 @@ import dev.aungkyawpaing.ccdroidx.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import java.time.Clock
 import java.time.ZonedDateTime
 import javax.inject.Inject
@@ -19,37 +20,41 @@ class ProjectRepo @Inject constructor(
   private val dispatcherProvider: DispatcherProvider
 ) {
 
-  fun fetchRepo(url: String): List<Project> {
-    return fetchProject.requestForProjectList(url).map { response ->
-      Project(
-        name = response.name,
-        activity = response.activity,
-        lastBuildStatus = response.lastBuildStatus,
-        lastBuildLabel = response.lastBuildLabel,
-        lastBuildTime = response.lastBuildTime,
-        nextBuildTime = response.nextBuildTime,
-        webUrl = response.webUrl,
-        feedUrl = response.feedUrl,
-        lastSyncedTime = ZonedDateTime.now(clock)
-      )
+  suspend fun fetchRepo(url: String): List<Project> {
+    return withContext(dispatcherProvider.io()) {
+      fetchProject.requestForProjectList(url).map { response ->
+        Project(
+          name = response.name,
+          activity = response.activity,
+          lastBuildStatus = response.lastBuildStatus,
+          lastBuildLabel = response.lastBuildLabel,
+          lastBuildTime = response.lastBuildTime,
+          nextBuildTime = response.nextBuildTime,
+          webUrl = response.webUrl,
+          feedUrl = response.feedUrl,
+          lastSyncedTime = ZonedDateTime.now(clock)
+        )
+      }
     }
   }
 
 
-  fun saveProject(project: Project) {
-    db.projectTableQueries.insertOrReplace(
-      ProjectTable(
-        name = project.name,
-        activity = project.activity,
-        lastBuildStatus = project.lastBuildStatus,
-        lastBuildLabel = project.lastBuildLabel,
-        lastBuildTime = project.lastBuildTime,
-        nextBuildTime = project.nextBuildTime,
-        webUrl = project.webUrl,
-        feedUrl = project.feedUrl,
-        lastSyncedTime = project.lastSyncedTime
+  suspend fun saveProject(project: Project) {
+    withContext(dispatcherProvider.io()) {
+      db.projectTableQueries.insertOrReplace(
+        ProjectTable(
+          name = project.name,
+          activity = project.activity,
+          lastBuildStatus = project.lastBuildStatus,
+          lastBuildLabel = project.lastBuildLabel,
+          lastBuildTime = project.lastBuildTime,
+          nextBuildTime = project.nextBuildTime,
+          webUrl = project.webUrl,
+          feedUrl = project.feedUrl,
+          lastSyncedTime = project.lastSyncedTime
+        )
       )
-    )
+    }
   }
 
   fun getAll(): Flow<List<Project>> {
@@ -71,6 +76,13 @@ class ProjectRepo @Inject constructor(
           )
         }
       }
+
+  }
+
+  suspend fun delete(project: Project) {
+    return withContext(dispatcherProvider.io()) {
+      db.projectTableQueries.delete(project.webUrl, project.feedUrl);
+    }
   }
 
 }

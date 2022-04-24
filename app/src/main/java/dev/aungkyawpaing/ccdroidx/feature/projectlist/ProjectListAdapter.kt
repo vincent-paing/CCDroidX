@@ -22,7 +22,8 @@ import org.ocpsoft.prettytime.PrettyTime
 
 
 class ProjectListAdapter(
-  private val onOpenRepoClick: ((project: Project) -> Unit)
+  private val onOpenRepoClick: ((project: Project) -> Unit),
+  private val onDeleteClick: ((project: Project) -> Unit)
 ) :
   ListAdapter<Project, ProjectListAdapter.ProjectViewHolder>(
     diffCallBackWith(
@@ -36,6 +37,9 @@ class ProjectListAdapter(
       ItemProjectBinding.inflate(parent.inflater(), parent, false),
       onOpenRepoClick = { position ->
         onOpenRepoClick(getItem(position))
+      },
+      onDeleteClick = { position ->
+        onDeleteClick(getItem(position))
       }
     )
   }
@@ -46,7 +50,8 @@ class ProjectListAdapter(
 
   class ProjectViewHolder(
     private val binding: ItemProjectBinding,
-    private val onOpenRepoClick: ((position: Int) -> Unit)
+    private val onOpenRepoClick: ((position: Int) -> Unit),
+    private val onDeleteClick: ((position: Int) -> Unit)
   ) : RecyclerView.ViewHolder(binding.root) {
 
     private val prettyTime = PrettyTime()
@@ -60,7 +65,6 @@ class ProjectListAdapter(
     }
 
     fun bind(item: Project) {
-
       val buildStatusColor = when (item.activity) {
         BuildState.SLEEPING -> {
           when (item.lastBuildStatus) {
@@ -96,11 +100,21 @@ class ProjectListAdapter(
       popup.menuInflater.inflate(R.menu.menu_item_project, popup.menu)
 
       popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-        if (menuItem.itemId == R.id.action_open_repo) {
-          onOpenRepoClick(position)
-          return@setOnMenuItemClickListener true
+        when (menuItem.itemId) {
+          R.id.action_open_repo -> {
+            onOpenRepoClick(position)
+            return@setOnMenuItemClickListener true
+          }
+          R.id.action_delete -> {
+            onDeleteClick(position)
+            return@setOnMenuItemClickListener true
+          }
+          else -> {
+            return@setOnMenuItemClickListener false
+          }
         }
-        return@setOnMenuItemClickListener false
+
+
       }
       popup.show()
     }

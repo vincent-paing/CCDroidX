@@ -9,4 +9,7 @@
     <string name="refresh_project_status">Refresh Project Status</string>
     <string name="settings">Settings</string>
     <string name="open_repo">Open repo</string>
+    <string name="delete_project">Delete</string>
+    <string name="confirm_delete_message">This action cannot be reversed. Are you sure you want to delete?</string>
+    <string name="confirm_delete_title">Warning</string>
 </resources>

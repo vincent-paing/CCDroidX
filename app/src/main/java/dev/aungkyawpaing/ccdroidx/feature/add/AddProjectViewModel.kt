@@ -23,9 +23,7 @@ class AddProjectViewModel @Inject constructor(
 
   fun getProjectsFromFeed(feedUrl: String) {
     viewModelScope.launch {
-      val projectList = withContext(dispatcherProvider.io()) {
-        projectRepo.fetchRepo(feedUrl)
-      }
+      val projectList = projectRepo.fetchRepo(feedUrl)
       projectListLiveEvent.setValue(projectList)
     }
   }

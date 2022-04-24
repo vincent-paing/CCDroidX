@@ -20,3 +20,6 @@ INSERT OR REPLACE INTO ProjectTable VALUES ?;
 
 selectAll:
 SELECT * FROM ProjectTable;
+
+delete:
+DELETE FROM ProjectTable WHERE webUrl=:webUrl AND feedUrl=:feedUrl;

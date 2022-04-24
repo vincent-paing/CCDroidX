@@ -10,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
 import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectViewModel
@@ -24,8 +26,9 @@ class ProjectListFragment : Fragment() {
   private val binding get() = _binding!!
 
   private val projectListAdapter by lazy {
-    ProjectListAdapter(this::onOpenRepoClick)
+    ProjectListAdapter(this::onOpenRepoClick, this::onDeleteProject)
   }
+
   private val viewModel: ProjectListViewModel by viewModels()
 
   private val openInBrowser = OpenInBrowser()
@@ -41,7 +44,6 @@ class ProjectListFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-//    (requireActivity() as? AppCompatActivity)?.setSupportActionBar(binding.toolBar)
     binding.fabAdd.setOnClickListener {
       findNavController().navigate(
         ProjectListFragmentDirections.actionFragmentProjectListToAddProjectDialog()
@@ -63,6 +65,17 @@ class ProjectListFragment : Fragment() {
 
   private fun onOpenRepoClick(project: Project) {
     openInBrowser.openInBrowser(requireActivity(), project.webUrl)
+  }
+
+  private fun onDeleteProject(project: Project) {
+    MaterialAlertDialogBuilder(requireContext())
+      .setTitle(getString(R.string.confirm_delete_title))
+      .setMessage(getString(R.string.confirm_delete_message))
+      .setPositiveButton(R.string.delete_project) { _, _ ->
+        viewModel.onDeleteProject(project)
+      }
+      .setNegativeButton(android.R.string.cancel, null)
+      .show()
   }
 
 }

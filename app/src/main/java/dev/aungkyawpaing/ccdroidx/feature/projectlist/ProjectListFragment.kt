@@ -15,6 +15,7 @@ import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
 import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import org.ocpsoft.prettytime.PrettyTime
+import java.time.ZonedDateTime
 
 @AndroidEntryPoint
 class ProjectListFragment : Fragment() {
@@ -54,14 +55,23 @@ class ProjectListFragment : Fragment() {
       projectListAdapter.submitList(projectList)
     }
     viewModel.lastSyncedLiveData.observe(viewLifecycleOwner) { lastSyncedTime ->
-      if (lastSyncedTime == null) {
-        binding.toolBar.subtitle = "Welcome!"
-      } else {
-        binding.toolBar.subtitle = getString(
-          R.string.last_synced_x, prettyTime.format(lastSyncedTime)
-        )
-      }
+      updateSubtitle(lastSyncedTime)
     }
+  }
+
+  private fun updateSubtitle(lastSyncedTime: ZonedDateTime?) {
+    if (lastSyncedTime == null) {
+      binding.toolBar.subtitle = "Welcome!"
+    } else {
+      binding.toolBar.subtitle = getString(
+        R.string.last_synced_x, prettyTime.format(lastSyncedTime)
+      )
+    }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    updateSubtitle(viewModel.lastSyncedLiveData.value)
   }
 
   override fun onDestroyView() {

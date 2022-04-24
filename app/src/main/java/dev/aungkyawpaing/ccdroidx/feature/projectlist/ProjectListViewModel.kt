@@ -4,14 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.aungkyawpaing.ccdroidx.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
-import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncMetaDataStorage
-import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -29,9 +25,9 @@ class ProjectListViewModel @Inject constructor(
 
   fun onDeleteProject(project: Project) {
     viewModelScope.launch {
-      projectRepo.delete(project)
+      withContext(dispatcherProvider.io()) {
+        projectRepo.delete(project)
+      }
     }
-
   }
-
 }

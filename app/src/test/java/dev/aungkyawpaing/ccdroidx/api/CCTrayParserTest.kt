@@ -46,7 +46,7 @@ class CCTrayParserTest {
       .build()
 
     val expected = listOf(
-      Project(
+      ProjectResponse(
         name = "SvnTest",
         activity = BuildState.SLEEPING,
         lastBuildStatus = BuildStatus.EXCEPTION,
@@ -96,7 +96,7 @@ class CCTrayParserTest {
       ).build()
 
     val expected = listOf(
-      Project(
+      ProjectResponse(
         name = "SvnTest",
         activity = BuildState.BUILDING,
         lastBuildStatus = BuildStatus.SUCCESS,
@@ -146,7 +146,7 @@ class CCTrayParserTest {
       ).build()
 
     val expected = listOf(
-      Project(
+      ProjectResponse(
         name = "SvnTest",
         activity = BuildState.CHECKING_MODIFICATIONS,
         lastBuildStatus = BuildStatus.FAILURE,
@@ -196,7 +196,7 @@ class CCTrayParserTest {
       ).build()
 
     val expected = listOf(
-      Project(
+      ProjectResponse(
         name = "SvnTest",
         activity = BuildState.CHECKING_MODIFICATIONS,
         lastBuildStatus = BuildStatus.UNKNOWN,
@@ -244,7 +244,7 @@ class CCTrayParserTest {
       ).build()
 
     val expected = listOf(
-      Project(
+      ProjectResponse(
         name = "SvnTest",
         activity = BuildState.CHECKING_MODIFICATIONS,
         lastBuildStatus = BuildStatus.FAILURE,
@@ -289,7 +289,7 @@ class CCTrayParserTest {
       ).build()
 
     val expected = listOf(
-      Project(
+      ProjectResponse(
         name = "vincent-paing/myanmar-phonenumber-kt",
         activity = BuildState.SLEEPING,
         lastBuildStatus = BuildStatus.SUCCESS,
@@ -334,7 +334,7 @@ class CCTrayParserTest {
       ).build()
 
     val expected = listOf(
-      Project(
+      ProjectResponse(
         name = "circleci/ex",
         activity = BuildState.SLEEPING,
         lastBuildStatus = BuildStatus.SUCCESS,

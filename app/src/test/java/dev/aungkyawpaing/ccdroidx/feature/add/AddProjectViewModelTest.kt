@@ -6,6 +6,7 @@ import dev.aungkyawpaing.ccdroidx.CCDroidXDb
 import dev.aungkyawpaing.ccdroidx.CoroutineTestRule
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.api.FetchProject
+import dev.aungkyawpaing.ccdroidx.api.ProjectResponse
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.db.projectTableAdapter
 import dev.aungkyawpaing.ccdroidx.getOrAwaitValue
@@ -20,6 +21,10 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AddProjectViewModelTest {
@@ -32,11 +37,13 @@ class AddProjectViewModelTest {
   var instantTaskExecutorRule = InstantTaskExecutorRule()
 
   private val fetchProject = mockk<FetchProject>()
+  private val clock: Clock = Clock.fixed(Instant.ofEpochSecond(6000), ZoneId.of("UTC"))
   private val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
   private val projectRepo = ProjectRepo(
     fetchProject,
     CCDroidXDb(driver, projectTableAdapter),
-    coroutineTestRule.testDispatcherProvider
+    clock,
+    dispatcherProvider = coroutineTestRule.testDispatcherProvider
   )
 
   private val viewModel =
@@ -54,12 +61,23 @@ class AddProjectViewModelTest {
       "https://api.travis-ci.com/repos/vincent-paing/myanmar-phonenumber-kt/cc.xml?branch=master"
 
     val expectedProjectList = listOf(
-      ProjectBuilder.buildProject()
+      ProjectBuilder.buildProject(clock)
     )
 
     coEvery {
       fetchProject.requestForProjectList(url)
-    } returns expectedProjectList
+    } returns expectedProjectList.map { project ->
+      ProjectResponse(
+        name = project.name,
+        activity = project.activity,
+        lastBuildStatus = project.lastBuildStatus,
+        lastBuildLabel = project.lastBuildLabel,
+        lastBuildTime = project.lastBuildTime,
+        nextBuildTime = project.nextBuildTime,
+        webUrl = project.webUrl,
+        feedUrl = project.feedUrl
+      )
+    }
 
     viewModel.getProjectsFromFeed(url)
 
@@ -70,7 +88,7 @@ class AddProjectViewModelTest {
 
   @Test
   fun testOnSelectProject() = runTest {
-    val project = ProjectBuilder.buildProject()
+    val project = ProjectBuilder.buildProject(clock)
 
     viewModel.onSelectProject(project)
 

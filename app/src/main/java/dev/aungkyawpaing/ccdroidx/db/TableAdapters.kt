@@ -7,5 +7,6 @@ val projectTableAdapter = ProjectTable.Adapter(
   activityAdapter = EnumColumnAdapter(),
   lastBuildStatusAdapter = EnumColumnAdapter(),
   lastBuildTimeAdapter = ZonedDateTimeColumnAdapter,
-  nextBuildTimeAdapter = ZonedDateTimeColumnAdapter
+  nextBuildTimeAdapter = ZonedDateTimeColumnAdapter,
+  lastSyncedTimeAdapter = ZonedDateTimeColumnAdapter
 )

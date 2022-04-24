@@ -8,16 +8,31 @@ import dev.aungkyawpaing.ccdroidx.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.Clock
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class ProjectRepo @Inject constructor(
   private val fetchProject: FetchProject,
   private val db: CCDroidXDb,
+  private val clock: Clock,
   private val dispatcherProvider: DispatcherProvider
 ) {
 
   fun fetchRepo(url: String): List<Project> {
-    return fetchProject.requestForProjectList(url)
+    return fetchProject.requestForProjectList(url).map { response ->
+      Project(
+        name = response.name,
+        activity = response.activity,
+        lastBuildStatus = response.lastBuildStatus,
+        lastBuildLabel = response.lastBuildLabel,
+        lastBuildTime = response.lastBuildTime,
+        nextBuildTime = response.nextBuildTime,
+        webUrl = response.webUrl,
+        feedUrl = response.feedUrl,
+        lastSyncedTime = ZonedDateTime.now(clock)
+      )
+    }
   }
 
 
@@ -31,7 +46,8 @@ class ProjectRepo @Inject constructor(
         lastBuildTime = project.lastBuildTime,
         nextBuildTime = project.nextBuildTime,
         webUrl = project.webUrl,
-        feedUrl = project.feedUrl
+        feedUrl = project.feedUrl,
+        lastSyncedTime = project.lastSyncedTime
       )
     )
   }
@@ -50,7 +66,8 @@ class ProjectRepo @Inject constructor(
             lastBuildTime = projectTable.lastBuildTime,
             nextBuildTime = projectTable.nextBuildTime,
             webUrl = projectTable.webUrl,
-            feedUrl = projectTable.feedUrl
+            feedUrl = projectTable.feedUrl,
+            lastSyncedTime = projectTable.lastSyncedTime
           )
         }
       }

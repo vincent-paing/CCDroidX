@@ -4,21 +4,15 @@ import dev.aungkyawpaing.ccdroidx.CoroutineTestRule
 import dev.aungkyawpaing.ccdroidx.data.BuildState
 import dev.aungkyawpaing.ccdroidx.data.BuildStatus
 import dev.aungkyawpaing.ccdroidx.data.Project
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
-import java.time.ZoneId
-import java.time.ZoneOffset
-import java.time.ZonedDateTime
-import okhttp3.mockwebserver.RecordedRequest
+import java.time.*
 
 
 @ExperimentalCoroutinesApi
@@ -57,7 +51,7 @@ class FetchProjectTest {
     val actual = fetchProject.requestForProjectList(url)
 
     val expected = listOf(
-      Project(
+      ProjectResponse(
         name = "circleci/ex",
         activity = BuildState.SLEEPING,
         lastBuildStatus = BuildStatus.SUCCESS,
@@ -68,7 +62,7 @@ class FetchProjectTest {
         ),
         nextBuildTime = null,
         webUrl = "https://circleci.com/gh/circleci/ex/tree/main",
-        feedUrl = url
+        feedUrl = url,
       )
     )
 

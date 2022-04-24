@@ -22,11 +22,11 @@ object CCTrayParser {
     return ZonedDateTime.parse(dateTimeString, formatter).with(ChronoField.MILLI_OF_SECOND, 0)
   }
 
-  fun parseResponse(response: Response): List<Project> {
+  fun parseResponse(response: Response): List<ProjectResponse> {
     val serializer = Persister()
     val data = serializer.read(CCTrayProjects::class.java, response.body?.byteStream())
     return data.project?.map {
-      Project(
+      ProjectResponse(
         name = it.name!!,
         activity = when (it.activity) {
           "Sleeping" -> BuildState.SLEEPING
@@ -44,7 +44,7 @@ object CCTrayParser {
         lastBuildTime = parseDateTime(it.lastBuildTime!!),
         nextBuildTime = it.nextBuildTime?.let { nextBuildTime -> parseDateTime(nextBuildTime) },
         webUrl = it.webUrl!!,
-        feedUrl = response.request.url.toUrl().toString()
+        feedUrl = response.request.url.toUrl().toString(),
       )
     } ?: emptyList()
   }

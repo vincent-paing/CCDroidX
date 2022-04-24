@@ -8,6 +8,7 @@ import dev.aungkyawpaing.ccdroidx.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
+import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

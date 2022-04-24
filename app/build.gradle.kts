@@ -72,6 +72,7 @@ dependencies {
   androidXFragment()
   androidXNavigation()
   androidXWorkManager()
+  implementation("androidx.browser:browser:1.4.0")
 
   implementation(Material.material)
 

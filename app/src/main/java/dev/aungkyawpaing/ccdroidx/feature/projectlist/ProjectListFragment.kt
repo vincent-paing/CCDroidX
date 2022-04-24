@@ -11,8 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
 import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectViewModel
+import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProjectListFragment : Fragment() {
@@ -20,8 +23,12 @@ class ProjectListFragment : Fragment() {
   private var _binding: FragmentProjectListBinding? = null
   private val binding get() = _binding!!
 
-  private val projectListAdapter = ProjectListAdapter()
+  private val projectListAdapter by lazy {
+    ProjectListAdapter(this::onOpenRepoClick)
+  }
   private val viewModel: ProjectListViewModel by viewModels()
+
+  private val openInBrowser = OpenInBrowser()
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -54,5 +61,8 @@ class ProjectListFragment : Fragment() {
     _binding = null
   }
 
+  private fun onOpenRepoClick(project: Project) {
+    openInBrowser.openInBrowser(requireActivity(), project.webUrl)
+  }
 
 }

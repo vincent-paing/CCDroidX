@@ -1,7 +1,11 @@
 package dev.aungkyawpaing.ccdroidx.feature.projectlist
 
 import android.graphics.drawable.GradientDrawable
+import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.MenuRes
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,10 +17,13 @@ import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.ItemProjectBinding
 import dev.aungkyawpaing.ccdroidx.utils.extensions.diffCallBackWith
 import dev.aungkyawpaing.ccdroidx.utils.extensions.inflater
+import dev.aungkyawpaing.ccdroidx.utils.extensions.withSafeAdapterPosition
 import org.ocpsoft.prettytime.PrettyTime
 
 
-class ProjectListAdapter :
+class ProjectListAdapter(
+  private val onOpenRepoClick: ((project: Project) -> Unit)
+) :
   ListAdapter<Project, ProjectListAdapter.ProjectViewHolder>(
     diffCallBackWith(
       areItemTheSame = { item1, item2 -> item1.name == item2.name && item1.webUrl == item2.webUrl },
@@ -26,7 +33,10 @@ class ProjectListAdapter :
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
     return ProjectViewHolder(
-      ItemProjectBinding.inflate(parent.inflater(), parent, false)
+      ItemProjectBinding.inflate(parent.inflater(), parent, false),
+      onOpenRepoClick = { position ->
+        onOpenRepoClick(getItem(position))
+      }
     )
   }
 
@@ -35,10 +45,19 @@ class ProjectListAdapter :
   }
 
   class ProjectViewHolder(
-    private val binding: ItemProjectBinding
+    private val binding: ItemProjectBinding,
+    private val onOpenRepoClick: ((position: Int) -> Unit)
   ) : RecyclerView.ViewHolder(binding.root) {
 
     private val prettyTime = PrettyTime()
+
+    init {
+      binding.ivMenu.setOnClickListener { view ->
+        withSafeAdapterPosition { position ->
+          showMenu(view, position)
+        }
+      }
+    }
 
     fun bind(item: Project) {
 
@@ -70,6 +89,20 @@ class ProjectListAdapter :
         tvLastSyncTime.text =
           itemView.context.getString(R.string.last_synced_x, prettyTime.format(item.lastSyncedTime))
       }
+    }
+
+    private fun showMenu(view: View, position: Int) {
+      val popup = PopupMenu(itemView.context, view)
+      popup.menuInflater.inflate(R.menu.menu_item_project, popup.menu)
+
+      popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+        if (menuItem.itemId == R.id.action_open_repo) {
+          onOpenRepoClick(position)
+          return@setOnMenuItemClickListener true
+        }
+        return@setOnMenuItemClickListener false
+      }
+      popup.show()
     }
 
   }

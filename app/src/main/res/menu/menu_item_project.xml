@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_open_repo"
-        android:contentDescription="@string/menu_item_refresh_project_status"
+        android:contentDescription="@string/menu_item_sync_project_status"
         android:title="@string/action_item_project_open_repo"
         app:showAsAction="ifRoom" />
 

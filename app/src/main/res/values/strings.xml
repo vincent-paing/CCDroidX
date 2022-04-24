@@ -11,7 +11,7 @@
     <string name="syncing">Syncing…</string>
     <string name="last_synced_x">Last synced %s</string>
 
-    <string name="menu_item_refresh_project_status">Refresh Project Status</string>
+    <string name="menu_item_sync_project_status">Sync Project Status</string>
     <string name="menu_item_settings">Settings</string>
 
     <string name="action_item_project_open_repo">Open repo</string>

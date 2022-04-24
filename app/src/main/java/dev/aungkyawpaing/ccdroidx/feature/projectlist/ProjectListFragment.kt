@@ -16,6 +16,7 @@ import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
 import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
+import dev.aungkyawpaing.ccdroidx.utils.extensions.showShortToast
 import org.ocpsoft.prettytime.PrettyTime
 import java.time.ZonedDateTime
 
@@ -53,6 +54,24 @@ class ProjectListFragment : Fragment() {
       adapter = projectListAdapter
       layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
+
+    binding.toolBar.setOnMenuItemClickListener {  menuItem ->
+      when (menuItem.itemId) {
+        R.id.action_sync -> {
+          viewModel.onPressSync()
+          return@setOnMenuItemClickListener true
+        }
+        R.id.action_settings -> {
+          requireContext().showShortToast("coming soon!")
+          return@setOnMenuItemClickListener true
+        }
+        else -> {
+          return@setOnMenuItemClickListener false
+        }
+      }
+
+    }
+
     viewModel.projectListLiveData.observe(viewLifecycleOwner) { projectList ->
       projectListAdapter.submitList(projectList)
     }

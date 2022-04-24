@@ -8,6 +8,7 @@ import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncMetaDataStorage
+import dev.aungkyawpaing.ccdroidx.feature.sync.SyncProjects
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProjectListViewModel @Inject constructor(
   private val projectRepo: ProjectRepo,
+  private val syncProjects: SyncProjects,
   private val syncMetaDataStorage: SyncMetaDataStorage,
   private val dispatcherProvider: DispatcherProvider,
 ) : ViewModel() {
@@ -27,6 +29,14 @@ class ProjectListViewModel @Inject constructor(
     viewModelScope.launch {
       withContext(dispatcherProvider.io()) {
         projectRepo.delete(project)
+      }
+    }
+  }
+
+  fun onPressSync() {
+    viewModelScope.launch {
+      withContext(dispatcherProvider.io()) {
+        syncProjects.sync()
       }
     }
   }

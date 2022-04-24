@@ -70,6 +70,7 @@ dependencies {
   androidXActivity()
   androidXFragment()
   androidXNavigation()
+  androidXWorkManager()
 
   implementation(Material.material)
 

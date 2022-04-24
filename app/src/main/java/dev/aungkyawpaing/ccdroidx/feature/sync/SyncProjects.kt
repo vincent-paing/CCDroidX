@@ -2,8 +2,10 @@ package dev.aungkyawpaing.ccdroidx.feature.sync
 
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import kotlinx.coroutines.flow.firstOrNull
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SyncProjects(private val projectRepo: ProjectRepo) {
+class SyncProjects @Inject constructor(private val projectRepo: ProjectRepo) {
 
   suspend fun sync() {
     (projectRepo.getAll().firstOrNull() ?: emptyList()).forEach { project ->
@@ -14,6 +16,4 @@ class SyncProjects(private val projectRepo: ProjectRepo) {
       projectRepo.saveProject(updatedProject)
     }
   }
-
-
 }

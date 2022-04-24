@@ -87,7 +87,7 @@ class ProjectListFragment : Fragment() {
     MaterialAlertDialogBuilder(requireContext())
       .setTitle(getString(R.string.confirm_delete_title))
       .setMessage(getString(R.string.confirm_delete_message))
-      .setPositiveButton(R.string.delete_project) { _, _ ->
+      .setPositiveButton(R.string.action_item_project_delete_project) { _, _ ->
         viewModel.onDeleteProject(project)
       }
       .setNegativeButton(android.R.string.cancel, null)

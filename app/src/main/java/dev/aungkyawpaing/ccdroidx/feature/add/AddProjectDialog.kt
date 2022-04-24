@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -13,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.databinding.AddProjectDialogBinding
 import dev.aungkyawpaing.ccdroidx.utils.extensions.hideKeyboard
-import timber.log.Timber
+import dev.aungkyawpaing.ccdroidx.utils.extensions.showShortToast
 
 @AndroidEntryPoint
 class AddProjectDialog : DialogFragment() {
@@ -81,6 +80,10 @@ class AddProjectDialog : DialogFragment() {
 
     viewModel.dismissLiveEvent.observe(viewLifecycleOwner) {
       dismiss()
+    }
+
+    viewModel.errorLiveEvent.observe(viewLifecycleOwner) {
+      requireContext().showShortToast(it)
     }
   }
 

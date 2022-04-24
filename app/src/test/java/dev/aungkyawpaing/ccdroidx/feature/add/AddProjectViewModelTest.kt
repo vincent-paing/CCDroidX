@@ -41,7 +41,7 @@ class AddProjectViewModelTest {
   )
 
   private val viewModel =
-    AddProjectViewModel(projectRepo, coroutineTestRule.testDispatcherProvider)
+    AddProjectViewModel(projectRepo, mockk(), mockk(), coroutineTestRule.testDispatcherProvider)
 
   @Before
   fun setUp() {

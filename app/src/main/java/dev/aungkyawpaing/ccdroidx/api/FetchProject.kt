@@ -1,9 +1,8 @@
 package dev.aungkyawpaing.ccdroidx.api
 
-import dev.aungkyawpaing.ccdroidx.data.Project
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.time.Clock
+import timber.log.Timber
 import javax.inject.Inject
 
 class FetchProject @Inject constructor(
@@ -11,9 +10,14 @@ class FetchProject @Inject constructor(
 ) {
 
   fun requestForProjectList(url: String): List<ProjectResponse> {
-    val request = Request.Builder()
-      .url(url)
-      .build();
+    val request = try {
+      Request.Builder()
+        .url(url)
+        .build()
+    } catch (exception: IllegalArgumentException) {
+      Timber.e(exception)
+      throw InvalidUrlException()
+    }
 
     client.newCall(request).executeOrThrow().use { response ->
       return CCTrayParser.parseResponse(response ?: throw NetworkException())

@@ -3,14 +3,27 @@
 
     <string name="add_new_project">Add New Project</string>
     <string name="select_project">Select Project</string>
+
     <string name="feed_url">Feed url</string>
     <string name="next">Next</string>
+
     <string name="last_built_x">Last built %s</string>
     <string name="last_synced_x">Last synced %s</string>
-    <string name="refresh_project_status">Refresh Project Status</string>
-    <string name="settings">Settings</string>
-    <string name="open_repo">Open repo</string>
-    <string name="delete_project">Delete</string>
+
+    <string name="menu_item_refresh_project_status">Refresh Project Status</string>
+    <string name="menu_item_settings">Settings</string>
+
+    <string name="action_item_project_open_repo">Open repo</string>
+    <string name="action_item_project_delete_project">Delete</string>
     <string name="confirm_delete_message">This action cannot be reversed. Are you sure you want to delete?</string>
     <string name="confirm_delete_title">Warning</string>
+
+    <string name="error_invalid_url">Invalid url, please confirm that the input is correct</string>
+    <string name="error_generic">Unknown error occurred. Please try again later</string>
+    <string name="error_no_internet">Cannot connect to the server, please confirm you have access to the Internet</string>
+    <string name="error_socket_timeout">Timed out connecting server, please try again later</string>
+    <string name="error_server_400">400 Bad Request</string>
+    <string name="error_server_500">500 Internal Server error</string>
+    <string name="error_server_404">404 Not Found</string>
+    <string name="error_http">Unknown http error occurred. Please try again later</string>
 </resources>

@@ -4,17 +4,17 @@
 
     <item
         android:id="@+id/action_refresh"
-        android:contentDescription="@string/refresh_project_status"
+        android:contentDescription="@string/menu_item_refresh_project_status"
         android:icon="@drawable/ic_sync_24"
-        android:title="@string/refresh_project_status"
+        android:title="@string/menu_item_refresh_project_status"
         app:iconTint="?attr/colorOnPrimary"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"
-        android:contentDescription="@string/settings"
+        android:contentDescription="@string/menu_item_settings"
         android:icon="@drawable/ic_settings_24"
-        android:title="@string/settings"
+        android:title="@string/menu_item_settings"
         app:iconTint="?attr/colorOnPrimary"
         app:showAsAction="ifRoom" />
 

@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -15,10 +13,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
-import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectViewModel
 import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import org.ocpsoft.prettytime.PrettyTime
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProjectListFragment : Fragment() {

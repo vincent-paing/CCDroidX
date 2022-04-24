@@ -1,5 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature.add
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,14 +19,20 @@ class AddProjectViewModel @Inject constructor(
   private val dispatcherProvider: DispatcherProvider,
 ) : ViewModel() {
 
+  private val _isLoadingLiveData = MutableLiveData<Boolean>()
+  val isLoadingLiveData: LiveData<Boolean> get() = _isLoadingLiveData
+
   val projectListLiveEvent = SingleLiveEvent<List<Project>>()
 
   val dismissLiveEvent = SingleLiveEvent<Unit>()
 
   fun getProjectsFromFeed(feedUrl: String) {
     viewModelScope.launch {
+      _isLoadingLiveData.postValue(true)
       val projectList = projectRepo.fetchRepo(feedUrl)
-      projectListLiveEvent.setValue(projectList)
+      _isLoadingLiveData.postValue(false)
+      projectListLiveEvent.postValue(projectList)
+
     }
   }
 
@@ -33,7 +41,7 @@ class AddProjectViewModel @Inject constructor(
       withContext(dispatcherProvider.io()) {
         projectRepo.saveProject(project)
       }
-      dismissLiveEvent.setValue(Unit)
+      dismissLiveEvent.postValue(Unit)
     }
 
   }

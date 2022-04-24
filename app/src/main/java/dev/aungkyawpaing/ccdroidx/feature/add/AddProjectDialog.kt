@@ -1,18 +1,18 @@
 package dev.aungkyawpaing.ccdroidx.feature.add
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.databinding.AddProjectDialogBinding
+import dev.aungkyawpaing.ccdroidx.utils.extensions.hideKeyboard
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -42,6 +42,7 @@ class AddProjectDialog : DialogFragment() {
     super.onViewCreated(view, savedInstanceState)
 
     binding.buttonNext.setOnClickListener {
+      it.hideKeyboard()
       viewModel.getProjectsFromFeed(binding.textFieldFeedUrl.text.toString())
     }
 
@@ -49,8 +50,18 @@ class AddProjectDialog : DialogFragment() {
       this.dismiss()
     }
 
+    viewModel.isLoadingLiveData.observe(viewLifecycleOwner) { isLoading ->
+      if (isLoading) {
+        binding.progressIndicator.show()
+      } else {
+        binding.progressIndicator.hide()
+      }
+      binding.buttonNext.isEnabled = !isLoading
+      binding.textFieldFeedUrl.isEnabled = !isLoading
+      binding.buttonCancel.isEnabled = !isLoading
+    }
+
     viewModel.projectListLiveEvent.observe(viewLifecycleOwner) { projectList ->
-      Timber.i(projectList.toString())
       MaterialAlertDialogBuilder(requireContext())
         .setTitle(R.string.select_project)
         .setItems(

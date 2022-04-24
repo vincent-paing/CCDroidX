@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 
 interface SyncMetaDataStorage {
 
-  suspend fun saveLastSyncedTime(zonedDateTime: ZonedDateTime)
+  suspend fun saveLastSyncedTime(lastSyncedState: LastSyncedStatus)
 
-  fun getLastSyncedTime(): Flow<ZonedDateTime?>
+  fun getLastSyncedTime(): Flow<LastSyncedStatus?>
 }

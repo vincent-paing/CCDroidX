@@ -9,6 +9,8 @@ import dev.aungkyawpaing.ccdroidx.api.ProjectResponse
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.db.projectTableAdapter
 import dev.aungkyawpaing.ccdroidx.feature.sync.FakeSyncMetaDataStorage
+import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
+import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncProjects
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -103,7 +105,11 @@ class SyncProjectsTest {
         updatedProjectTwo
       ), actual
     )
-    Assert.assertEquals(ZonedDateTime.now(clock), syncMetaDataStorage.getLastSyncedTime().first())
+    val expectedSyncStatus = LastSyncedStatus(
+      lastSyncedDateTime = ZonedDateTime.now(clock),
+      lastSyncedState = LastSyncedState.SUCCESS
+    )
+    Assert.assertEquals(expectedSyncStatus, syncMetaDataStorage.getLastSyncedTime().first())
 
   }
 }

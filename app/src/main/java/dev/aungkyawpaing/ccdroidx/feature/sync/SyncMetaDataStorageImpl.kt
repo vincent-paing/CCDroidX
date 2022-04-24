@@ -2,39 +2,59 @@ package dev.aungkyawpaing.ccdroidx.feature.sync
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.dataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.aungkyawpaing.ccdroidx.SyncedStateProto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.inject.Inject
-import javax.inject.Singleton
 
-private val Context.syncedMetaDataStore: DataStore<Preferences> by preferencesDataStore(name = "sync_metadata")
 
 class SyncMetaDataStorageImpl @Inject constructor(
   @ApplicationContext private val context: Context
 ) : SyncMetaDataStorage {
 
-  companion object {
-    private val KEY_LAST_SYNCED_DATE_TIME = longPreferencesKey("last_synced_time")
-  }
+  val Context.lastSyncedStateDataStore: DataStore<SyncedStateProto?> by dataStore(
+    fileName = "last_synced_state.pb",
+    serializer = SyncedStateProtoSerializer
+  )
 
-  override suspend fun saveLastSyncedTime(zonedDateTime: ZonedDateTime) {
-    context.syncedMetaDataStore.edit { store ->
-      store[KEY_LAST_SYNCED_DATE_TIME] = zonedDateTime.toInstant().toEpochMilli()
+
+  override suspend fun saveLastSyncedTime(lastSyncedState: LastSyncedStatus) {
+    context.lastSyncedStateDataStore.updateData { _ ->
+      SyncedStateProto(
+        lastSyncedDateTime = lastSyncedState.lastSyncedDateTime.toInstant().toEpochMilli(),
+        status = when (lastSyncedState.lastSyncedState) {
+          LastSyncedState.SYNCING -> SyncedStateProto.Status.SYNCING
+          LastSyncedState.SUCCESS -> SyncedStateProto.Status.SUCCESS
+          LastSyncedState.FAILED -> SyncedStateProto.Status.FAILED
+        },
+        errorCode = lastSyncedState.errorCode
+      )
     }
   }
 
-  override fun getLastSyncedTime(): Flow<ZonedDateTime?> {
-    return context.syncedMetaDataStore.data.map { store ->
-      val instant = Instant.ofEpochMilli(store[KEY_LAST_SYNCED_DATE_TIME] ?: return@map null)
-      ZonedDateTime.ofInstant(instant, ZoneId.systemDefault())
+  override fun getLastSyncedTime(): Flow<LastSyncedStatus?> {
+    return context.lastSyncedStateDataStore.data.map { value ->
+      if (value != null) {
+        return@map LastSyncedStatus(
+          lastSyncedDateTime = ZonedDateTime.ofInstant(
+            Instant.ofEpochMilli(value.lastSyncedDateTime),
+            ZoneId.systemDefault()
+          ),
+          lastSyncedState = when (value.status) {
+            SyncedStateProto.Status.SYNCING -> LastSyncedState.SYNCING
+            SyncedStateProto.Status.SUCCESS -> LastSyncedState.SUCCESS
+            SyncedStateProto.Status.FAILED -> LastSyncedState.FAILED
+          },
+          errorCode = value.errorCode
+        )
+      } else {
+        return@map null
+      }
     }
   }
 }

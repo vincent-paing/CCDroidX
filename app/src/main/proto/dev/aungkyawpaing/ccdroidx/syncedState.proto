@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package dev.aungkyawpaing.ccdroidx;
+
+option java_multiple_files = true;
+
+message SyncedStateProto {
+  int64 lastSyncedDateTime = 1;
+  enum Status {
+    SYNCING = 0;
+    SUCCESS = 1;
+    FAILED = 2;
+  }
+  Status status = 2;
+  optional int64 errorCode = 3;
+}

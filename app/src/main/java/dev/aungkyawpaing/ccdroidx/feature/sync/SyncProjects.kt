@@ -1,5 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature.sync
 
+import dev.aungkyawpaing.ccdroidx.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import kotlinx.coroutines.flow.firstOrNull
 import java.time.Clock
@@ -13,13 +14,36 @@ class SyncProjects @Inject constructor(
 ) {
 
   suspend fun sync() {
-    (projectRepo.getAll().firstOrNull() ?: emptyList()).forEach { project ->
-      val updatedProject = projectRepo.fetchRepo(project.feedUrl).find {
-        it.webUrl == project.webUrl
-      } ?: return@forEach
+    syncMetaDataStorage.saveLastSyncedTime(
+      LastSyncedStatus(
+        lastSyncedDateTime = ZonedDateTime.now(clock),
+        lastSyncedState = LastSyncedState.SYNCING
+      )
+    )
+    try {
+      (projectRepo.getAll().firstOrNull() ?: emptyList()).forEach { project ->
+        val updatedProject = projectRepo.fetchRepo(project.feedUrl).find {
+          it.webUrl == project.webUrl
+        } ?: return@forEach
 
-      projectRepo.saveProject(updatedProject)
+        projectRepo.saveProject(updatedProject)
+      }
+      syncMetaDataStorage.saveLastSyncedTime(
+        LastSyncedStatus(
+          lastSyncedDateTime = ZonedDateTime.now(clock),
+          lastSyncedState = LastSyncedState.SUCCESS
+        )
+      )
+    } catch (networkException: NetworkException) {
+      syncMetaDataStorage.saveLastSyncedTime(
+        LastSyncedStatus(
+          lastSyncedDateTime = ZonedDateTime.now(clock),
+          lastSyncedState = LastSyncedState.FAILED,
+          errorCode = 1
+        )
+      )
+      throw networkException
     }
-    syncMetaDataStorage.saveLastSyncedTime(ZonedDateTime.now(clock))
+
   }
 }

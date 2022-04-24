@@ -6,6 +6,7 @@ plugins {
   id("com.squareup.sqldelight")
   id("androidx.navigation.safeargs.kotlin")
   id("dagger.hilt.android.plugin")
+  id("com.squareup.wire")
 }
 
 android {
@@ -61,6 +62,11 @@ sqldelight {
   }
 }
 
+wire {
+  kotlin {
+  }
+}
+
 dependencies {
   coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.1.5")
   implementation("com.jakewharton.timber:timber:5.0.1")
@@ -73,7 +79,7 @@ dependencies {
   androidXNavigation()
   androidXWorkManager()
   implementation("androidx.browser:browser:1.4.0")
-  implementation("androidx.datastore:datastore-preferences:1.0.0")
+  androidxProtoDataStore()
 
   implementation(Material.material)
 

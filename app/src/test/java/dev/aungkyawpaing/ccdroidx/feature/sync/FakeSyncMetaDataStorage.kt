@@ -7,13 +7,14 @@ import javax.inject.Inject
 
 class FakeSyncMetaDataStorage @Inject constructor() : SyncMetaDataStorage {
 
-  private var lastSyncedDateTime: ZonedDateTime? = null
+  private var lastSyncedState: LastSyncedStatus? = null
 
-  override suspend fun saveLastSyncedTime(zonedDateTime: ZonedDateTime) {
-    lastSyncedDateTime = zonedDateTime
+  override suspend fun saveLastSyncedTime(lastSyncedState: LastSyncedStatus) {
+    this.lastSyncedState = lastSyncedState
   }
 
-  override fun getLastSyncedTime(): Flow<ZonedDateTime?> {
-    return flowOf(lastSyncedDateTime)
+  override fun getLastSyncedTime(): Flow<LastSyncedStatus?> {
+    return flowOf(lastSyncedState)
   }
+
 }

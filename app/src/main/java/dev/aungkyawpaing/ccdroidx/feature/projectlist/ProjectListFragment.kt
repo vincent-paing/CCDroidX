@@ -14,6 +14,8 @@ import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
 import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
+import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
+import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
 import org.ocpsoft.prettytime.PrettyTime
 import java.time.ZonedDateTime
 
@@ -54,18 +56,27 @@ class ProjectListFragment : Fragment() {
     viewModel.projectListLiveData.observe(viewLifecycleOwner) { projectList ->
       projectListAdapter.submitList(projectList)
     }
-    viewModel.lastSyncedLiveData.observe(viewLifecycleOwner) { lastSyncedTime ->
-      updateSubtitle(lastSyncedTime)
+    viewModel.lastSyncedLiveData.observe(viewLifecycleOwner) { lastSyncedStatus ->
+      updateSubtitle(lastSyncedStatus)
     }
   }
 
-  private fun updateSubtitle(lastSyncedTime: ZonedDateTime?) {
-    if (lastSyncedTime == null) {
+  private fun updateSubtitle(lastSyncedStatus: LastSyncedStatus?) {
+    if (lastSyncedStatus == null) {
       binding.toolBar.subtitle = "Welcome!"
     } else {
-      binding.toolBar.subtitle = getString(
-        R.string.last_synced_x, prettyTime.format(lastSyncedTime)
-      )
+      when (lastSyncedStatus.lastSyncedState) {
+        LastSyncedState.SYNCING -> {
+          binding.toolBar.subtitle = getString(
+            R.string.syncing
+          )
+        }
+        LastSyncedState.SUCCESS, LastSyncedState.FAILED -> {
+          binding.toolBar.subtitle = getString(
+            R.string.last_synced_x, prettyTime.format(lastSyncedStatus.lastSyncedDateTime)
+          )
+        }
+      }
     }
   }
 

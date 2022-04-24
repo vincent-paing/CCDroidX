@@ -18,7 +18,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/menu_toolbar_project_list"
-            app:subtitle="Your Project List"
             app:subtitleCentered="true"
             app:subtitleTextColor="?attr/colorOnPrimary"
             app:title="@string/app_name"

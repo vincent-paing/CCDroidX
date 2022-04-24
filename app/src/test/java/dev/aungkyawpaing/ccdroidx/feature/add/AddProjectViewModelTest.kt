@@ -21,10 +21,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AddProjectViewModelTest {
@@ -37,12 +33,10 @@ class AddProjectViewModelTest {
   var instantTaskExecutorRule = InstantTaskExecutorRule()
 
   private val fetchProject = mockk<FetchProject>()
-  private val clock: Clock = Clock.fixed(Instant.ofEpochSecond(6000), ZoneId.of("UTC"))
   private val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
   private val projectRepo = ProjectRepo(
     fetchProject,
     CCDroidXDb(driver, projectTableAdapter),
-    clock,
     dispatcherProvider = coroutineTestRule.testDispatcherProvider
   )
 
@@ -61,7 +55,7 @@ class AddProjectViewModelTest {
       "https://api.travis-ci.com/repos/vincent-paing/myanmar-phonenumber-kt/cc.xml?branch=master"
 
     val expectedProjectList = listOf(
-      ProjectBuilder.buildProject(clock)
+      ProjectBuilder.buildProject()
     )
 
     coEvery {
@@ -88,7 +82,7 @@ class AddProjectViewModelTest {
 
   @Test
   fun testOnSelectProject() = runTest {
-    val project = ProjectBuilder.buildProject(clock)
+    val project = ProjectBuilder.buildProject()
 
     viewModel.onSelectProject(project)
 

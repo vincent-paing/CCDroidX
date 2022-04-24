@@ -11,7 +11,6 @@ CREATE TABLE ProjectTable (
     nextBuildTime INTEGER AS ZonedDateTime,
     webUrl TEXT NOT NULL,
     feedUrl TEXT NOT NULL,
-    lastSyncedTime INTEGER AS ZonedDateTime NOT NULL,
     PRIMARY KEY (webUrl, feedUrl)
 );
 

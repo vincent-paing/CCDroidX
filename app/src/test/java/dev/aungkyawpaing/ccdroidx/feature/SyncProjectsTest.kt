@@ -6,11 +6,9 @@ import dev.aungkyawpaing.ccdroidx.CoroutineTestRule
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder.buildProject
 import dev.aungkyawpaing.ccdroidx.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.api.ProjectResponse
-import dev.aungkyawpaing.ccdroidx.data.BuildState
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus
-import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.db.projectTableAdapter
+import dev.aungkyawpaing.ccdroidx.feature.sync.FakeSyncMetaDataStorage
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncProjects
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -21,7 +19,10 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.time.*
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class SyncProjectsTest {
 
@@ -29,16 +30,19 @@ class SyncProjectsTest {
   var coroutineTestRule = CoroutineTestRule()
 
   private val fetchProject = mockk<FetchProject>()
-  private val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
   private val clock: Clock = Clock.fixed(Instant.ofEpochSecond(6000), ZoneId.of("UTC"))
+  private val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
+  private val syncMetaDataStorage = FakeSyncMetaDataStorage()
+
   private val projectRepo = ProjectRepo(
     fetchProject,
     CCDroidXDb(driver, projectTableAdapter),
-    clock,
     coroutineTestRule.testDispatcherProvider
   )
   private val syncProject = SyncProjects(
-    projectRepo
+    projectRepo,
+    syncMetaDataStorage,
+    clock
   )
 
   @Before
@@ -47,12 +51,11 @@ class SyncProjectsTest {
     MockKAnnotations.init(this, relaxUnitFun = true)
   }
 
-
   @Test
   fun testSyncProject() = coroutineTestRule.scope.runTest {
-    val savedProjectOne = buildProject(clock)
+    val savedProjectOne = buildProject()
     projectRepo.saveProject(savedProjectOne)
-    val savedProjectTwo = buildProject(clock).copy(feedUrl = "diffFeed")
+    val savedProjectTwo = buildProject().copy(feedUrl = "diffFeed")
     projectRepo.saveProject(savedProjectTwo)
 
     val updatedProjectOne = savedProjectOne.copy(
@@ -100,6 +103,7 @@ class SyncProjectsTest {
         updatedProjectTwo
       ), actual
     )
+    Assert.assertEquals(ZonedDateTime.now(clock), syncMetaDataStorage.getLastSyncedTime().first())
 
   }
 }

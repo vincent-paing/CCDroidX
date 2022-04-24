@@ -73,6 +73,7 @@ dependencies {
   androidXNavigation()
   androidXWorkManager()
   implementation("androidx.browser:browser:1.4.0")
+  implementation("androidx.datastore:datastore-preferences:1.0.0")
 
   implementation(Material.material)
 

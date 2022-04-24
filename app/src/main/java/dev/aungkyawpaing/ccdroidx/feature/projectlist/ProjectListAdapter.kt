@@ -4,7 +4,6 @@ import android.graphics.drawable.GradientDrawable
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
@@ -91,7 +90,7 @@ class ProjectListAdapter(
         tvProjectName.text = item.name
         viewBuildStatus.background = shape
         tvLastSyncTime.text =
-          itemView.context.getString(R.string.last_synced_x, prettyTime.format(item.lastSyncedTime))
+          itemView.context.getString(R.string.last_built_x, prettyTime.format(item.lastBuildTime))
       }
     }
 

@@ -21,7 +21,6 @@ class SyncProjectWorker @AssistedInject constructor(
     const val TAG = "SyncProjectWorker"
   }
 
-
   override suspend fun doWork(): Result {
 
     try {

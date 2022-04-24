@@ -16,7 +16,6 @@ import javax.inject.Inject
 class ProjectRepo @Inject constructor(
   private val fetchProject: FetchProject,
   private val db: CCDroidXDb,
-  private val clock: Clock,
   private val dispatcherProvider: DispatcherProvider
 ) {
 
@@ -31,8 +30,7 @@ class ProjectRepo @Inject constructor(
           lastBuildTime = response.lastBuildTime,
           nextBuildTime = response.nextBuildTime,
           webUrl = response.webUrl,
-          feedUrl = response.feedUrl,
-          lastSyncedTime = ZonedDateTime.now(clock)
+          feedUrl = response.feedUrl
         )
       }
     }
@@ -50,8 +48,7 @@ class ProjectRepo @Inject constructor(
           lastBuildTime = project.lastBuildTime,
           nextBuildTime = project.nextBuildTime,
           webUrl = project.webUrl,
-          feedUrl = project.feedUrl,
-          lastSyncedTime = project.lastSyncedTime
+          feedUrl = project.feedUrl
         )
       )
     }
@@ -72,7 +69,6 @@ class ProjectRepo @Inject constructor(
             nextBuildTime = projectTable.nextBuildTime,
             webUrl = projectTable.webUrl,
             feedUrl = projectTable.feedUrl,
-            lastSyncedTime = projectTable.lastSyncedTime
           )
         }
       }

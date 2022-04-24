@@ -47,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/viewBuildStatus"
             app:layout_constraintTop_toBottomOf="@id/tvProjectName"
-            tools:text="Synced 3 minute ago" />
+            tools:text="Last build : 3 minute ago" />
 
         <ImageView
             android:id="@+id/ivMenu"

@@ -17,6 +17,7 @@ import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
 import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectViewModel
 import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
+import org.ocpsoft.prettytime.PrettyTime
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,8 +31,8 @@ class ProjectListFragment : Fragment() {
   }
 
   private val viewModel: ProjectListViewModel by viewModels()
-
   private val openInBrowser = OpenInBrowser()
+  private val prettyTime = PrettyTime()
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -55,6 +56,15 @@ class ProjectListFragment : Fragment() {
     }
     viewModel.projectListLiveData.observe(viewLifecycleOwner) { projectList ->
       projectListAdapter.submitList(projectList)
+    }
+    viewModel.lastSyncedLiveData.observe(viewLifecycleOwner) { lastSyncedTime ->
+      if (lastSyncedTime == null) {
+        binding.toolBar.subtitle = "Welcome!"
+      } else {
+        binding.toolBar.subtitle = getString(
+          R.string.last_synced_x, prettyTime.format(lastSyncedTime)
+        )
+      }
     }
   }
 

@@ -6,4 +6,6 @@
     <string name="feed_url">Feed url</string>
     <string name="next">Next</string>
     <string name="last_synced_x">Last synced %s</string>
+    <string name="refresh_project_status">Refresh Project Status</string>
+    <string name="settings">Settings</string>
 </resources>

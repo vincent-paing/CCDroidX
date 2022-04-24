@@ -70,7 +70,7 @@ class ProjectListAdapter(
             BuildStatus.SUCCESS -> R.color.build_success
             BuildStatus.FAILURE -> R.color.build_fail
             BuildStatus.EXCEPTION -> R.color.build_fail
-            BuildStatus.UNKNOWN -> TODO()
+            BuildStatus.UNKNOWN -> R.color.build_fail
           }
         }
         BuildState.BUILDING, BuildState.CHECKING_MODIFICATIONS -> {

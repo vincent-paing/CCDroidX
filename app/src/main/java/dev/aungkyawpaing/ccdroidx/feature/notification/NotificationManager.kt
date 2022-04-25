@@ -7,7 +7,6 @@ import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationChannelGroupCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.feature.MainActivity
@@ -60,6 +59,7 @@ class NotificationManager @Inject constructor(
       .setContentText(context.getString(R.string.notification_fail_content))
       .setSmallIcon(R.drawable.ic_notification)
       .setColor(context.getColor(R.color.build_fail))
+      .setAutoCancel(true)
       .setContentIntent(notifyPendingIntent)
       .build()
 
@@ -96,6 +96,7 @@ class NotificationManager @Inject constructor(
       .setSmallIcon(R.drawable.ic_notification)
       .setColor(context.getColor(R.color.build_success))
       .setContentIntent(notifyPendingIntent)
+      .setAutoCancel(true)
       .build()
 
     notificationManagerCompat.notify(projectName, 0, notification)

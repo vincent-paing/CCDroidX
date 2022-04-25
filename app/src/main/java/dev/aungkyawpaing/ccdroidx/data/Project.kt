@@ -6,6 +6,7 @@ import java.time.ZonedDateTime
 
 @Parcelize
 data class Project(
+  val id: Long,
   val name: String,
   val activity: BuildState,
   val lastBuildStatus: BuildStatus,

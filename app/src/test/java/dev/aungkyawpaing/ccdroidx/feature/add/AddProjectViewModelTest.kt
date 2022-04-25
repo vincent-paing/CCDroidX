@@ -55,7 +55,7 @@ class AddProjectViewModelTest {
       "https://api.travis-ci.com/repos/vincent-paing/myanmar-phonenumber-kt/cc.xml?branch=master"
 
     val expectedProjectList = listOf(
-      ProjectBuilder.buildProject()
+      ProjectBuilder.buildProject(-1L)
     )
 
     coEvery {
@@ -82,7 +82,7 @@ class AddProjectViewModelTest {
 
   @Test
   fun testOnSelectProject() = runTest {
-    val project = ProjectBuilder.buildProject()
+    val project = ProjectBuilder.buildProject(-1L)
 
     viewModel.onSelectProject(project)
 
@@ -90,6 +90,6 @@ class AddProjectViewModelTest {
 
     val actual = projectRepo.getAll().first()
 
-    Assert.assertEquals(listOf(project), actual)
+    Assert.assertEquals(listOf(project.copy(id = 1L)), actual)
   }
 }

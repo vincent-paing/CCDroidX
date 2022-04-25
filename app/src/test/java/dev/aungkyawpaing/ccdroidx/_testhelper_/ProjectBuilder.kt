@@ -10,8 +10,10 @@ import java.time.ZonedDateTime
 object ProjectBuilder {
 
   fun buildProject(
+    id: Long = 1,
   ): Project {
     return Project(
+      id = id,
       name = "Project Name",
       activity = BuildState.SLEEPING,
       lastBuildStatus = BuildStatus.SUCCESS,

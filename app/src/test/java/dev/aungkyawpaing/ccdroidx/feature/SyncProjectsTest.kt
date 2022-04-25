@@ -55,15 +55,17 @@ class SyncProjectsTest {
 
   @Test
   fun testSyncProject() = coroutineTestRule.scope.runTest {
-    val savedProjectOne = buildProject()
+    val savedProjectOne = buildProject(-1)
     projectRepo.saveProject(savedProjectOne)
-    val savedProjectTwo = buildProject().copy(feedUrl = "diffFeed")
+    val savedProjectTwo = buildProject(-1).copy(feedUrl = "diffFeed")
     projectRepo.saveProject(savedProjectTwo)
 
     val updatedProjectOne = savedProjectOne.copy(
+      id = 1L,
       name = "updated",
     )
     val updatedProjectTwo = savedProjectTwo.copy(
+      id = 2L,
       name = "updated two"
     )
     coEvery {

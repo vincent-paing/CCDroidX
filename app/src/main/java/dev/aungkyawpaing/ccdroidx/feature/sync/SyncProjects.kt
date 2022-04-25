@@ -26,7 +26,7 @@ class SyncProjects @Inject constructor(
           it.webUrl == project.webUrl
         } ?: return@forEach
 
-        projectRepo.saveProject(updatedProject)
+        projectRepo.saveProject(updatedProject.copy(id = project.id))
       }
       syncMetaDataStorage.saveLastSyncedTime(
         LastSyncedStatus(

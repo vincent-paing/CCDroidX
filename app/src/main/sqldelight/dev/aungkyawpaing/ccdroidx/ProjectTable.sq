@@ -3,6 +3,7 @@ import dev.aungkyawpaing.ccdroidx.data.BuildStatus;
 import java.time.ZonedDateTime;
 
 CREATE TABLE ProjectTable (
+    id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     activity TEXT AS BuildState  NOT NULL,
     lastBuildStatus TEXT AS BuildStatus NOT NULL,
@@ -10,15 +11,19 @@ CREATE TABLE ProjectTable (
     lastBuildTime INTEGER AS ZonedDateTime NOT NULL,
     nextBuildTime INTEGER AS ZonedDateTime,
     webUrl TEXT NOT NULL,
-    feedUrl TEXT NOT NULL,
-    PRIMARY KEY (webUrl, feedUrl)
+    feedUrl TEXT NOT NULL
 );
 
-insertOrReplace:
-INSERT OR REPLACE INTO ProjectTable VALUES ?;
+insert:
+INSERT INTO ProjectTable(name, activity, lastBuildStatus, lastBuildLabel, lastBuildTime, nextBuildTime, webUrl, feedUrl)
+VALUES (:name, :activity, :lastBuildStatus, :lastBuildLabel, :lastBuildTime, :nextBuildTime, :webUrl, :feedUrl);
+
+update:
+UPDATE ProjectTable SET name = : name, activity = :activity, lastBuildStatus = :lastBuildStatus, lastBuildLabel= :lastBuildLabel,
+lastBuildTime= :lastBuildTime, nextBuildTime = :nextBuildTime, webUrl = :webUrl, feedUrl = :feedUrl WHERE id = :id;
 
 selectAll:
-SELECT * FROM ProjectTable;
+SELECT * FROM ProjectTable ORDER BY id;
 
 delete:
-DELETE FROM ProjectTable WHERE webUrl=:webUrl AND feedUrl=:feedUrl;
+DELETE FROM ProjectTable WHERE id = :id;

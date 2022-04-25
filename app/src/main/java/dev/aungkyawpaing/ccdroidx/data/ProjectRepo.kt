@@ -23,6 +23,7 @@ class ProjectRepo @Inject constructor(
     return withContext(dispatcherProvider.io()) {
       fetchProject.requestForProjectList(url).map { response ->
         Project(
+          id = -1L,
           name = response.name,
           activity = response.activity,
           lastBuildStatus = response.lastBuildStatus,
@@ -39,8 +40,8 @@ class ProjectRepo @Inject constructor(
 
   suspend fun saveProject(project: Project) {
     withContext(dispatcherProvider.io()) {
-      db.projectTableQueries.insertOrReplace(
-        ProjectTable(
+      if (project.id == -1L) {
+        db.projectTableQueries.insert(
           name = project.name,
           activity = project.activity,
           lastBuildStatus = project.lastBuildStatus,
@@ -48,9 +49,21 @@ class ProjectRepo @Inject constructor(
           lastBuildTime = project.lastBuildTime,
           nextBuildTime = project.nextBuildTime,
           webUrl = project.webUrl,
-          feedUrl = project.feedUrl
+          feedUrl = project.feedUrl,
         )
-      )
+      } else {
+        db.projectTableQueries.update(
+          id = project.id,
+          name = project.name,
+          activity = project.activity,
+          lastBuildStatus = project.lastBuildStatus,
+          lastBuildLabel = project.lastBuildLabel,
+          lastBuildTime = project.lastBuildTime,
+          nextBuildTime = project.nextBuildTime,
+          webUrl = project.webUrl,
+          feedUrl = project.feedUrl,
+        )
+      }
     }
   }
 
@@ -61,6 +74,7 @@ class ProjectRepo @Inject constructor(
       .map { projectTables ->
         projectTables.map { projectTable ->
           Project(
+            id = projectTable.id,
             name = projectTable.name,
             activity = projectTable.activity,
             lastBuildStatus = projectTable.lastBuildStatus,
@@ -77,7 +91,7 @@ class ProjectRepo @Inject constructor(
 
   suspend fun delete(project: Project) {
     return withContext(dispatcherProvider.io()) {
-      db.projectTableQueries.delete(project.webUrl, project.feedUrl);
+      db.projectTableQueries.delete(project.id)
     }
   }
 

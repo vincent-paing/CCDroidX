@@ -97,7 +97,7 @@ class SyncProjectsTest {
       )
     )
 
-    syncProject.sync()
+    syncProject.sync { _, _ -> }
 
     val actual = projectRepo.getAll().first()
 

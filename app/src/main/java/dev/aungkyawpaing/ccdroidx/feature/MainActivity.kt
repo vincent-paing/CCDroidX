@@ -1,19 +1,20 @@
 package dev.aungkyawpaing.ccdroidx.feature
 
-import android.content.ComponentName
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsClient
-import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.work.*
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncProjectWorker
-import timber.log.Timber
 import java.time.Duration
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+  companion object {
+    const val INTENT_EXTRA_URL = "url"
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

@@ -11,16 +11,20 @@ object ProjectBuilder {
 
   fun buildProject(
     id: Long = 1,
+    name: String = "Project Name",
+    lastBuildStatus: BuildStatus = BuildStatus.SUCCESS,
+    webUrl: String = "https://example.com/master",
+    lastBuildTime: ZonedDateTime = ZonedDateTime.of(2022, 4, 21, 0, 0, 0, 0, ZoneId.of("UTC"))
   ): Project {
     return Project(
       id = id,
-      name = "Project Name",
+      name = name,
       activity = BuildState.SLEEPING,
-      lastBuildStatus = BuildStatus.SUCCESS,
+      lastBuildStatus = lastBuildStatus,
       lastBuildLabel = null,
-      lastBuildTime = ZonedDateTime.of(2022, 4, 21, 0, 0, 0, 0, ZoneId.of("UTC")),
+      lastBuildTime = lastBuildTime,
       nextBuildTime = null,
-      webUrl = "https://example.com/master",
+      webUrl = webUrl,
       feedUrl = "https://www.example.com/cc.xml"
     )
   }

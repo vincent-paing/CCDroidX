@@ -27,4 +27,19 @@
     <string name="error_server_500">500 Internal Server error</string>
     <string name="error_server_404">404 Not Found</string>
     <string name="error_http">Unknown http error occurred. Please try again later</string>
+
+    <!-- channels -->
+    <string name="channel_group_build_alert_name">Build alerts</string>
+    <string name="channel_group_build_alert_desc">Notify about build status</string>
+
+    <string name="channel_build_alert_fail_name">Fail builds</string>
+    <string name="channel_build_alert_fail_desc">Alert when a build becomes failure or continue to be a failure</string>
+
+    <string name="channel_build_alert_success_after_fail_name">Notify about failing builds</string>
+    <string name="channel_build_alert_success_after_fail_desc">Alert when builds become success after a failure</string>
+
+    <!-- notification -->
+    <string name="notification_fail_title">[FAILED] %s</string>
+    <string name="notification_fail_content">Tap to open build status page</string>
+
 </resources>

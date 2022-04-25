@@ -42,4 +42,7 @@
     <string name="notification_fail_title">[FAILED] %s</string>
     <string name="notification_fail_content">Tap to open build status page</string>
 
+    <string name="notification_success_after_fail_title">[RECOVERED] %s</string>
+    <string name="notification_success_after_fail_content">The build is successful and has recovered from failure</string>
+
 </resources>

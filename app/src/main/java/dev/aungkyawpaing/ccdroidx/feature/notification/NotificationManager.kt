@@ -66,7 +66,38 @@ class NotificationManager @Inject constructor(
     notificationManagerCompat.notify(projectName, 0, notification)
   }
 
-  fun notifyProjectSuccessAfterFail(projectName: String, webUrl: String) {
+  fun notifyProjectSuccessAfterFail(projectName: String, url: String) {
+    val name = context.getString(R.string.channel_build_alert_success_after_fail_name)
+    val descriptionText = context.getString(R.string.channel_build_alert_success_after_fail_desc)
+    val importance = NotificationManagerCompat.IMPORTANCE_DEFAULT
+    val channel = NotificationChannelCompat.Builder(CHANNEL_ID_BUILD_SUCCESS_AFTER_FAIL, importance)
+      .setName(name)
+      .setDescription(descriptionText)
+      .setGroup(CHANNEL_GROUP_ID_BUILD_ALERT)
+      .build()
 
+    notificationManagerCompat.createNotificationChannel(channel)
+
+    val intent = Intent(context, MainActivity::class.java)
+    intent.putExtra(MainActivity.INTENT_EXTRA_URL, url)
+    val notifyPendingIntent = PendingIntent.getActivity(
+      context, 0, intent,
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    val notification = NotificationCompat.Builder(context, CHANNEL_ID_BUILD_SUCCESS_AFTER_FAIL)
+      .setContentTitle(
+        context.getString(
+          R.string.notification_success_after_fail_title,
+          projectName
+        )
+      )
+      .setContentText(context.getString(R.string.notification_success_after_fail_content))
+      .setSmallIcon(R.drawable.ic_notification)
+      .setColor(context.getColor(R.color.build_success))
+      .setContentIntent(notifyPendingIntent)
+      .build()
+
+    notificationManagerCompat.notify(projectName, 0, notification)
   }
 }

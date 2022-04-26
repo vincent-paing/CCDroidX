@@ -5,7 +5,7 @@ import dev.aungkyawpaing.ccdroidx.ProjectTable
 
 val projectTableAdapter = ProjectTable.Adapter(
   activityAdapter = EnumColumnAdapter(),
-  lastBuildStatusAdapter = EnumColumnAdapter(),
+  lastBuildStatusAdapter = BuildStatusColumnAdapter,
   lastBuildTimeAdapter = ZonedDateTimeColumnAdapter,
   nextBuildTimeAdapter = ZonedDateTimeColumnAdapter
 )

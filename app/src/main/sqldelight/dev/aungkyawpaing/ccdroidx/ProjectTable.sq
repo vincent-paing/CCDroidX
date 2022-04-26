@@ -6,7 +6,7 @@ CREATE TABLE ProjectTable (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     activity TEXT AS BuildState  NOT NULL,
-    lastBuildStatus TEXT AS BuildStatus NOT NULL,
+    lastBuildStatus INTEGER AS BuildStatus NOT NULL,
     lastBuildLabel TEXT,
     lastBuildTime INTEGER AS ZonedDateTime NOT NULL,
     nextBuildTime INTEGER AS ZonedDateTime,
@@ -23,7 +23,11 @@ UPDATE ProjectTable SET name = : name, activity = :activity, lastBuildStatus = :
 lastBuildTime= :lastBuildTime, nextBuildTime = :nextBuildTime, webUrl = :webUrl, feedUrl = :feedUrl WHERE id = :id;
 
 selectAll:
-SELECT * FROM ProjectTable ORDER BY id;
+SELECT * FROM ProjectTable
+ORDER BY
+lastBuildStatus DESC,
+lastBuildTime DESC,
+id;
 
 delete:
 DELETE FROM ProjectTable WHERE id = :id;

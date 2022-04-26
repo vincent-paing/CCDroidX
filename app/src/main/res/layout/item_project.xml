@@ -6,9 +6,8 @@
     style="@style/Widget.Material3.CardView.Filled"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
     app:strokeColor="?colorOnBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,10 +43,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            app:drawableStartCompat="@drawable/ic_time_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/viewBuildStatus"
             app:layout_constraintTop_toBottomOf="@id/tvProjectName"
-            tools:text="Last build : 3 minute ago" />
+            tools:text="3 minutes ago" />
 
         <ImageView
             android:id="@+id/ivMenu"

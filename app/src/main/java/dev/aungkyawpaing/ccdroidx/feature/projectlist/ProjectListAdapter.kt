@@ -89,8 +89,7 @@ class ProjectListAdapter(
       binding.apply {
         tvProjectName.text = item.name
         viewBuildStatus.background = shape
-        tvLastSyncTime.text =
-          itemView.context.getString(R.string.last_built_x, prettyTime.format(item.lastBuildTime))
+        tvLastSyncTime.text = prettyTime.format(item.lastBuildTime)
       }
     }
 

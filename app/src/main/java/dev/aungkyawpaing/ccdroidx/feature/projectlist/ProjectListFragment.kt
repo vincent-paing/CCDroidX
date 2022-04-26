@@ -17,8 +17,8 @@ import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
 import dev.aungkyawpaing.ccdroidx.utils.extensions.showShortToast
+import dev.aungkyawpaing.ccdroidx.utils.recyclerview.RecyclerViewMarginDecoration
 import org.ocpsoft.prettytime.PrettyTime
-import java.time.ZonedDateTime
 
 @AndroidEntryPoint
 class ProjectListFragment : Fragment() {
@@ -53,9 +53,12 @@ class ProjectListFragment : Fragment() {
     binding.rvProjects.apply {
       adapter = projectListAdapter
       layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+      val dimen =
+        context.resources.getDimensionPixelSize(R.dimen.recycler_view_item_margin)
+      addItemDecoration(RecyclerViewMarginDecoration(dimen, 1))
     }
 
-    binding.toolBar.setOnMenuItemClickListener {  menuItem ->
+    binding.toolBar.setOnMenuItemClickListener { menuItem ->
       when (menuItem.itemId) {
         R.id.action_sync -> {
           viewModel.onPressSync()

@@ -9,6 +9,8 @@ plugins {
   id("com.squareup.wire")
 }
 
+val ENV = System.getenv()
+
 android {
   compileSdk = BuildConfig.compileSdk
 
@@ -25,7 +27,15 @@ android {
     buildFeatures {
       viewBinding = true
     }
+  }
 
+  signingConfigs {
+    create("release") {
+      storeFile = File(ENV["CCDROIDX_RELEASE_KEYSTORE_PATH"]!!)
+      storePassword = ENV["CCDROIDX_RELEASE_KEYSTORE_PASSWORD"]!!
+      keyAlias = ENV["CCDROIDX_RELEASE_KEY_ALIAS"]!!
+      keyPassword = ENV["CCDROIDX_RELEASE_KEY_ALIAS_PASSWORD"]!!
+    }
   }
 
   buildTypes {
@@ -34,6 +44,7 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
+
   compileOptions {
     isCoreLibraryDesugaringEnabled = true
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -68,7 +79,7 @@ wire {
 }
 
 dependencies {
-  coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.1.5")
+  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
   implementation("com.jakewharton.timber:timber:5.0.1")
   implementation("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
 

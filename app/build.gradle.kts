@@ -21,6 +21,7 @@ android {
     versionCode = BuildConfig.versionCode
     versionName = BuildConfig.versionName
     resourceConfigurations += setOf("en")
+    setProperty("archivesBaseName", "ccdroidx-${BuildConfig.versionName}")
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -31,7 +32,7 @@ android {
 
   signingConfigs {
     create("release") {
-      storeFile = File(ENV["CCDROIDX_RELEASE_KEYSTORE_PATH"]!!)
+      storeFile = File(rootDir, ENV["CCDROIDX_RELEASE_KEYSTORE_PATH"]!!)
       storePassword = ENV["CCDROIDX_RELEASE_KEYSTORE_PASSWORD"]!!
       keyAlias = ENV["CCDROIDX_RELEASE_KEY_ALIAS"]!!
       keyPassword = ENV["CCDROIDX_RELEASE_KEY_ALIAS_PASSWORD"]!!
@@ -39,8 +40,17 @@ android {
   }
 
   buildTypes {
+    getByName("debug") {
+      isMinifyEnabled = false
+      isDebuggable = true
+      versionNameSuffix = "-debug"
+      applicationIdSuffix = ".debug"
+    }
+
     getByName("release") {
       isMinifyEnabled = true
+      isDebuggable = false
+      signingConfig = signingConfigs.getByName("release")
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }

@@ -6,7 +6,7 @@ CCDroidX is to Android what CCMenu is to Mac and what CCTray is to Windows. CCDr
 
 ### Play Store
 
-CCDroidX can be installed from Play Store. It currently supports Android 8+.
+CCDroidX can be installed from [Play Store](https://play.google.com/store/apps/details?id=dev.aungkyawpaing.ccdroidx). It currently supports Android 8+.
 
 ## Build from source
 

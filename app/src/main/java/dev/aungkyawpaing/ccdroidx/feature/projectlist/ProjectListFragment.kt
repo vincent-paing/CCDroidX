@@ -16,7 +16,6 @@ import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
 import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
-import dev.aungkyawpaing.ccdroidx.utils.extensions.showShortToast
 import dev.aungkyawpaing.ccdroidx.utils.recyclerview.RecyclerViewMarginDecoration
 import org.ocpsoft.prettytime.PrettyTime
 
@@ -65,7 +64,9 @@ class ProjectListFragment : Fragment() {
           return@setOnMenuItemClickListener true
         }
         R.id.action_settings -> {
-          requireContext().showShortToast("coming soon!")
+          findNavController().navigate(
+            ProjectListFragmentDirections.actionFragmentProjectListToSettingsFragment()
+          )
           return@setOnMenuItemClickListener true
         }
         else -> {

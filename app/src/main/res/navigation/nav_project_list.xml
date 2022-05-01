@@ -13,6 +13,13 @@
         <action
             android:id="@+id/action_fragmentProjectList_to_addProjectDialog"
             app:destination="@id/addProjectDialog" />
+        <action
+            android:id="@+id/action_fragmentProjectList_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/do_nothing"
+            app:popEnterAnim="@anim/do_nothing"
+            app:popExitAnim="@anim/slide_down" />
     </fragment>
 
     <dialog
@@ -20,6 +27,23 @@
         android:name="dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog"
         android:label="AddProjectDialog"
         tools:layout="@layout/add_project_dialog" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="dev.aungkyawpaing.ccdroidx.feature.settings.SettingsFragment"
+        android:label="SettingsFragment">
+
+        <action
+            android:id="@+id/action_settingsFragment_to_syncIntervalInputDialog"
+            app:destination="@id/syncIntervalInputDialog" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/syncIntervalInputDialog"
+        android:name="dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval.SyncIntervalInputDialog"
+        android:label="SyncIntervalInputDialog"
+        tools:layout="@layout/dialog_sync_interval_input" />
 
 
 </navigation>

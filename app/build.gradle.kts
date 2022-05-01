@@ -101,6 +101,7 @@ dependencies {
   androidXWorkManager()
   implementation("androidx.browser:browser:1.4.0")
   androidxProtoDataStore()
+  implementation("androidx.preference:preference-ktx:1.2.0")
 
   implementation(Material.material)
 

@@ -2,10 +2,10 @@ package dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval
 
 data class SyncInterval(
   val value: Int,
-  val timeUnit: SupportedTimeUnit
+  val timeUnit: SyncIntervalTimeUnit
 )
 
-enum class SupportedTimeUnit {
+enum class SyncIntervalTimeUnit {
   MINUTES,
   HOUR,
   DAY

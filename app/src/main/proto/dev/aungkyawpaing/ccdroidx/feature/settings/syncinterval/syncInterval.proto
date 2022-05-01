@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval;
+
+option java_multiple_files = true;
+
+message SyncIntervalProto {
+  int32 value = 1;
+  enum TimeUnitProto {
+    MINUTES = 0;
+    HOURS = 1;
+    DAYS = 2;
+  }
+  TimeUnitProto timeUnit = 2;
+}

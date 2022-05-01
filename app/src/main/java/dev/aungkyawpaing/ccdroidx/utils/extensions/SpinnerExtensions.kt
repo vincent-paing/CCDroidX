@@ -20,7 +20,7 @@ fun Spinner.safeSelection(
   try {
     setSelection(position)
     doAfterSelect(position)
-  } catch (e: Exception) {
+  } catch (e: ArrayIndexOutOfBoundsException) {
     onError.invoke(e)
   }
 

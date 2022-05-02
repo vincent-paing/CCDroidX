@@ -42,7 +42,7 @@ class AddProjectDialog : DialogFragment() {
 
     binding.buttonNext.setOnClickListener {
       it.hideKeyboard()
-      viewModel.getProjectsFromFeed(binding.textFieldFeedUrl.text.toString())
+      viewModel.onClickNext(binding.textFieldFeedUrl.text.toString())
     }
 
     binding.buttonCancel.setOnClickListener {

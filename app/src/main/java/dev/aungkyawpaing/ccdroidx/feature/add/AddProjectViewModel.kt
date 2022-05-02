@@ -32,7 +32,7 @@ class AddProjectViewModel @Inject constructor(
 
   val dismissLiveEvent = SingleLiveEvent<Unit>()
 
-  fun getProjectsFromFeed(feedUrl: String) {
+  fun onClickNext(feedUrl: String) {
     viewModelScope.launch {
       _isLoadingLiveData.postValue(true)
       try {

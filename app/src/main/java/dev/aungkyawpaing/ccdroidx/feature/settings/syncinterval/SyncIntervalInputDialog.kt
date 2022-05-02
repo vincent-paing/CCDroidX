@@ -55,8 +55,7 @@ class SyncIntervalInputDialog : DialogFragment() {
     binding.dropDownTimeUnit.setOnItemClickListener { _, _, position, _ ->
       setTimeUnitWithPosition(position)
     }
-
-
+    
     binding.buttonSave.setOnClickListener {
       viewModel.onSaveSyncInterval()
     }

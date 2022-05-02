@@ -73,7 +73,7 @@ class AddProjectViewModelTest {
       )
     }
 
-    viewModel.getProjectsFromFeed(url)
+    viewModel.onClickNext(url)
 
     runCurrent()
 

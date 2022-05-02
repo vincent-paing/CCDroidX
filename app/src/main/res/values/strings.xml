@@ -20,6 +20,7 @@
     <string name="confirm_delete_title">Warning</string>
 
     <string name="error_invalid_url">Invalid url, please confirm that the input is correct</string>
+    <string name="error_unsupported_server">Unable to parse the server response, please submit a bug report</string>
     <string name="error_generic">Unknown error occurred. Please try again later</string>
     <string name="error_no_internet">Cannot connect to the server, please confirm you have access to the Internet</string>
     <string name="error_socket_timeout">Timed out connecting server, please try again later</string>

@@ -13,4 +13,8 @@ class AddProjectErrorMessages @Inject constructor(
     return context.getString(R.string.error_invalid_url)
   }
 
+  fun unsupportedServer(): String {
+    return context.getString(R.string.error_unsupported_server)
+  }
+
 }

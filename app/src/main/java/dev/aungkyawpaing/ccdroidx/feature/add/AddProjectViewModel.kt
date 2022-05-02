@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aungkyawpaing.ccdroidx.api.InvalidUrlException
 import dev.aungkyawpaing.ccdroidx.api.NetworkException
+import dev.aungkyawpaing.ccdroidx.api.UnsupportedServerException
 import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
@@ -47,6 +48,8 @@ class AddProjectViewModel @Inject constructor(
           errorLiveEvent.postValue(mapNetworkExceptionToMessage.getMessage(networkException))
         } catch (invalidUrlException: InvalidUrlException) {
           errorLiveEvent.postValue(addProjectErrorMessages.invalidUrlMessage())
+        } catch (unsupportedServerException: UnsupportedServerException) {
+          errorLiveEvent.postValue(addProjectErrorMessages.unsupportedServer())
         }
       }
       _isLoadingLiveData.postValue(false)

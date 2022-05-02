@@ -20,7 +20,11 @@ class FetchProject @Inject constructor(
     }
 
     client.newCall(request).executeOrThrow().use { response ->
-      return CCTrayParser.parseResponse(response ?: throw NetworkException())
+      try {
+        return CCTrayParser.parseResponse(response ?: throw NetworkException())
+      } catch (exception: Exception) {
+        throw UnsupportedServerException()
+      }
     }
   }
 }

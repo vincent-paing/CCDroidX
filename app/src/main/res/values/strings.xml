@@ -45,4 +45,8 @@
     <string name="notification_success_after_fail_title">[RECOVERED] %s</string>
     <string name="notification_success_after_fail_content">The build is successful and has recovered from failure</string>
 
+    <string name="hint_interval_amount">Interval amount</string>
+    <string name="hint_time_unit">Time unit</string>
+    <string name="save">Save</string>
+
 </resources>

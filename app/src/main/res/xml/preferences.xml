@@ -2,12 +2,12 @@
 
     <PreferenceCategory
         app:key="category_sync"
-        app:title="Sync">
+        app:title="@string/sync_category_title">
 
         <Preference
             app:key="sync_interval"
-            app:summary="How often CCDroidX retrieves status information from build server"
-            app:title="Sync Interval" />
+            app:summary="@string/sync_interval_pref_summary"
+            app:title="@string/sync_interval_pref_title" />
 
     </PreferenceCategory>
 

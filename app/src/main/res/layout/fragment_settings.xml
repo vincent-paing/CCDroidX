@@ -21,7 +21,7 @@
             app:navigationIconTint="?attr/colorOnPrimary"
             app:subtitleCentered="true"
             app:subtitleTextColor="?attr/colorOnPrimary"
-            app:title="Settings"
+            app:title="@string/settings"
             app:titleCentered="true"
             app:titleTextColor="?attr/colorOnPrimary" />
 

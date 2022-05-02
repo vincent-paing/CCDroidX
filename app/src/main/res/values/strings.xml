@@ -48,5 +48,18 @@
     <string name="hint_interval_amount">Interval amount</string>
     <string name="hint_time_unit">Time unit</string>
     <string name="save">Save</string>
+    <string name="settings">Settings</string>
+    <string name="sync_interval_limitation_notice">*Due to background worker limitation on Android, interval cannot be less than 15 minutes</string>
+
+    <string name="sync_category_title">Sync</string>
+    <string name="sync_interval_pref_title">Sync Interval</string>
+    <string name="sync_interval_pref_summary">How often CCDroidX retrieves status information from build server</string>
+
+    <string-array name="sync_interval_time_units">
+        <item>Minutes</item>
+        <item>Hours</item>
+        <item>Days</item>
+    </string-array>
+
 
 </resources>

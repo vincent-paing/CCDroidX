@@ -45,16 +45,14 @@ class SyncIntervalInputDialog : DialogFragment() {
       viewModel.setValue(editable?.toString())
     }
 
-    val dropDownItems = SyncIntervalTimeUnit.values().map {
-      when (it) {
-        SyncIntervalTimeUnit.MINUTES -> "Minutes"
-        SyncIntervalTimeUnit.HOUR -> "Hours"
-        SyncIntervalTimeUnit.DAY -> "Days"
-      }
-    }
-    val adapter = ArrayAdapter(requireContext(), R.layout.item_dropdown_menu, dropDownItems)
+    val adapter = ArrayAdapter.createFromResource(
+      requireContext(),
+      R.array.sync_interval_time_units,
+      R.layout.item_dropdown_menu
+    )
+
     (binding.dropDownTimeUnit).setAdapter(adapter)
-    binding.dropDownTimeUnit.setOnItemClickListener { parent, view, position, id ->
+    binding.dropDownTimeUnit.setOnItemClickListener { _, _, position, _ ->
       setTimeUnitWithPosition(position)
     }
 

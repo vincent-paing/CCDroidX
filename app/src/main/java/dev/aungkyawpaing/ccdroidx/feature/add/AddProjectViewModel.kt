@@ -21,6 +21,7 @@ class AddProjectViewModel @Inject constructor(
   private val projectRepo: ProjectRepo,
   private val mapNetworkExceptionToMessage: MapNetworkExceptionToMessage,
   private val addProjectErrorMessages: AddProjectErrorMessages,
+  private val addProjectFeedUrlValidation: AddProjectFeedUrlValidation,
   private val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
 
@@ -28,6 +29,7 @@ class AddProjectViewModel @Inject constructor(
   val isLoadingLiveData: LiveData<Boolean> get() = _isLoadingLiveData
 
   val errorLiveEvent = SingleLiveEvent<String>()
+  val validationLiveEvent = SingleLiveEvent<FeedUrlValidationResult>()
   val projectListLiveEvent = SingleLiveEvent<List<Project>>()
 
   val dismissLiveEvent = SingleLiveEvent<Unit>()
@@ -35,13 +37,17 @@ class AddProjectViewModel @Inject constructor(
   fun onClickNext(feedUrl: String) {
     viewModelScope.launch {
       _isLoadingLiveData.postValue(true)
-      try {
-        val projectList = projectRepo.fetchRepo(feedUrl)
-        projectListLiveEvent.postValue(projectList)
-      } catch (networkException: NetworkException) {
-        errorLiveEvent.postValue(mapNetworkExceptionToMessage.getMessage(networkException))
-      } catch (invalidUrlException: InvalidUrlException) {
-        errorLiveEvent.postValue(addProjectErrorMessages.invalidUrlMessage())
+      val validation = addProjectFeedUrlValidation.validateProjectFeedUrl(feedUrl)
+      validationLiveEvent.postValue(validation)
+      if (validation == FeedUrlValidationResult.CORRECT) {
+        try {
+          val projectList = projectRepo.fetchRepo(feedUrl)
+          projectListLiveEvent.postValue(projectList)
+        } catch (networkException: NetworkException) {
+          errorLiveEvent.postValue(mapNetworkExceptionToMessage.getMessage(networkException))
+        } catch (invalidUrlException: InvalidUrlException) {
+          errorLiveEvent.postValue(addProjectErrorMessages.invalidUrlMessage())
+        }
       }
       _isLoadingLiveData.postValue(false)
     }

@@ -33,6 +33,7 @@ class AddProjectViewModelTest {
   var instantTaskExecutorRule = InstantTaskExecutorRule()
 
   private val fetchProject = mockk<FetchProject>()
+  private val validation = AddProjectFeedUrlValidation()
   private val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
   private val projectRepo = ProjectRepo(
     fetchProject,
@@ -41,12 +42,32 @@ class AddProjectViewModelTest {
   )
 
   private val viewModel =
-    AddProjectViewModel(projectRepo, mockk(), mockk(), coroutineTestRule.testDispatcherProvider)
+    AddProjectViewModel(
+      projectRepo,
+      mockk(),
+      mockk(),
+      validation,
+      coroutineTestRule.testDispatcherProvider
+    )
 
   @Before
   fun setUp() {
     CCDroidXDb.Schema.create(driver)
     MockKAnnotations.init(this, relaxUnitFun = true)
+  }
+
+  @Test
+  fun testValidationFailOnEmptyText() = runTest {
+    val url = ""
+
+    viewModel.onClickNext(url)
+
+    runCurrent()
+
+    Assert.assertEquals(
+      FeedUrlValidationResult.INCORRECT_EMPTY_TEXT,
+      viewModel.validationLiveEvent.getOrAwaitValue()
+    )
   }
 
   @Test
@@ -77,6 +98,10 @@ class AddProjectViewModelTest {
 
     runCurrent()
 
+    Assert.assertEquals(
+      FeedUrlValidationResult.CORRECT,
+      viewModel.validationLiveEvent.getOrAwaitValue()
+    )
     Assert.assertEquals(expectedProjectList, viewModel.projectListLiveEvent.getOrAwaitValue())
   }
 

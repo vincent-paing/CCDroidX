@@ -85,6 +85,23 @@ class AddProjectDialog : DialogFragment() {
     viewModel.errorLiveEvent.observe(viewLifecycleOwner) {
       requireContext().showShortToast(it)
     }
+
+    viewModel.validationLiveEvent.observe(viewLifecycleOwner) { validationResult ->
+      @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+      when (validationResult) {
+        FeedUrlValidationResult.CORRECT -> {
+          binding.textInputLayoutFeedUrl.error = null
+        }
+        FeedUrlValidationResult.INCORRECT_EMPTY_TEXT -> {
+          binding.textInputLayoutFeedUrl.error =
+            getString(R.string.error_feed_url_empty_text)
+        }
+        FeedUrlValidationResult.INCORRECT_INVALID_URL -> {
+          binding.textInputLayoutFeedUrl.error = getString(R.string.error_feed_url_invalid)
+        }
+
+      }
+    }
   }
 
   override fun onDestroyView() {

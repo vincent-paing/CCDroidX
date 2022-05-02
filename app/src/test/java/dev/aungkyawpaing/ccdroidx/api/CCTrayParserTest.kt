@@ -2,7 +2,6 @@ package dev.aungkyawpaing.ccdroidx.api
 
 import dev.aungkyawpaing.ccdroidx.data.BuildState
 import dev.aungkyawpaing.ccdroidx.data.BuildStatus
-import dev.aungkyawpaing.ccdroidx.data.Project
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Protocol
 import okhttp3.Request
@@ -345,6 +344,51 @@ class CCTrayParserTest {
         ),
         nextBuildTime = null,
         webUrl = "https://circleci.com/gh/circleci/ex/tree/main",
+        feedUrl = "https://www.example.com/cc.xml"
+      )
+    )
+
+    val actual = CCTrayParser.parseResponse(input)
+    Assert.assertEquals(expected, actual)
+  }
+
+  @Test
+  fun testBuildkiteXml() {
+    val input = Response.Builder()
+      .request(
+        Request.Builder()
+          .url("https://www.example.com/cc.xml")
+          .build()
+      )
+      .protocol(Protocol.HTTP_1_1)
+      .code(200)
+      .message("")
+      .body(
+        """
+        <Projects>
+            <Project 
+                name="Test Name"
+                activity="Sleeping"
+                lastBuildStatus="Success"
+                lastBuildLabel="1"
+                lastBuildTime="2022-05-02T06:02:49+00:00" 
+                webUrl="https://www.test.com"/>
+        </Projects>
+        """.trimIndent().toResponseBody("application/xml".toMediaType())
+      ).build()
+
+    val expected = listOf(
+      ProjectResponse(
+        name = "Test Name",
+        activity = BuildState.SLEEPING,
+        lastBuildStatus = BuildStatus.SUCCESS,
+        lastBuildLabel = "1",
+        lastBuildTime = ZonedDateTime.of(
+          2022, 5, 2, 6, 2, 49, 0,
+          ZoneId.ofOffset("", ZoneOffset.of("+00:00"))
+        ),
+        nextBuildTime = null,
+        webUrl = "https://www.test.com",
         feedUrl = "https://www.example.com/cc.xml"
       )
     )

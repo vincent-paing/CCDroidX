@@ -13,11 +13,14 @@ import javax.inject.Inject
 @HiltViewModel
 class SyncIntervalInputViewModel @Inject constructor(
   private val syncIntervalSettingsStore: SyncIntervalSettingsStore,
+  private val syncIntervalValidation: SyncIntervalValidation,
   private val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
 
+  val validationLiveEvent = SingleLiveEvent<SyncIntervalValidationResult>()
   val prefillSyncIntervalEvent = SingleLiveEvent<SyncInterval>()
   val dismissLiveEvent = SingleLiveEvent<Unit>()
+
   private var timeUnit: SyncIntervalTimeUnit? = null
   private var value: String? = null
 
@@ -33,14 +36,20 @@ class SyncIntervalInputViewModel @Inject constructor(
 
   fun onSaveSyncInterval() {
     viewModelScope.launch {
-      val syncInterval = SyncInterval(
-        value = value!!.toInt(),
-        timeUnit = timeUnit!!
-      )
-      withContext(dispatcherProvider.io()) {
-        syncIntervalSettingsStore.setSyncInterval(syncInterval)
+      val validation = syncIntervalValidation.validateProjectFeedUrl(value, timeUnit)
+      validationLiveEvent.postValue(validation)
+
+      if (validation == SyncIntervalValidationResult.CORRECT) {
+        // Already checked for null in validation
+        val syncInterval = SyncInterval(
+          value = value!!.toInt(),
+          timeUnit = timeUnit!!
+        )
+        withContext(dispatcherProvider.io()) {
+          syncIntervalSettingsStore.setSyncInterval(syncInterval)
+        }
+        dismissLiveEvent.postValue(Unit)
       }
-      dismissLiveEvent.postValue(Unit)
     }
   }
 

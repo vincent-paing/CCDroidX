@@ -55,7 +55,7 @@ class SyncIntervalInputDialog : DialogFragment() {
     binding.dropDownTimeUnit.setOnItemClickListener { _, _, position, _ ->
       setTimeUnitWithPosition(position)
     }
-    
+
     binding.buttonSave.setOnClickListener {
       viewModel.onSaveSyncInterval()
     }
@@ -76,6 +76,24 @@ class SyncIntervalInputDialog : DialogFragment() {
         binding.dropDownTimeUnit.setText(adapter.getItem(position), false)
       } catch (exception: ArrayIndexOutOfBoundsException) {
         Timber.e(exception)
+      }
+    }
+
+    viewModel.validationLiveEvent.observe(viewLifecycleOwner) { validationResult ->
+      @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+      when (validationResult) {
+        SyncIntervalValidationResult.CORRECT -> {
+          binding.textInputTimeAmount.error = null
+        }
+        SyncIntervalValidationResult.INCORRECT_EMPTY_VALUE -> {
+          binding.textInputTimeAmount.error = getString(R.string.error_interval_empty_text)
+        }
+        SyncIntervalValidationResult.INCORRECT_NON_INTEGER -> {
+          binding.textInputTimeAmount.error = getString(R.string.error_interval_non_integer)
+        }
+        SyncIntervalValidationResult.INCORRECT_LESS_THAN_MINIMUM_15_MINUTES -> {
+          binding.textInputTimeAmount.error = getString(R.string.error_interval_less_than_minimum)
+        }
       }
     }
 

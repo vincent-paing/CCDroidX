@@ -10,19 +10,19 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
-import dev.aungkyawpaing.ccdroidx.databinding.AddProjectDialogBinding
+import dev.aungkyawpaing.ccdroidx.databinding.DialogAddProjectBinding
 import dev.aungkyawpaing.ccdroidx.utils.extensions.hideKeyboard
 import dev.aungkyawpaing.ccdroidx.utils.extensions.showShortToast
 
 @AndroidEntryPoint
 class AddProjectDialog : DialogFragment() {
 
-  private var _binding: AddProjectDialogBinding? = null
+  private var _binding: DialogAddProjectBinding? = null
   private val binding get() = _binding!!
   private val viewModel: AddProjectViewModel by viewModels()
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    _binding = AddProjectDialogBinding.inflate(this.layoutInflater)
+    _binding = DialogAddProjectBinding.inflate(this.layoutInflater)
     return MaterialAlertDialogBuilder(requireContext())
       .setTitle(R.string.add_new_project)
       .setView(binding.root)

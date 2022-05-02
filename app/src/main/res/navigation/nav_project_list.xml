@@ -26,7 +26,7 @@
         android:id="@+id/addProjectDialog"
         android:name="dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog"
         android:label="AddProjectDialog"
-        tools:layout="@layout/add_project_dialog" />
+        tools:layout="@layout/dialog_add_project" />
 
     <fragment
         android:id="@+id/settingsFragment"

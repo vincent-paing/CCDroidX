@@ -6,7 +6,12 @@ import org.simpleframework.xml.Root
 
 @Root(strict = false, name = "Projects")
 class CCTrayProjects {
-  @field:ElementList(name = "Project", inline = true, required = false)
+  @field:ElementList(
+    name = "Project",
+    inline = true,
+    required = false,
+    type = CCTrayProject::class
+  )
   var project: List<CCTrayProject>? = null
 }
 

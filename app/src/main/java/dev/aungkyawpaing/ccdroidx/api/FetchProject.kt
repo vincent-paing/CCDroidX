@@ -23,6 +23,7 @@ class FetchProject @Inject constructor(
       try {
         return CCTrayParser.parseResponse(response ?: throw NetworkException())
       } catch (exception: Exception) {
+        Timber.e(exception)
         throw UnsupportedServerException()
       }
     }

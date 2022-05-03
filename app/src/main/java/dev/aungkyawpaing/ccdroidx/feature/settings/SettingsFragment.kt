@@ -6,9 +6,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.appbar.MaterialToolbar
+import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
+import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
+
+  @Inject
+  lateinit var openInBrowser: OpenInBrowser
+
+  companion object {
+    private const val GITHUB_ISSUE_URL = "https://github.com/vincent-paing/CCDroidX/issues"
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -24,6 +35,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findNavController().navigate(
           SettingsFragmentDirections.actionSettingsFragmentToSyncIntervalInputDialog()
         )
+        true
+      }
+    }
+
+    findPreference<Preference?>("help_feedback")?.let { pref ->
+      pref.setOnPreferenceClickListener {
+        openInBrowser.openInBrowser(requireActivity(), GITHUB_ISSUE_URL)
         true
       }
     }

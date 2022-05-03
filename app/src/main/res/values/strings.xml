@@ -67,5 +67,9 @@
     <string name="error_interval_empty_text">Value cannot be empty</string>
     <string name="error_interval_non_integer">Value must be numerical</string>
     <string name="error_interval_less_than_minimum">Interval cannot be less than 15 minutes</string>
+    
+    <string name="help_category_title"><![CDATA[Help & Support]]></string>
+    <string name="help_feedback_pref_title">Report a bug</string>
+    <string name="help_feedback_pref_summary">Send a feedback or a bug report to make your experience better</string>
 
 </resources>

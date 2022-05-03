@@ -11,4 +11,15 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:key="category_help"
+        app:title="@string/help_category_title">
+
+        <Preference
+            app:key="help_feedback"
+            app:summary="@string/help_feedback_pref_summary"
+            app:title="@string/help_feedback_pref_title" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

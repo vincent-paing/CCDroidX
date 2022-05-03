@@ -8,6 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncWorkerScheduler
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -16,7 +17,8 @@ class MainActivity : AppCompatActivity() {
     const val INTENT_EXTRA_URL = "url"
   }
 
-  private val openInBrowser = OpenInBrowser()
+  @Inject
+  lateinit var openInBrowser: OpenInBrowser
   private val viewModel: MainViewModel by viewModels()
   private val syncWorkerScheduler by lazy {
     SyncWorkerScheduler(applicationContext)

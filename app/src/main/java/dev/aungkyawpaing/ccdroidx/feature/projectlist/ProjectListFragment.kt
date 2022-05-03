@@ -18,6 +18,7 @@ import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
 import dev.aungkyawpaing.ccdroidx.utils.recyclerview.RecyclerViewMarginDecoration
 import org.ocpsoft.prettytime.PrettyTime
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProjectListFragment : Fragment() {
@@ -30,7 +31,9 @@ class ProjectListFragment : Fragment() {
   }
 
   private val viewModel: ProjectListViewModel by viewModels()
-  private val openInBrowser = OpenInBrowser()
+
+  @Inject
+  lateinit var openInBrowser: OpenInBrowser
   private val prettyTime = PrettyTime()
 
   override fun onCreateView(

@@ -10,13 +10,7 @@ class SyncWorkerScheduler constructor(
 ) {
 
   fun removeExistingAndScheduleWorker(syncInterval: SyncInterval) {
-    removeExistingWorkers()
     scheduleWorker(syncInterval.asDuration())
-  }
-
-  private fun removeExistingWorkers() {
-    WorkManager.getInstance(context)
-      .cancelAllWorkByTag(SyncProjectWorker.TAG)
   }
 
   private fun scheduleWorker(duration: Duration) {
@@ -35,7 +29,7 @@ class SyncWorkerScheduler constructor(
     WorkManager.getInstance(context)
       .enqueueUniquePeriodicWork(
         SyncProjectWorker.TAG,
-        ExistingPeriodicWorkPolicy.KEEP,
+        ExistingPeriodicWorkPolicy.REPLACE,
         syncWorkRequest
       )
 

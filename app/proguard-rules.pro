@@ -30,5 +30,3 @@
 -keepclassmembers class * {
     @org.simpleframework.xml.* *;
 }
-
-#-keep class dev.aungkyawpaing.ccdroidx.api.CCTrayProjects { *; }

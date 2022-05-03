@@ -20,6 +20,10 @@
             app:summary="@string/help_feedback_pref_summary"
             app:title="@string/help_feedback_pref_title" />
 
+        <Preference
+            app:key="help_version"
+            app:title="@string/help_version_title" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

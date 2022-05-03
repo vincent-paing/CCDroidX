@@ -7,6 +7,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
+import dev.aungkyawpaing.ccdroidx.BuildConfig
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import javax.inject.Inject
@@ -44,6 +45,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         openInBrowser.openInBrowser(requireActivity(), GITHUB_ISSUE_URL)
         true
       }
+    }
+
+    findPreference<Preference?>("help_version")?.let { pref ->
+      pref.summary = BuildConfig.VERSION_NAME
     }
   }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
@@ -90,6 +91,8 @@ class ProjectListAdapter(
         tvProjectName.text = item.name
         viewBuildStatus.background = shape
         tvLastSyncTime.text = prettyTime.format(item.lastBuildTime)
+        tvBuildLabel.isVisible = item.lastBuildLabel != null
+        tvBuildLabel.text = itemView.context.getString(R.string.build_label, item.lastBuildLabel)
       }
     }
 

@@ -74,4 +74,8 @@
 
     <string name="help_version_title">Version</string>
 
+    <string name="others_category_title">Others</string>
+    <string name="others_browser_pref_title">Links open externally</string>
+    <string name="error_no_browser_installed">Unable to open in any browser on your device</string>
+
 </resources>

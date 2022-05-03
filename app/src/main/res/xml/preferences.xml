@@ -12,6 +12,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:key="category_others"
+        app:title="@string/others_category_title">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="others_browser"
+            app:title="@string/others_browser_pref_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:key="category_help"
         app:title="@string/help_category_title">
 

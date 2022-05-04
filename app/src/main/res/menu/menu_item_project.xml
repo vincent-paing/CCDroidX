@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_toggle_mute"
+        android:title=""
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_open_repo"
         android:contentDescription="@string/menu_item_sync_project_status"
         android:title="@string/action_item_project_open_repo"

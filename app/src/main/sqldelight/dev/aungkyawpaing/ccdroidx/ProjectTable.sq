@@ -11,7 +11,9 @@ CREATE TABLE ProjectTable (
     lastBuildTime INTEGER AS ZonedDateTime NOT NULL,
     nextBuildTime INTEGER AS ZonedDateTime,
     webUrl TEXT NOT NULL,
-    feedUrl TEXT NOT NULL
+    feedUrl TEXT NOT NULL,
+    isMuted INTEGER AS Boolean NOT NULL DEFAULT 0,
+    mutedUntil INTEGER AS ZonedDateTime DEFAULT NULL
 );
 
 insert:
@@ -21,6 +23,9 @@ VALUES (:name, :activity, :lastBuildStatus, :lastBuildLabel, :lastBuildTime, :ne
 update:
 UPDATE ProjectTable SET name = : name, activity = :activity, lastBuildStatus = :lastBuildStatus, lastBuildLabel= :lastBuildLabel,
 lastBuildTime= :lastBuildTime, nextBuildTime = :nextBuildTime, webUrl = :webUrl, feedUrl = :feedUrl WHERE id = :id;
+
+updateMute:
+UPDATE ProjectTable SET isMuted=:isMuted, mutedUntil=:mutedUnti;
 
 selectAll:
 SELECT * FROM ProjectTable

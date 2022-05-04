@@ -3,14 +3,11 @@ package dev.aungkyawpaing.ccdroidx.data
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import dev.aungkyawpaing.ccdroidx.CCDroidXDb
-import dev.aungkyawpaing.ccdroidx.ProjectTable
 import dev.aungkyawpaing.ccdroidx.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import java.time.Clock
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class ProjectRepo @Inject constructor(
@@ -31,7 +28,9 @@ class ProjectRepo @Inject constructor(
           lastBuildTime = response.lastBuildTime,
           nextBuildTime = response.nextBuildTime,
           webUrl = response.webUrl,
-          feedUrl = response.feedUrl
+          feedUrl = response.feedUrl,
+          isMuted = false,
+          mutedUntil = null
         )
       }
     }
@@ -83,6 +82,8 @@ class ProjectRepo @Inject constructor(
             nextBuildTime = projectTable.nextBuildTime,
             webUrl = projectTable.webUrl,
             feedUrl = projectTable.feedUrl,
+            isMuted = projectTable.isMuted,
+            mutedUntil = projectTable.mutedUntil
           )
         }
       }
@@ -92,6 +93,18 @@ class ProjectRepo @Inject constructor(
   suspend fun delete(project: Project) {
     return withContext(dispatcherProvider.io()) {
       db.projectTableQueries.delete(project.id)
+    }
+  }
+
+  suspend fun unmuteProject() {
+    withContext(dispatcherProvider.io()) {
+      db.projectTableQueries.updateMute(false, null)
+    }
+  }
+
+  suspend fun muteProject() {
+    withContext(dispatcherProvider.io()) {
+      db.projectTableQueries.updateMute(true, null)
     }
   }
 

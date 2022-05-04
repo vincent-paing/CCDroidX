@@ -1,0 +1,5 @@
+ALTER TABLE ProjectTable
+ADD isMuted INTEGER NOT NULL DEFAULT 0;
+
+ALTER TABLE ProjectTable
+ADD mutedUntil INTEGER;

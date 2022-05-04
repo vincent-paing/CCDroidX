@@ -17,6 +17,9 @@
 
     <string name="action_item_project_open_repo">Open repo</string>
     <string name="action_item_project_delete_project">Delete</string>
+    <string name="action_item_project_mute">Mute</string>
+    <string name="action_item_project_unmute">Unmute</string>
+
     <string name="confirm_delete_message">This action cannot be reversed. Are you sure you want to delete?</string>
     <string name="confirm_delete_title">Warning</string>
 

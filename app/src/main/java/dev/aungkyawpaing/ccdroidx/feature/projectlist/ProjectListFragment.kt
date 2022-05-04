@@ -27,7 +27,7 @@ class ProjectListFragment : Fragment() {
   private val binding get() = _binding!!
 
   private val projectListAdapter by lazy {
-    ProjectListAdapter(this::onOpenRepoClick, this::onDeleteProject)
+    ProjectListAdapter(this::onOpenRepoClick, this::onDeleteProject, this::onToggleMute)
   }
 
   private val viewModel: ProjectListViewModel by viewModels()
@@ -129,6 +129,10 @@ class ProjectListFragment : Fragment() {
       }
       .setNegativeButton(android.R.string.cancel, null)
       .show()
+  }
+
+  private fun onToggleMute(project: Project) {
+    viewModel.onToggleMute(project)
   }
 
 }

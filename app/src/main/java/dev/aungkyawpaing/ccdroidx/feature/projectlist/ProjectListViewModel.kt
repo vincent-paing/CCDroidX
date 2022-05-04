@@ -44,4 +44,14 @@ class ProjectListViewModel @Inject constructor(
       }
     }
   }
+
+  fun onToggleMute(project: Project) {
+    viewModelScope.launch {
+      if (project.isMuted) {
+        projectRepo.unmuteProject()
+      } else {
+        projectRepo.muteProject()
+      }
+    }
+  }
 }

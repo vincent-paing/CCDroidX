@@ -20,27 +20,23 @@ import dev.aungkyawpaing.ccdroidx.utils.extensions.inflater
 import dev.aungkyawpaing.ccdroidx.utils.extensions.withSafeAdapterPosition
 import org.ocpsoft.prettytime.PrettyTime
 
-
 class ProjectListAdapter(
   private val onOpenRepoClick: ((project: Project) -> Unit),
-  private val onDeleteClick: ((project: Project) -> Unit)
-) :
-  ListAdapter<Project, ProjectListAdapter.ProjectViewHolder>(
-    diffCallBackWith(
-      areItemTheSame = { item1, item2 -> item1.name == item2.name && item1.webUrl == item2.webUrl },
-      areContentsTheSame = { item1, item2 -> item1 == item2 }
-    )
-  ) {
+  private val onDeleteClick: ((project: Project) -> Unit),
+  private val onToggleMute: ((project: Project) -> Unit)
+) : ListAdapter<Project, ProjectListAdapter.ProjectViewHolder>(
+  diffCallBackWith(
+    areItemTheSame = { item1, item2 -> item1.name == item2.name && item1.webUrl == item2.webUrl },
+    areContentsTheSame = { item1, item2 -> item1 == item2 }
+  )
+) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
     return ProjectViewHolder(
       ItemProjectBinding.inflate(parent.inflater(), parent, false),
-      onOpenRepoClick = { position ->
-        onOpenRepoClick(getItem(position))
+      onClickMenu = { view, position ->
+        showMenu(view, getItem(position))
       },
-      onDeleteClick = { position ->
-        onDeleteClick(getItem(position))
-      }
     )
   }
 
@@ -48,10 +44,43 @@ class ProjectListAdapter(
     holder.bind(getItem(position))
   }
 
+  private fun showMenu(view: View, project: Project) {
+    val popup = PopupMenu(view.context, view)
+    popup.menuInflater.inflate(R.menu.menu_item_project, popup.menu)
+
+    popup.menu.findItem(R.id.action_toggle_mute).title = if (project.isMuted) {
+      view.context.getString(R.string.action_item_project_unmute)
+    } else {
+      view.context.getString(R.string.action_item_project_mute)
+    }
+
+    popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+      when (menuItem.itemId) {
+        R.id.action_open_repo -> {
+          onOpenRepoClick(project)
+          return@setOnMenuItemClickListener true
+        }
+        R.id.action_delete -> {
+          onDeleteClick(project)
+          return@setOnMenuItemClickListener true
+        }
+        R.id.action_toggle_mute -> {
+          onToggleMute(project)
+          return@setOnMenuItemClickListener true
+        }
+        else -> {
+          return@setOnMenuItemClickListener false
+        }
+      }
+
+
+    }
+    popup.show()
+  }
+
   class ProjectViewHolder(
     private val binding: ItemProjectBinding,
-    private val onOpenRepoClick: ((position: Int) -> Unit),
-    private val onDeleteClick: ((position: Int) -> Unit)
+    private val onClickMenu: ((view: View, position: Int) -> Unit),
   ) : RecyclerView.ViewHolder(binding.root) {
 
     private val prettyTime = PrettyTime()
@@ -59,7 +88,7 @@ class ProjectListAdapter(
     init {
       binding.ivMenu.setOnClickListener { view ->
         withSafeAdapterPosition { position ->
-          showMenu(view, position)
+          onClickMenu(view, position)
         }
       }
     }
@@ -95,30 +124,5 @@ class ProjectListAdapter(
         tvBuildLabel.text = itemView.context.getString(R.string.build_label, item.lastBuildLabel)
       }
     }
-
-    private fun showMenu(view: View, position: Int) {
-      val popup = PopupMenu(itemView.context, view)
-      popup.menuInflater.inflate(R.menu.menu_item_project, popup.menu)
-
-      popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-        when (menuItem.itemId) {
-          R.id.action_open_repo -> {
-            onOpenRepoClick(position)
-            return@setOnMenuItemClickListener true
-          }
-          R.id.action_delete -> {
-            onDeleteClick(position)
-            return@setOnMenuItemClickListener true
-          }
-          else -> {
-            return@setOnMenuItemClickListener false
-          }
-        }
-
-
-      }
-      popup.show()
-    }
-
   }
 }

@@ -95,6 +95,33 @@ class NotifyProjectStatusTest {
   }
 
   @Test
+  fun testDoesNotNotifyOnProjectBeforeFailAndNowFailWithSameBuildTimeTwo() {
+    val name = "Test Project"
+    val webUrl = "https://www.test.com"
+    val lastBuildTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(1000), ZoneId.of("UTC"))
+    val nowBuildTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(1000), ZoneId.of("Z"))
+
+    notifyProjectStatus.notify(
+      previous = buildProject(
+        lastBuildStatus = BuildStatus.FAILURE,
+        lastBuildTime = lastBuildTime
+      ),
+      now = buildProject(
+        name = name,
+        lastBuildStatus = BuildStatus.FAILURE,
+        webUrl = webUrl,
+        lastBuildTime = nowBuildTime
+      )
+    )
+
+    verify(exactly = 0) {
+      notificationManager.notifyProjectFail(name, webUrl)
+    }
+
+    confirmVerified(notificationManager)
+  }
+
+  @Test
   fun testNotifyOnProjectBeforeFailAndNowSuccess() {
     val name = "Test Project"
     val webUrl = "https://www.test.com"

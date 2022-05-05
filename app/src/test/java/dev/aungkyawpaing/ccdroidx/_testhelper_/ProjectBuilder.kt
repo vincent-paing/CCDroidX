@@ -3,7 +3,6 @@ package dev.aungkyawpaing.ccdroidx._testhelper_
 import dev.aungkyawpaing.ccdroidx.data.BuildState
 import dev.aungkyawpaing.ccdroidx.data.BuildStatus
 import dev.aungkyawpaing.ccdroidx.data.Project
-import java.time.Clock
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -25,7 +24,9 @@ object ProjectBuilder {
       lastBuildTime = lastBuildTime,
       nextBuildTime = null,
       webUrl = webUrl,
-      feedUrl = "https://www.example.com/cc.xml"
+      feedUrl = "https://www.example.com/cc.xml",
+      isMuted = false,
+      mutedUntil = null,
     )
   }
 }

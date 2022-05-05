@@ -11,7 +11,7 @@ class NotifyProjectStatus @Inject constructor(
   fun notify(previous: Project, now: Project) {
     if ((previous.lastBuildStatus == BuildStatus.SUCCESS &&
           now.lastBuildStatus != BuildStatus.SUCCESS) ||
-      (now.lastBuildTime > previous.lastBuildTime &&
+      (now.lastBuildTime.isAfter(previous.lastBuildTime) &&
           now.lastBuildStatus != BuildStatus.SUCCESS)
     ) {
       notificationManager.notifyProjectFail(now.name, now.webUrl)

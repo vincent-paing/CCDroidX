@@ -1,8 +1,8 @@
 package dev.aungkyawpaing.ccdroidx.feature.add
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aungkyawpaing.ccdroidx.api.InvalidUrlException
@@ -12,6 +12,7 @@ import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.exception.MapNetworkExceptionToMessage
+import dev.aungkyawpaing.ccdroidx.utils.databinding.ObservableViewModel
 import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,22 +25,25 @@ class AddProjectViewModel @Inject constructor(
   private val addProjectErrorMessages: AddProjectErrorMessages,
   private val addProjectFeedUrlValidation: AddProjectFeedUrlValidation,
   private val dispatcherProvider: DispatcherProvider
-) : ViewModel() {
+) : ObservableViewModel() {
 
   private val _isLoadingLiveData = MutableLiveData<Boolean>()
   val isLoadingLiveData: LiveData<Boolean> get() = _isLoadingLiveData
 
   val errorLiveEvent = SingleLiveEvent<String>()
-  val validationLiveEvent = SingleLiveEvent<FeedUrlValidationResult>()
   val projectListLiveEvent = SingleLiveEvent<List<Project>>()
 
   val dismissLiveEvent = SingleLiveEvent<Unit>()
 
-  fun onClickNext(feedUrl: String) {
+  val _feedUrl = ObservableField("")
+  private val feedUrl get() = _feedUrl.get() ?: ""
+  val feedUrlValidationResult = ObservableField(FeedUrlValidationResult.CORRECT)
+
+  fun onClickNext() {
     viewModelScope.launch {
       _isLoadingLiveData.postValue(true)
       val validation = addProjectFeedUrlValidation.validateProjectFeedUrl(feedUrl)
-      validationLiveEvent.postValue(validation)
+      feedUrlValidationResult.set(validation)
       if (validation == FeedUrlValidationResult.CORRECT) {
         try {
           val projectList = projectRepo.fetchRepo(feedUrl)

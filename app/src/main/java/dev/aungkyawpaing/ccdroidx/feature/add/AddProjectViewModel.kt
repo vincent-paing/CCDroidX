@@ -31,7 +31,7 @@ class AddProjectViewModel @Inject constructor(
   val isLoadingLiveData: LiveData<Boolean> get() = _isLoadingLiveData
 
   val errorLiveEvent = SingleLiveEvent<String>()
-  val projectListLiveEvent = SingleLiveEvent<List<Project>>()
+  val showProjectListLiveEvent = SingleLiveEvent<List<Project>>()
 
   val dismissLiveEvent = SingleLiveEvent<Unit>()
 
@@ -47,7 +47,7 @@ class AddProjectViewModel @Inject constructor(
       if (validation == FeedUrlValidationResult.CORRECT) {
         try {
           val projectList = projectRepo.fetchRepo(feedUrl)
-          projectListLiveEvent.postValue(projectList)
+          showProjectListLiveEvent.postValue(projectList)
         } catch (networkException: NetworkException) {
           errorLiveEvent.postValue(mapNetworkExceptionToMessage.getMessage(networkException))
         } catch (invalidUrlException: InvalidUrlException) {

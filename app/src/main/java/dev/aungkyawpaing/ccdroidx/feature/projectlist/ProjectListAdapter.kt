@@ -1,24 +1,17 @@
 package dev.aungkyawpaing.ccdroidx.feature.projectlist
 
-import android.graphics.drawable.GradientDrawable
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.color.MaterialColors
 import dev.aungkyawpaing.ccdroidx.R
-import dev.aungkyawpaing.ccdroidx.data.BuildState
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.ItemProjectBinding
 import dev.aungkyawpaing.ccdroidx.utils.extensions.diffCallBackWith
 import dev.aungkyawpaing.ccdroidx.utils.extensions.inflater
 import dev.aungkyawpaing.ccdroidx.utils.extensions.withSafeAdapterPosition
-import org.ocpsoft.prettytime.PrettyTime
 
 class ProjectListAdapter(
   private val onOpenRepoClick: ((project: Project) -> Unit),
@@ -72,8 +65,6 @@ class ProjectListAdapter(
           return@setOnMenuItemClickListener false
         }
       }
-
-
     }
     popup.show()
   }
@@ -82,8 +73,6 @@ class ProjectListAdapter(
     private val binding: ItemProjectBinding,
     private val onClickMenu: ((view: View, position: Int) -> Unit),
   ) : RecyclerView.ViewHolder(binding.root) {
-
-    private val prettyTime = PrettyTime()
 
     init {
       binding.ivMenu.setOnClickListener { view ->
@@ -94,35 +83,8 @@ class ProjectListAdapter(
     }
 
     fun bind(item: Project) {
-      val buildStatusColor = when (item.activity) {
-        BuildState.SLEEPING -> {
-          when (item.lastBuildStatus) {
-            BuildStatus.SUCCESS -> R.color.build_success
-            BuildStatus.FAILURE -> R.color.build_fail
-            BuildStatus.EXCEPTION -> R.color.build_fail
-            BuildStatus.UNKNOWN -> R.color.build_fail
-          }
-        }
-        BuildState.BUILDING, BuildState.CHECKING_MODIFICATIONS -> {
-          R.color.build_in_progress
-        }
-      }
-
-      val shape = GradientDrawable()
-      shape.shape = GradientDrawable.OVAL
-      shape.setColor(ContextCompat.getColor(itemView.context, buildStatusColor))
-      shape.setStroke(
-        1,
-        MaterialColors.getColor(itemView, com.google.android.material.R.attr.colorOnSurface)
-      )
-
-      binding.apply {
-        tvProjectName.text = item.name
-        viewBuildStatus.background = shape
-        tvLastSyncTime.text = prettyTime.format(item.lastBuildTime)
-        tvBuildLabel.isVisible = item.lastBuildLabel != null
-        tvBuildLabel.text = itemView.context.getString(R.string.build_label, item.lastBuildLabel)
-      }
+      binding.item = item
+      binding.executePendingBindings()
     }
   }
 }

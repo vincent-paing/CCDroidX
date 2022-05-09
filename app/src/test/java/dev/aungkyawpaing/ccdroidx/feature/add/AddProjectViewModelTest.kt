@@ -58,15 +58,14 @@ class AddProjectViewModelTest {
 
   @Test
   fun testValidationFailOnEmptyText() = runTest {
-    val url = ""
-
-    viewModel.onClickNext(url)
+    viewModel._feedUrl.set("")
+    viewModel.onClickNext()
 
     runCurrent()
 
     Assert.assertEquals(
       FeedUrlValidationResult.INCORRECT_EMPTY_TEXT,
-      viewModel.validationLiveEvent.getOrAwaitValue()
+      viewModel.feedUrlValidationResult.get()
     )
   }
 
@@ -94,15 +93,16 @@ class AddProjectViewModelTest {
       )
     }
 
-    viewModel.onClickNext(url)
+    viewModel._feedUrl.set(url)
+    viewModel.onClickNext()
 
     runCurrent()
 
     Assert.assertEquals(
       FeedUrlValidationResult.CORRECT,
-      viewModel.validationLiveEvent.getOrAwaitValue()
+      viewModel.feedUrlValidationResult.get()
     )
-    Assert.assertEquals(expectedProjectList, viewModel.projectListLiveEvent.getOrAwaitValue())
+    Assert.assertEquals(expectedProjectList, viewModel.showProjectListLiveEvent.getOrAwaitValue())
   }
 
   @Test

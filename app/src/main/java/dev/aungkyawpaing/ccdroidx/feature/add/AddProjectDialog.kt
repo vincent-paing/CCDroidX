@@ -62,7 +62,7 @@ class AddProjectDialog : DialogFragment() {
       binding.buttonCancel.isEnabled = !isLoading
     }
 
-    viewModel.projectListLiveEvent.observe(viewLifecycleOwner) { projectList ->
+    viewModel.showProjectListLiveEvent.observe(viewLifecycleOwner) { projectList ->
       MaterialAlertDialogBuilder(requireContext())
         .setTitle(R.string.select_project)
         .setItems(

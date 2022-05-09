@@ -47,6 +47,8 @@ class ProjectListFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    binding.viewModel = viewModel
+    binding.lifecycleOwner = viewLifecycleOwner
     binding.fabAdd.setOnClickListener {
       findNavController().navigate(
         ProjectListFragmentDirections.actionFragmentProjectListToAddProjectDialog()
@@ -78,7 +80,6 @@ class ProjectListFragment : Fragment() {
       }
 
     }
-
     viewModel.projectListLiveData.observe(viewLifecycleOwner) { projectList ->
       projectListAdapter.submitList(projectList)
     }

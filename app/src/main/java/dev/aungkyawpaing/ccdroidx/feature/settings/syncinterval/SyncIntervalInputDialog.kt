@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -40,10 +39,8 @@ class SyncIntervalInputDialog : DialogFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
-    binding.textFieldTimeAmount.addTextChangedListener { editable ->
-      viewModel.setValue(editable?.toString())
-    }
+    binding.viewModel = viewModel
+    binding.lifecycleOwner = viewLifecycleOwner
 
     val adapter = ArrayAdapter.createFromResource(
       requireContext(),

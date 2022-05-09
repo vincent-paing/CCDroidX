@@ -1,9 +1,10 @@
 package dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval
 
-import androidx.lifecycle.ViewModel
+import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
+import dev.aungkyawpaing.ccdroidx.utils.databinding.ObservableViewModel
 import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -15,14 +16,16 @@ class SyncIntervalInputViewModel @Inject constructor(
   private val syncIntervalSettingsStore: SyncIntervalSettingsStore,
   private val syncIntervalValidation: SyncIntervalValidation,
   private val dispatcherProvider: DispatcherProvider
-) : ViewModel() {
+) : ObservableViewModel() {
 
   val validationLiveEvent = SingleLiveEvent<SyncIntervalValidationResult>()
   val prefillSyncIntervalEvent = SingleLiveEvent<SyncInterval>()
   val dismissLiveEvent = SingleLiveEvent<Unit>()
 
   private var timeUnit: SyncIntervalTimeUnit? = null
-  private var value: String? = null
+
+  val _value = ObservableField("")
+  private val value get() = _value.get() ?: ""
 
   init {
     viewModelScope.launch {
@@ -42,7 +45,7 @@ class SyncIntervalInputViewModel @Inject constructor(
       if (validation == SyncIntervalValidationResult.CORRECT) {
         // Already checked for null in validation
         val syncInterval = SyncInterval(
-          value = value!!.toInt(),
+          value = value.toInt(),
           timeUnit = timeUnit!!
         )
         withContext(dispatcherProvider.io()) {
@@ -55,10 +58,5 @@ class SyncIntervalInputViewModel @Inject constructor(
 
   fun setTimeUnit(timeUnit: SyncIntervalTimeUnit) {
     this.timeUnit = timeUnit
-  }
-
-
-  fun setValue(value: String?) {
-    this.value = value
   }
 }

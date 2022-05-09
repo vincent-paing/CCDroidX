@@ -48,6 +48,22 @@ class SyncIntervalValidationTest {
   }
 
   @Test
+  fun ZeroHourShouldReturnIncorrect() {
+    val expected = SyncIntervalValidationResult.INCORRECT_LESS_THAN_MINIMUM_15_MINUTES
+    val actual = validation.validateProjectFeedUrl("0", SyncIntervalTimeUnit.HOUR)
+
+    Assert.assertEquals(expected, actual)
+  }
+
+  @Test
+  fun ZeroDayShouldReturnIncorrect() {
+    val expected = SyncIntervalValidationResult.INCORRECT_LESS_THAN_MINIMUM_15_MINUTES
+    val actual = validation.validateProjectFeedUrl("0", SyncIntervalTimeUnit.DAY)
+
+    Assert.assertEquals(expected, actual)
+  }
+
+  @Test
   fun validIntervalShouldReturnCorrect() {
     val expected = SyncIntervalValidationResult.CORRECT
     val actual = validation.validateProjectFeedUrl("15", SyncIntervalTimeUnit.MINUTES)

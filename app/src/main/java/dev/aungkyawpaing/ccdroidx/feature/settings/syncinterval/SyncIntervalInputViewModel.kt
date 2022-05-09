@@ -33,6 +33,7 @@ class SyncIntervalInputViewModel @Inject constructor(
         syncIntervalSettingsStore.getSyncInterval().firstOrNull()
       } ?: return@launch
 
+      _value.set(lastSyncInterval.value.toString())
       prefillSyncIntervalEvent.postValue(lastSyncInterval)
     }
   }

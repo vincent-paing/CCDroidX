@@ -62,7 +62,6 @@ class SyncIntervalInputDialog : DialogFragment() {
     }
 
     viewModel.prefillSyncIntervalEvent.observe(viewLifecycleOwner) { syncInterval ->
-      binding.textFieldTimeAmount.setText(syncInterval.value.toString())
       try {
         val position = when (syncInterval.timeUnit) {
           SyncIntervalTimeUnit.MINUTES -> 0

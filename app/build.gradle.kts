@@ -7,6 +7,7 @@ plugins {
   id("androidx.navigation.safeargs.kotlin")
   id("dagger.hilt.android.plugin")
   id("com.squareup.wire")
+  id("de.mannodermaus.android-junit5")
 }
 
 val ENV = System.getenv()
@@ -115,4 +116,11 @@ dependencies {
   testImplementation("junit:junit:4.13.2")
   androidXTest()
   mockK()
+
+  // (Required) Writing and executing Unit Tests on the JUnit Platform
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+
+  // (Optional) If you need "Parameterized Tests"
+  testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
 }

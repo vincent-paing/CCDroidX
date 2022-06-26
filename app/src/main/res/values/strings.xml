@@ -61,6 +61,8 @@
     <string name="sync_interval_pref_summary">How often CCDroidX retrieves status information from build server</string>
     <string name="error_feed_url_empty_text">Please fill the url of your server\'s cctray feed here.</string>
     <string name="error_feed_url_invalid">The url you entered is invalid</string>
+    <string name="error_username_empty_text">Username cannot be empty.</string>
+    <string name="error_password_url_empty_text">Password cannot be empty.</string>
 
     <string-array name="sync_interval_time_units">
         <item>Minutes</item>

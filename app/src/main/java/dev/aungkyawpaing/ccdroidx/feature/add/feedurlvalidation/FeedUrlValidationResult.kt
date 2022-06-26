@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.feature.add
+package dev.aungkyawpaing.ccdroidx.feature.add.feedurlvalidation
 
 enum class FeedUrlValidationResult {
   CORRECT,

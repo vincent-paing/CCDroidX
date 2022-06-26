@@ -1,5 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature.add
 
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,9 @@ import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.exception.MapNetworkExceptionToMessage
+import dev.aungkyawpaing.ccdroidx.feature.add.feedurlvalidation.FeedUrlValidationResult
+import dev.aungkyawpaing.ccdroidx.feature.add.passwordvalidation.PasswordValidationResult
+import dev.aungkyawpaing.ccdroidx.feature.add.usernamevalidation.UsernameValidationResult
 import dev.aungkyawpaing.ccdroidx.utils.databinding.ObservableViewModel
 import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -23,7 +27,7 @@ class AddProjectViewModel @Inject constructor(
   private val projectRepo: ProjectRepo,
   private val mapNetworkExceptionToMessage: MapNetworkExceptionToMessage,
   private val addProjectErrorMessages: AddProjectErrorMessages,
-  private val addProjectFeedUrlValidation: AddProjectFeedUrlValidation,
+  private val addProjectInputValidator: AddProjectInputValidator,
   private val dispatcherProvider: DispatcherProvider
 ) : ObservableViewModel() {
 
@@ -37,16 +41,44 @@ class AddProjectViewModel @Inject constructor(
 
   val _feedUrl = ObservableField("")
   private val feedUrl get() = _feedUrl.get() ?: ""
+
+  val _requireAuth = ObservableBoolean(false)
+  private val requireAuth get() = _requireAuth.get()
+
+  val _username = ObservableField("")
+  private val username get() = _username.get() ?: ""
+
+  val _password = ObservableField("")
+  private val password get() = _password.get() ?: ""
+
   val feedUrlValidationResult = ObservableField(FeedUrlValidationResult.CORRECT)
+  val usernameValidationResult = ObservableField(UsernameValidationResult.CORRECT)
+  val passwordValidationResult = ObservableField(PasswordValidationResult.CORRECT)
+
 
   fun onClickNext() {
     viewModelScope.launch {
       _isLoadingLiveData.postValue(true)
-      val validation = addProjectFeedUrlValidation.validateProjectFeedUrl(feedUrl)
-      feedUrlValidationResult.set(validation)
-      if (validation == FeedUrlValidationResult.CORRECT) {
+      feedUrlValidationResult.set(addProjectInputValidator.validateFeedUrl(feedUrl))
+
+      if (requireAuth) {
+        usernameValidationResult.set(addProjectInputValidator.validateUsername(username))
+        passwordValidationResult.set(addProjectInputValidator.validatePassword(password))
+      } else {
+        usernameValidationResult.set(UsernameValidationResult.CORRECT)
+        passwordValidationResult.set(PasswordValidationResult.CORRECT)
+      }
+
+      if (feedUrlValidationResult.get() == FeedUrlValidationResult.CORRECT &&
+        usernameValidationResult.get() == UsernameValidationResult.CORRECT &&
+        passwordValidationResult.get() == PasswordValidationResult.CORRECT
+      ) {
         try {
-          val projectList = projectRepo.fetchRepo(feedUrl)
+          val projectList = projectRepo.fetchRepo(
+            url = feedUrl,
+            username = if (requireAuth) username else null,
+            password = if (requireAuth) password else null,
+          )
           showProjectListLiveEvent.postValue(projectList)
         } catch (networkException: NetworkException) {
           errorLiveEvent.postValue(mapNetworkExceptionToMessage.getMessage(networkException))

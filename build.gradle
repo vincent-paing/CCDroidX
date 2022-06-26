@@ -8,11 +8,12 @@ buildscript {
     classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2")
     classpath(DaggerHilt.gradle_plugin)
     classpath(Wire.gradle_plugin)
+    classpath("de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0")
   }
 }
 
 plugins {
-  id 'com.android.application' version '7.2.0' apply false
+  id 'com.android.application' version '7.2.1' apply false
   id 'org.jetbrains.kotlin.android' version '1.6.20' apply false
   id 'com.squareup.sqldelight' version '1.5.3' apply false
 }

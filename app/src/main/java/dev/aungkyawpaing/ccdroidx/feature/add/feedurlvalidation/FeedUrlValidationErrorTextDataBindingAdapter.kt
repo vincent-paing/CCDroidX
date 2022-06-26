@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.feature.add
+package dev.aungkyawpaing.ccdroidx.feature.add.feedurlvalidation
 
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout

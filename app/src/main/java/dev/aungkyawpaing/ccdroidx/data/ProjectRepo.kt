@@ -16,7 +16,11 @@ class ProjectRepo @Inject constructor(
   private val dispatcherProvider: DispatcherProvider
 ) {
 
-  suspend fun fetchRepo(url: String): List<Project> {
+  suspend fun fetchRepo(
+    url: String,
+    username: String? = null,
+    password: String? = null
+  ): List<Project> {
     return withContext(dispatcherProvider.io()) {
       fetchProject.requestForProjectList(url).map { response ->
         Project(

@@ -22,10 +22,11 @@ class ProjectRepoTest : CoroutineTest() {
 
   private val fetchProject = mockk<FetchProject>()
   private val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
+  private val db = CCDroidXDb(driver, projectTableAdapter)
 
   private val projectRepo = ProjectRepo(
     fetchProject,
-    CCDroidXDb(driver, projectTableAdapter),
+    db,
     testDispatcherProvider
   )
 
@@ -116,6 +117,86 @@ class ProjectRepoTest : CoroutineTest() {
       val updateProject = project.copy(id = 1, name = "Updated name")
       projectRepo.saveProject(updateProject)
       Assertions.assertEquals(listOf(updateProject), projectRepo.getAll().first())
+    }
+  }
+
+  @Nested
+  @DisplayName("delete")
+  internal inner class Delete {
+
+    @Test
+    fun `delete from db`() = runTest {
+      val project = buildProject(id = -1L)
+
+      projectRepo.saveProject(project)
+
+      projectRepo.delete(1)
+
+      Assertions.assertEquals(emptyList<Project>(), projectRepo.getAll().first())
+    }
+  }
+
+  @Nested
+  @DisplayName("unmuteProject")
+  internal inner class UnmuteProject {
+
+    @Test
+    fun `updated isMuted to false`() = runTest {
+      val project = buildProject(id = 1)
+
+      db.projectTableQueries.insert(
+        name = project.name,
+        activity = project.activity,
+        lastBuildStatus = project.lastBuildStatus,
+        lastBuildLabel = project.lastBuildLabel,
+        lastBuildTime = project.lastBuildTime,
+        nextBuildTime = project.nextBuildTime,
+        webUrl = project.webUrl,
+        feedUrl = project.feedUrl,
+      )
+      db.projectTableQueries.updateMute(true, null, project.id)
+
+      projectRepo.unmuteProject(project.id)
+
+      Assertions.assertEquals(
+        listOf(
+          project.copy(
+            isMuted = false
+          )
+        ), projectRepo.getAll().first()
+      )
+    }
+  }
+
+  @Nested
+  @DisplayName("muteProject")
+  internal inner class MuteProject {
+
+    @Test
+    fun `updated isMuted to true`() = runTest {
+      val project = buildProject(id = 1)
+
+      db.projectTableQueries.insert(
+        name = project.name,
+        activity = project.activity,
+        lastBuildStatus = project.lastBuildStatus,
+        lastBuildLabel = project.lastBuildLabel,
+        lastBuildTime = project.lastBuildTime,
+        nextBuildTime = project.nextBuildTime,
+        webUrl = project.webUrl,
+        feedUrl = project.feedUrl,
+      )
+      db.projectTableQueries.updateMute(false, null, project.id)
+
+      projectRepo.muteProject(project.id)
+
+      Assertions.assertEquals(
+        listOf(
+          project.copy(
+            isMuted = true
+          )
+        ), projectRepo.getAll().first()
+      )
     }
   }
 }

@@ -25,7 +25,7 @@ UPDATE ProjectTable SET name = : name, activity = :activity, lastBuildStatus = :
 lastBuildTime= :lastBuildTime, nextBuildTime = :nextBuildTime, webUrl = :webUrl, feedUrl = :feedUrl WHERE id = :id;
 
 updateMute:
-UPDATE ProjectTable SET isMuted=:isMuted, mutedUntil=:mutedUnti;
+UPDATE ProjectTable SET isMuted=:isMuted, mutedUntil=:mutedUnti WHERE id = :id;
 
 selectAll:
 SELECT * FROM ProjectTable

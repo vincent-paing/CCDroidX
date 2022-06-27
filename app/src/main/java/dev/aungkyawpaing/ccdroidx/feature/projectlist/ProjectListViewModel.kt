@@ -17,7 +17,7 @@ import javax.inject.Inject
 class ProjectListViewModel @Inject constructor(
   private val projectRepo: ProjectRepo,
   private val syncProjects: SyncProjects,
-  private val syncMetaDataStorage: SyncMetaDataStorage,
+  syncMetaDataStorage: SyncMetaDataStorage,
   private val dispatcherProvider: DispatcherProvider,
 ) : ViewModel() {
 
@@ -28,7 +28,7 @@ class ProjectListViewModel @Inject constructor(
   fun onDeleteProject(project: Project) {
     viewModelScope.launch {
       withContext(dispatcherProvider.io()) {
-        projectRepo.delete(project)
+        projectRepo.delete(project.id)
       }
     }
   }
@@ -48,9 +48,9 @@ class ProjectListViewModel @Inject constructor(
   fun onToggleMute(project: Project) {
     viewModelScope.launch {
       if (project.isMuted) {
-        projectRepo.unmuteProject()
+        projectRepo.unmuteProject(project.id)
       } else {
-        projectRepo.muteProject()
+        projectRepo.muteProject(project.id)
       }
     }
   }

@@ -94,21 +94,21 @@ class ProjectRepo @Inject constructor(
 
   }
 
-  suspend fun delete(project: Project) {
+  suspend fun delete(projectId: Long) {
     return withContext(dispatcherProvider.io()) {
-      db.projectTableQueries.delete(project.id)
+      db.projectTableQueries.delete(projectId)
     }
   }
 
-  suspend fun unmuteProject() {
+  suspend fun unmuteProject(projectId: Long) {
     withContext(dispatcherProvider.io()) {
-      db.projectTableQueries.updateMute(false, null)
+      db.projectTableQueries.updateMute(false, null, projectId)
     }
   }
 
-  suspend fun muteProject() {
+  suspend fun muteProject(projectId: Long) {
     withContext(dispatcherProvider.io()) {
-      db.projectTableQueries.updateMute(true, null)
+      db.projectTableQueries.updateMute(true, null, projectId)
     }
   }
 

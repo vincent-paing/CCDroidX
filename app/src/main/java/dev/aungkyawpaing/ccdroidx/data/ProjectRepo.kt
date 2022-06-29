@@ -22,7 +22,7 @@ class ProjectRepo @Inject constructor(
     password: String? = null
   ): List<Project> {
     return withContext(dispatcherProvider.io()) {
-      fetchProject.requestForProjectList(url).map { response ->
+      fetchProject.requestForProjectList(url, username, password).map { response ->
         Project(
           id = -1L,
           name = response.name,

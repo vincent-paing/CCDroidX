@@ -35,11 +35,6 @@ class AddProjectViewModelTest : CoroutineTest() {
       testDispatcherProvider
     )
 
-  @BeforeEach
-  fun setUp() {
-    MockKAnnotations.init(this, relaxUnitFun = true)
-  }
-
   @Nested
   @DisplayName("When fetchRepo is successful")
   internal inner class FetchRepoSuccessful {
@@ -65,7 +60,7 @@ class AddProjectViewModelTest : CoroutineTest() {
       }
 
       @Test
-      fun fetchRepoWithFeedUrlOnly() = runTest {
+      fun `invoke fetchRepo with feed url only`() = runTest {
         coEvery {
           mockValidator.validateFeedUrl(any())
         } returns FeedUrlValidationResult.CORRECT
@@ -81,7 +76,7 @@ class AddProjectViewModelTest : CoroutineTest() {
       }
 
       @Test
-      fun resetUsernameValidationAndPasswordValidationToCorrect() = runTest {
+      fun `reset username and password validation to correct`() = runTest {
         coEvery {
           mockValidator.validateFeedUrl(any())
         } returns FeedUrlValidationResult.CORRECT
@@ -121,7 +116,7 @@ class AddProjectViewModelTest : CoroutineTest() {
       }
 
       @Test
-      fun fetchRepoWithFeedUrlPlusUserNameAndPassword() = runTest {
+      fun `invoke fetchRepo with feed url, username and password`() = runTest {
         coEvery {
           mockValidator.validateUsername(any())
         } returns UsernameValidationResult.CORRECT

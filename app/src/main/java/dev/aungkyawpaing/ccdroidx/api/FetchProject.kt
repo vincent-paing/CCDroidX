@@ -9,7 +9,7 @@ class FetchProject @Inject constructor(
   private val client: OkHttpClient
 ) {
 
-  fun requestForProjectList(url: String): List<ProjectResponse> {
+  fun requestForProjectList(url: String, username: String? = null, password: String? = null): List<ProjectResponse> {
     val request = try {
       Request.Builder()
         .url(url)

@@ -42,9 +42,11 @@ class ProjectRepoTest : CoroutineTest() {
     @Test
     fun `invoke fetch and map response`() = runTest {
       val url = "url"
+      val username = "Amy"
+      val password = "password"
 
       coEvery {
-        fetchProject.requestForProjectList(url)
+        fetchProject.requestForProjectList(url, username, password)
       } returns listOf(
         ProjectResponse(
           name = "Project Name",
@@ -74,22 +76,22 @@ class ProjectRepoTest : CoroutineTest() {
         )
       )
 
-      val actual = projectRepo.fetchRepo(url)
+      val actual = projectRepo.fetchRepo(url, username, password)
 
       Assertions.assertEquals(expected, actual)
     }
 
     @Test
     fun `pipe exception thrown from fetch repo`() = runTest {
-      val execption = NetworkException()
+      val exception = NetworkException()
       coEvery {
-        fetchProject.requestForProjectList(any())
-      } throws execption
+        fetchProject.requestForProjectList(any(), any(), any())
+      } throws exception
 
       val result = kotlin.runCatching {
         projectRepo.fetchRepo("url")
       }.onFailure { actual ->
-        Assertions.assertEquals(execption, actual)
+        Assertions.assertEquals(exception, actual)
       }
 
       Assertions.assertTrue(result.isFailure)

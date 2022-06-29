@@ -48,7 +48,7 @@ class FetchProjectTest {
     val url = server.url("").toString()
     val fetchProject = FetchProject(OkHttpClient())
 
-    val actual = fetchProject.requestForProjectList(url)
+    val actual = fetchProject.requestForProjectList(url, null, null)
 
     val expected = listOf(
       ProjectResponse(

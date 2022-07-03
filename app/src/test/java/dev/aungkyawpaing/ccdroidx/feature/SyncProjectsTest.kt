@@ -17,7 +17,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.Clock
 import java.time.Instant
@@ -30,23 +29,17 @@ class SyncProjectsTest : CoroutineTest() {
   private val clock: Clock = Clock.fixed(Instant.ofEpochSecond(6000), ZoneId.of("UTC"))
   private val syncMetaDataStorage = mockk<SyncMetaDataStorage>(relaxed = true)
 
-  private val projectRepo = mockk<ProjectRepo>()
+  private val projectRepo = mockk<ProjectRepo>(relaxUnitFun = true)
   private val syncProject = SyncProjects(
     projectRepo,
     syncMetaDataStorage,
     clock
   )
 
-  @BeforeEach
-  fun setup() {
-    coEvery {
-      projectRepo.saveProject(any())
-    } answers {}
-  }
-
   @Test
   fun `save project on success`() = runTest {
     val feedUrl = "feedUrl"
+
     val projectOne =
       ProjectBuilder.buildProject()
         .copy(id = 1L, name = "Project One", feedUrl = feedUrl, lastBuildLabel = "A")
@@ -62,7 +55,10 @@ class SyncProjectsTest : CoroutineTest() {
     } returns flow { emit(listOf(projectOne, projectTwo)) }
 
     coEvery {
-      projectRepo.fetchRepo(feedUrl)
+      projectRepo.fetchRepo(
+        feedUrl, projectOne.authentication!!.username,
+        projectOne.authentication!!.password
+      )
     } returns listOf(
       updatedProjectOne,
       updatedProjectTwo
@@ -95,7 +91,7 @@ class SyncProjectsTest : CoroutineTest() {
     } returns flow { emit(listOf(projectOne, projectTwo)) }
 
     coEvery {
-      projectRepo.fetchRepo(feedUrl)
+      projectRepo.fetchRepo(feedUrl, any(), any())
     } returns listOf(
       updatedProjectOne,
       updatedProjectTwo
@@ -120,7 +116,7 @@ class SyncProjectsTest : CoroutineTest() {
     } returns flow { emit(listOf(ProjectBuilder.buildProject())) }
 
     coEvery {
-      projectRepo.fetchRepo(any())
+      projectRepo.fetchRepo(any(), any(), any())
     } throws exception
 
     val result = kotlin.runCatching {
@@ -141,7 +137,7 @@ class SyncProjectsTest : CoroutineTest() {
     } returns flow { emit(projectList) }
 
     coEvery {
-      projectRepo.fetchRepo(any())
+      projectRepo.fetchRepo(any(), any(), any())
     } returns projectList
 
     syncProject.sync(mockk(relaxed = true))
@@ -169,7 +165,7 @@ class SyncProjectsTest : CoroutineTest() {
     } returns flow { emit(listOf(ProjectBuilder.buildProject())) }
 
     coEvery {
-      projectRepo.fetchRepo(any())
+      projectRepo.fetchRepo(any(), any(), any())
     } throws NetworkException()
 
     kotlin.runCatching {

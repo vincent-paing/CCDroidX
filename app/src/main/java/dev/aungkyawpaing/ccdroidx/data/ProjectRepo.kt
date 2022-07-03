@@ -5,6 +5,7 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import dev.aungkyawpaing.ccdroidx.CCDroidXDb
 import dev.aungkyawpaing.ccdroidx.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
+import dev.aungkyawpaing.ccdroidx.utils.security.Cryptography
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -13,6 +14,7 @@ import javax.inject.Inject
 class ProjectRepo @Inject constructor(
   private val fetchProject: FetchProject,
   private val db: CCDroidXDb,
+  private val cryptography: Cryptography,
   private val dispatcherProvider: DispatcherProvider
 ) {
 
@@ -34,12 +36,14 @@ class ProjectRepo @Inject constructor(
           webUrl = response.webUrl,
           feedUrl = response.feedUrl,
           isMuted = false,
-          mutedUntil = null
+          mutedUntil = null,
+          authentication = if (username != null && password != null) {
+            Authentication(username, password)
+          } else null
         )
       }
     }
   }
-
 
   suspend fun saveProject(project: Project) {
     withContext(dispatcherProvider.io()) {
@@ -53,6 +57,8 @@ class ProjectRepo @Inject constructor(
           nextBuildTime = project.nextBuildTime,
           webUrl = project.webUrl,
           feedUrl = project.feedUrl,
+          username = project.authentication?.username,
+          password = if (project.authentication != null) cryptography.encrypt(project.authentication.password) else null
         )
       } else {
         db.projectTableQueries.update(
@@ -65,6 +71,8 @@ class ProjectRepo @Inject constructor(
           nextBuildTime = project.nextBuildTime,
           webUrl = project.webUrl,
           feedUrl = project.feedUrl,
+          username = project.authentication?.username,
+          password = if (project.authentication != null) cryptography.encrypt(project.authentication.password) else null
         )
       }
     }
@@ -87,7 +95,13 @@ class ProjectRepo @Inject constructor(
             webUrl = projectTable.webUrl,
             feedUrl = projectTable.feedUrl,
             isMuted = projectTable.isMuted,
-            mutedUntil = projectTable.mutedUntil
+            mutedUntil = projectTable.mutedUntil,
+            authentication = if (projectTable.username != null && projectTable.password != null) {
+              Authentication(
+                username = projectTable.username,
+                password = cryptography.decrypt(projectTable.password)
+              )
+            } else null
           )
         }
       }

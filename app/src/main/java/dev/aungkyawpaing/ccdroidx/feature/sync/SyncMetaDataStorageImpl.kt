@@ -1,8 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature.sync
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.aungkyawpaing.ccdroidx.SyncedStateProto
 import kotlinx.coroutines.flow.Flow
@@ -16,12 +14,6 @@ import javax.inject.Inject
 class SyncMetaDataStorageImpl @Inject constructor(
   @ApplicationContext private val context: Context
 ) : SyncMetaDataStorage {
-
-  val Context.lastSyncedStateDataStore: DataStore<SyncedStateProto?> by dataStore(
-    fileName = "last_synced_state.pb",
-    serializer = SyncedStateProtoSerializer
-  )
-
 
   override suspend fun saveLastSyncedTime(lastSyncedState: LastSyncedStatus) {
     context.lastSyncedStateDataStore.updateData { _ ->

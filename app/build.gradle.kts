@@ -25,6 +25,8 @@ android {
     setProperty("archivesBaseName", "ccdroidx-${BuildConfig.versionName}")
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunnerArguments["runnerBuilder"] =
+      "de.mannodermaus.junit5.AndroidJUnit5Builder"
 
     buildFeatures {
       viewBinding = true
@@ -91,7 +93,7 @@ wire {
 }
 
 dependencies {
-  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
   implementation("com.jakewharton.timber:timber:5.0.1")
   implementation("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
 
@@ -123,4 +125,10 @@ dependencies {
 
   // (Optional) If you need "Parameterized Tests"
   testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+
+  androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+  androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.3.0")
+  androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.3.0")
+
+
 }

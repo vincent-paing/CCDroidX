@@ -8,7 +8,9 @@ import dev.aungkyawpaing.ccdroidx.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.api.ProjectResponse
 import dev.aungkyawpaing.ccdroidx.db.projectTableAdapter
+import dev.aungkyawpaing.ccdroidx.utils.security.Cryptography
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -23,10 +25,12 @@ class ProjectRepoTest : CoroutineTest() {
   private val fetchProject = mockk<FetchProject>()
   private val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
   private val db = CCDroidXDb(driver, projectTableAdapter)
+  private val cryptography = mockk<Cryptography>(relaxed = true)
 
   private val projectRepo = ProjectRepo(
     fetchProject,
     db,
+    cryptography,
     testDispatcherProvider
   )
 
@@ -72,7 +76,11 @@ class ProjectRepoTest : CoroutineTest() {
           webUrl = "https://example.com/master",
           feedUrl = "https://www.example.com/cc.xml",
           isMuted = false,
-          mutedUntil = null
+          mutedUntil = null,
+          authentication = Authentication(
+            username,
+            password
+          )
         )
       )
 
@@ -105,18 +113,54 @@ class ProjectRepoTest : CoroutineTest() {
     @Test
     fun `insert if id is -1L`() = runTest {
       val project = buildProject(id = -1L)
+      val encryptedPass = "encrypted"
+      val decryptedPass = "decrpyted"
+      every {
+        cryptography.encrypt(project.authentication!!.password)
+      } returns encryptedPass
+
+      every {
+        cryptography.decrypt(encryptedPass)
+      } returns decryptedPass
 
       projectRepo.saveProject(project)
 
-      Assertions.assertEquals(listOf(project.copy(id = 1)), projectRepo.getAll().first())
+      Assertions.assertEquals(
+        listOf(
+          project.copy(
+            id = 1, authentication = project.authentication!!.copy(
+              password = decryptedPass
+            )
+          )
+        ), projectRepo.getAll().first()
+      )
     }
 
     @Test
     fun `update if id is not -1L`() = runTest {
       val project = buildProject(id = -1L)
+      val encryptedPass = "encrypted"
+      val decryptedPass = "decrpyted"
+      every {
+        cryptography.encrypt(project.authentication!!.password)
+      } returns encryptedPass
+
+      every {
+        cryptography.decrypt(encryptedPass)
+      } returns decryptedPass
+
       projectRepo.saveProject(project)
 
-      val updateProject = project.copy(id = 1, name = "Updated name")
+      val updateProject = project.copy(
+        id = 1, name = "Updated name", authentication = project.authentication!!.copy(
+          password = decryptedPass
+        )
+      )
+
+      every {
+        cryptography.encrypt(decryptedPass)
+      } returns encryptedPass
+
       projectRepo.saveProject(updateProject)
       Assertions.assertEquals(listOf(updateProject), projectRepo.getAll().first())
     }
@@ -155,18 +199,14 @@ class ProjectRepoTest : CoroutineTest() {
         nextBuildTime = project.nextBuildTime,
         webUrl = project.webUrl,
         feedUrl = project.feedUrl,
+        username = null,
+        password = null
       )
       db.projectTableQueries.updateMute(true, null, project.id)
 
       projectRepo.unmuteProject(project.id)
 
-      Assertions.assertEquals(
-        listOf(
-          project.copy(
-            isMuted = false
-          )
-        ), projectRepo.getAll().first()
-      )
+      Assertions.assertEquals(false, projectRepo.getAll().first()[0].isMuted)
     }
   }
 
@@ -187,18 +227,14 @@ class ProjectRepoTest : CoroutineTest() {
         nextBuildTime = project.nextBuildTime,
         webUrl = project.webUrl,
         feedUrl = project.feedUrl,
+        username = null,
+        password = null
       )
       db.projectTableQueries.updateMute(false, null, project.id)
 
       projectRepo.muteProject(project.id)
 
-      Assertions.assertEquals(
-        listOf(
-          project.copy(
-            isMuted = true
-          )
-        ), projectRepo.getAll().first()
-      )
+      Assertions.assertEquals(true, projectRepo.getAll().first()[0].isMuted)
     }
   }
 }

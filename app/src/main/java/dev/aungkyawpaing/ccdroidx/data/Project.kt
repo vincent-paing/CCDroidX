@@ -16,7 +16,14 @@ data class Project(
   val webUrl: String,
   val feedUrl: String,
   val isMuted: Boolean,
-  val mutedUntil: ZonedDateTime?
+  val mutedUntil: ZonedDateTime?,
+  val authentication: Authentication? = null
+) : Parcelable
+
+@Parcelize
+data class Authentication(
+  val username: String,
+  val password: String
 ) : Parcelable
 
 @Parcelize

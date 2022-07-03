@@ -13,16 +13,18 @@ CREATE TABLE ProjectTable (
     webUrl TEXT NOT NULL,
     feedUrl TEXT NOT NULL,
     isMuted INTEGER AS Boolean NOT NULL DEFAULT 0,
-    mutedUntil INTEGER AS ZonedDateTime DEFAULT NULL
+    mutedUntil INTEGER AS ZonedDateTime DEFAULT NULL,
+    username TEXT DEFAULT NULL,
+    password TEXT DEFAULT NULL
 );
 
 insert:
-INSERT INTO ProjectTable(name, activity, lastBuildStatus, lastBuildLabel, lastBuildTime, nextBuildTime, webUrl, feedUrl)
-VALUES (:name, :activity, :lastBuildStatus, :lastBuildLabel, :lastBuildTime, :nextBuildTime, :webUrl, :feedUrl);
+INSERT INTO ProjectTable(name, activity, lastBuildStatus, lastBuildLabel, lastBuildTime, nextBuildTime, webUrl, feedUrl, username, password)
+VALUES (:name, :activity, :lastBuildStatus, :lastBuildLabel, :lastBuildTime, :nextBuildTime, :webUrl, :feedUrl, :username, :password);
 
 update:
-UPDATE ProjectTable SET name = : name, activity = :activity, lastBuildStatus = :lastBuildStatus, lastBuildLabel= :lastBuildLabel,
-lastBuildTime= :lastBuildTime, nextBuildTime = :nextBuildTime, webUrl = :webUrl, feedUrl = :feedUrl WHERE id = :id;
+UPDATE ProjectTable SET name = :name, activity = :activity, lastBuildStatus = :lastBuildStatus, lastBuildLabel = :lastBuildLabel,
+lastBuildTime = :lastBuildTime, nextBuildTime = :nextBuildTime, webUrl = :webUrl, feedUrl = :feedUrl,username = :username, password = :password WHERE id = :id;
 
 updateMute:
 UPDATE ProjectTable SET isMuted=:isMuted, mutedUntil=:mutedUnti WHERE id = :id;

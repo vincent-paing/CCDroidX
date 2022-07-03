@@ -1,11 +1,11 @@
 package dev.aungkyawpaing.ccdroidx.feature.sync
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flowOf
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
-class FakeSyncMetaDataStorage @Inject constructor() : SyncMetaDataStorage {
+class FakeSyncMetaDataStorage @Inject constructor() : SyncMetaDataStorage, Flow<LastSyncedStatus?> {
 
   private var lastSyncedState: LastSyncedStatus? = null
 
@@ -15,6 +15,10 @@ class FakeSyncMetaDataStorage @Inject constructor() : SyncMetaDataStorage {
 
   override fun getLastSyncedTime(): Flow<LastSyncedStatus?> {
     return flowOf(lastSyncedState)
+  }
+
+  override suspend fun collect(collector: FlowCollector<LastSyncedStatus?>) {
+    collector.emit(lastSyncedState)
   }
 
 }

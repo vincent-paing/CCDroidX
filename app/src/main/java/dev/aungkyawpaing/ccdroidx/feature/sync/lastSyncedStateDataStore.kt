@@ -1,14 +1,19 @@
 package dev.aungkyawpaing.ccdroidx.feature.sync
 
+import android.content.Context
 import androidx.datastore.core.CorruptionException
+import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
+import androidx.datastore.dataStore
 import dev.aungkyawpaing.ccdroidx.SyncedStateProto
-import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import javax.inject.Inject
+
+val Context.lastSyncedStateDataStore: DataStore<SyncedStateProto?> by dataStore(
+  fileName = "last_synced_state.pb",
+  serializer = SyncedStateProtoSerializer
+)
 
 object SyncedStateProtoSerializer : Serializer<SyncedStateProto?> {
 

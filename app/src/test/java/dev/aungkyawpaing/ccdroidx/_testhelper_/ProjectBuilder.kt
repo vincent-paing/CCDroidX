@@ -1,5 +1,6 @@
 package dev.aungkyawpaing.ccdroidx._testhelper_
 
+import dev.aungkyawpaing.ccdroidx.data.Authentication
 import dev.aungkyawpaing.ccdroidx.data.BuildState
 import dev.aungkyawpaing.ccdroidx.data.BuildStatus
 import dev.aungkyawpaing.ccdroidx.data.Project
@@ -27,6 +28,10 @@ object ProjectBuilder {
       feedUrl = "https://www.example.com/cc.xml",
       isMuted = false,
       mutedUntil = null,
+      authentication = Authentication(
+        username = "username",
+        password = "password"
+      )
     )
   }
 }

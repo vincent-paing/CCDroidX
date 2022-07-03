@@ -26,7 +26,7 @@ class SyncProjects @Inject constructor(
     try {
       (projectRepo.getAll().firstOrNull() ?: emptyList()).forEach { project ->
         val updatedProject = projectRepo.fetchRepo(project.feedUrl).find {
-          it.webUrl == project.webUrl
+          it.name == project.name
         }?.copy(id = project.id) ?: return@forEach
 
         onProjectSynced(project, updatedProject)

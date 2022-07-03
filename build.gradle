@@ -5,10 +5,10 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2")
+    classpath(AndroidXNavigation.gradle_plugin)
     classpath(DaggerHilt.gradle_plugin)
     classpath(Wire.gradle_plugin)
-    classpath("de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0")
+    classpath(AndroidJUnit5.gradle_plugin)
   }
 }
 

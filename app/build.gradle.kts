@@ -93,7 +93,7 @@ wire {
 }
 
 dependencies {
-  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
+  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
   implementation("com.jakewharton.timber:timber:5.0.1")
   implementation("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
 

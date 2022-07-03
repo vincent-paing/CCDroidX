@@ -1,5 +1,5 @@
 ALTER TABLE ProjectTable
-ADD isMuted INTEGER NOT NULL DEFAULT 0;
+ADD username TEXT DEFAULT NULL;
 
 ALTER TABLE ProjectTable
-ADD mutedUntil INTEGER;
+ADD password TEXT DEFAULT NULL;

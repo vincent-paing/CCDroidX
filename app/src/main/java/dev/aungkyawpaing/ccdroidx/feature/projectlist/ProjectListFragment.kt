@@ -14,9 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
-import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
-import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
-import org.ocpsoft.prettytime.PrettyTime
 
 @AndroidEntryPoint
 class ProjectListFragment : Fragment() {
@@ -25,8 +22,6 @@ class ProjectListFragment : Fragment() {
   private val binding get() = _binding!!
 
   private val viewModel: ProjectListViewModel by viewModels()
-
-  private val prettyTime = PrettyTime()
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -39,70 +34,25 @@ class ProjectListFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    binding.viewModel = viewModel
-    binding.lifecycleOwner = viewLifecycleOwner
-    binding.fabAdd.setOnClickListener {
-      findNavController().navigate(
-        ProjectListFragmentDirections.actionFragmentProjectListToAddProjectDialog()
-      )
-    }
 
     binding.composeView.apply {
       setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
       setContent {
         // In Compose world
         Mdc3Theme {
-          ProjectListPage(viewModel)
+          ProjectListPage(viewModel, onclickAddProject = {
+            findNavController().navigate(
+              ProjectListFragmentDirections.actionFragmentProjectListToAddProjectDialog()
+            )
+          }, onClickSettings = {
+            findNavController().navigate(
+              ProjectListFragmentDirections.actionFragmentProjectListToSettingsFragment()
+            )
+          })
         }
       }
     }
 
-    binding.toolBar.setOnMenuItemClickListener { menuItem ->
-      when (menuItem.itemId) {
-        R.id.action_sync -> {
-          viewModel.onPressSync()
-          return@setOnMenuItemClickListener true
-        }
-        R.id.action_settings -> {
-          findNavController().navigate(
-            ProjectListFragmentDirections.actionFragmentProjectListToSettingsFragment()
-          )
-          return@setOnMenuItemClickListener true
-        }
-        else -> {
-          return@setOnMenuItemClickListener false
-        }
-      }
-
-    }
-    
-    viewModel.lastSyncedLiveData.observe(viewLifecycleOwner) { lastSyncedStatus ->
-      updateSubtitle(lastSyncedStatus)
-    }
-  }
-
-  private fun updateSubtitle(lastSyncedStatus: LastSyncedStatus?) {
-    if (lastSyncedStatus == null) {
-      binding.toolBar.subtitle = "Welcome!"
-    } else {
-      when (lastSyncedStatus.lastSyncedState) {
-        LastSyncedState.SYNCING -> {
-          binding.toolBar.subtitle = getString(
-            R.string.syncing
-          )
-        }
-        LastSyncedState.SUCCESS, LastSyncedState.FAILED -> {
-          binding.toolBar.subtitle = getString(
-            R.string.last_synced_x, prettyTime.format(lastSyncedStatus.lastSyncedDateTime)
-          )
-        }
-      }
-    }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    updateSubtitle(viewModel.lastSyncedLiveData.value)
   }
 
   override fun onDestroyView() {
@@ -119,10 +69,6 @@ class ProjectListFragment : Fragment() {
       }
       .setNegativeButton(android.R.string.cancel, null)
       .show()
-  }
-
-  private fun onToggleMute(project: Project) {
-    viewModel.onToggleMute(project)
   }
 
 }

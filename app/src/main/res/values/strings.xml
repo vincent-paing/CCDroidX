@@ -9,6 +9,7 @@
     <string name="next">Next</string>
 
     <string name="last_built_x">Last built %s</string>
+    <string name="welcome">Welcome!</string>
     <string name="syncing">Syncing…</string>
     <string name="last_synced_x">Last synced %s</string>
 

@@ -6,9 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsClient
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
-import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
+import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncWorkerScheduler
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -17,8 +16,6 @@ class MainActivity : AppCompatActivity() {
     const val INTENT_EXTRA_URL = "url"
   }
 
-  @Inject
-  lateinit var openInBrowser: OpenInBrowser
   private val viewModel: MainViewModel by viewModels()
   private val syncWorkerScheduler by lazy {
     SyncWorkerScheduler(applicationContext)
@@ -30,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     warmupBrowser()
 
     intent.getStringExtra(INTENT_EXTRA_URL)?.let { url ->
-      openInBrowser.openInBrowser(this, url)
+      openInBrowser(this, url)
     }
 
     viewModel.syncIntervalLiveData.observe(this) { syncInterval ->

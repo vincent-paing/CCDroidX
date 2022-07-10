@@ -54,6 +54,9 @@ fun getBuildStatusColor(buildStatus: BuildStatus, buildState: BuildState): Int {
 @Composable
 fun ProjectCard(
   project: Project,
+  onOpenRepoClick: ((project: Project) -> Unit),
+  onDeleteClick: ((project: Project) -> Unit),
+  onToggleMute: ((project: Project) -> Unit)
 ) {
 
   var menuExpanded by remember { mutableStateOf(false) }
@@ -112,7 +115,7 @@ fun ProjectCard(
           }
           DropdownMenuItem(
             text = { Text(text = muteMenuText) },
-            onClick = { /* Handle edit! */ },
+            onClick = { onToggleMute(project) },
             leadingIcon = {
               Icon(
                 Icons.Outlined.VolumeOff,
@@ -121,7 +124,7 @@ fun ProjectCard(
             })
           DropdownMenuItem(
             text = { Text(text = stringResource(R.string.action_item_project_open_repo)) },
-            onClick = { /* Handle edit! */ },
+            onClick = { onOpenRepoClick(project) },
             leadingIcon = {
               Icon(
                 Icons.Outlined.OpenInBrowser,
@@ -130,7 +133,7 @@ fun ProjectCard(
             })
           DropdownMenuItem(
             text = { Text(text = stringResource(R.string.action_item_project_delete_project)) },
-            onClick = { /* Handle edit! */ },
+            onClick = { onDeleteClick(project) },
             leadingIcon = {
               Icon(
                 Icons.Outlined.Delete,
@@ -217,7 +220,10 @@ fun ProjectCardPreview() {
           username = "username",
           password = "password"
         )
-      )
+      ),
+      {},
+      {},
+      {}
     )
   }
 }

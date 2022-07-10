@@ -9,14 +9,11 @@ import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.BuildConfig
 import dev.aungkyawpaing.ccdroidx.R
-import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
-import javax.inject.Inject
+import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
 
-  @Inject
-  lateinit var openInBrowser: OpenInBrowser
 
   companion object {
     private const val GITHUB_ISSUE_URL = "https://github.com/vincent-paing/CCDroidX/issues"
@@ -42,7 +39,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     findPreference<Preference?>("help_feedback")?.let { pref ->
       pref.setOnPreferenceClickListener {
-        openInBrowser.openInBrowser(requireActivity(), GITHUB_ISSUE_URL)
+        openInBrowser(requireActivity(), GITHUB_ISSUE_URL)
         true
       }
     }

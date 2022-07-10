@@ -1,10 +1,12 @@
 package dev.aungkyawpaing.ccdroidx.utils.extensions
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 
 /**
  * Created by Vincent on 2/13/20
@@ -42,5 +44,10 @@ fun Context.showLongToast(@StringRes resId: Int) {
 fun Context.isLandScape(): Boolean {
   val orientation = resources.configuration.orientation
   return orientation == Configuration.ORIENTATION_LANDSCAPE
+}
 
+fun Context.findActivity(): AppCompatActivity? = when (this) {
+  is AppCompatActivity -> this
+  is ContextWrapper -> baseContext.findActivity()
+  else -> null
 }

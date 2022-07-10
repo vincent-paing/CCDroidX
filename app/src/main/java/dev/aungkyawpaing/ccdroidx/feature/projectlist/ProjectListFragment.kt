@@ -8,19 +8,15 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
-import dev.aungkyawpaing.ccdroidx.feature.browser.OpenInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
-import dev.aungkyawpaing.ccdroidx.utils.recyclerview.RecyclerViewMarginDecoration
 import org.ocpsoft.prettytime.PrettyTime
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProjectListFragment : Fragment() {
@@ -28,14 +24,8 @@ class ProjectListFragment : Fragment() {
   private var _binding: FragmentProjectListBinding? = null
   private val binding get() = _binding!!
 
-  private val projectListAdapter by lazy {
-    ProjectListAdapter(this::onOpenRepoClick, this::onDeleteProject, this::onToggleMute)
-  }
-
   private val viewModel: ProjectListViewModel by viewModels()
 
-  @Inject
-  lateinit var openInBrowser: OpenInBrowser
   private val prettyTime = PrettyTime()
 
   override fun onCreateView(
@@ -65,15 +55,7 @@ class ProjectListFragment : Fragment() {
           ProjectListPage(viewModel)
         }
       }
-
     }
-//    binding.rvProjects.apply {
-//      adapter = projectListAdapter
-//      layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//      val dimen =
-//        context.resources.getDimensionPixelSize(R.dimen.recycler_view_item_margin)
-//      addItemDecoration(RecyclerViewMarginDecoration(dimen, 1))
-//    }
 
     binding.toolBar.setOnMenuItemClickListener { menuItem ->
       when (menuItem.itemId) {
@@ -93,9 +75,7 @@ class ProjectListFragment : Fragment() {
       }
 
     }
-    viewModel.projectListLiveData.observe(viewLifecycleOwner) { projectList ->
-      projectListAdapter.submitList(projectList)
-    }
+    
     viewModel.lastSyncedLiveData.observe(viewLifecycleOwner) { lastSyncedStatus ->
       updateSubtitle(lastSyncedStatus)
     }
@@ -128,10 +108,6 @@ class ProjectListFragment : Fragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
-  }
-
-  private fun onOpenRepoClick(project: Project) {
-    openInBrowser.openInBrowser(requireActivity(), project.webUrl)
   }
 
   private fun onDeleteProject(project: Project) {

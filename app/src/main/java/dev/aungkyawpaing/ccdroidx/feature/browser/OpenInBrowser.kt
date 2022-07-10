@@ -8,26 +8,21 @@ import androidx.preference.PreferenceManager
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.utils.extensions.showShortToast
 import dev.aungkyawpaing.ccdroidx.utils.intent.Intents
-import javax.inject.Inject
 
-class OpenInBrowser @Inject constructor() {
-
-  fun openInBrowser(activity: Activity, url: String) {
-    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-    val doesLinkOpenExternally = sharedPreferences.getBoolean("others_browser", false)
+fun openInBrowser(activity: Activity, url: String) {
+  val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+  val doesLinkOpenExternally = sharedPreferences.getBoolean("others_browser", false)
 
 
-    if (doesLinkOpenExternally) {
-      try {
-        val viewUrlIntent = Intents.viewUrl(url)
-        activity.startActivity(viewUrlIntent)
-      } catch (exception: ActivityNotFoundException) {
-        activity.showShortToast(activity.getString(R.string.error_no_browser_installed))
-      }
-    } else {
-      val customTabsIntent = CustomTabsIntent.Builder().build()
-      customTabsIntent.launchUrl(activity, url.toUri())
+  if (doesLinkOpenExternally) {
+    try {
+      val viewUrlIntent = Intents.viewUrl(url)
+      activity.startActivity(viewUrlIntent)
+    } catch (exception: ActivityNotFoundException) {
+      activity.showShortToast(activity.getString(R.string.error_no_browser_installed))
     }
+  } else {
+    val customTabsIntent = CustomTabsIntent.Builder().build()
+    customTabsIntent.launchUrl(activity, url.toUri())
   }
-
 }

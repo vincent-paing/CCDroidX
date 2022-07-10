@@ -1,5 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature.projectlist
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,11 +12,15 @@ import dev.aungkyawpaing.ccdroidx.data.Project
 
 @Composable
 fun ProjectList(
-  projectList: List<Project>
+  projectList: List<Project>,
+  onOpenRepoClick: ((project: Project) -> Unit),
+  onDeleteClick: ((project: Project) -> Unit),
+  onToggleMute: ((project: Project) -> Unit)
 ) {
 
   LazyColumn(
     contentPadding = PaddingValues(8.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
     modifier = Modifier.padding(bottom = 56.dp)
   ) {
     itemsIndexed(
@@ -23,8 +28,13 @@ fun ProjectList(
       key = { _, project ->
         project.id
       }
-    ) { index, project ->
-      ProjectCard(project = project)
+    ) { _, project ->
+      ProjectCard(
+        project = project,
+        onOpenRepoClick = onOpenRepoClick,
+        onDeleteClick = onDeleteClick,
+        onToggleMute = onToggleMute
+      )
     }
   }
 }

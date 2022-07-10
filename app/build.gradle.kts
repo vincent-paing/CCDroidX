@@ -31,6 +31,7 @@ android {
     buildFeatures {
       viewBinding = true
       dataBinding = true
+      compose = true
     }
   }
 
@@ -65,6 +66,11 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
 
+  composeOptions {
+    kotlinCompilerExtensionVersion  = "1.1.1"
+  }
+
+
   kotlinOptions {
     jvmTarget = "1.8"
   }
@@ -97,6 +103,7 @@ dependencies {
   implementation("com.jakewharton.timber:timber:5.0.1")
   implementation("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
 
+  compose()
   androidX()
   androidXArch()
   androidXActivity()

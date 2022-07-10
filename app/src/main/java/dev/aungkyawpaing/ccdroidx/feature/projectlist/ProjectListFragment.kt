@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
@@ -54,13 +56,24 @@ class ProjectListFragment : Fragment() {
         ProjectListFragmentDirections.actionFragmentProjectListToAddProjectDialog()
       )
     }
-    binding.rvProjects.apply {
-      adapter = projectListAdapter
-      layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-      val dimen =
-        context.resources.getDimensionPixelSize(R.dimen.recycler_view_item_margin)
-      addItemDecoration(RecyclerViewMarginDecoration(dimen, 1))
+
+    binding.composeView.apply {
+      setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+      setContent {
+        // In Compose world
+        Mdc3Theme {
+          ProjectListPage(viewModel)
+        }
+      }
+
     }
+//    binding.rvProjects.apply {
+//      adapter = projectListAdapter
+//      layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+//      val dimen =
+//        context.resources.getDimensionPixelSize(R.dimen.recycler_view_item_margin)
+//      addItemDecoration(RecyclerViewMarginDecoration(dimen, 1))
+//    }
 
     binding.toolBar.setOnMenuItemClickListener { menuItem ->
       when (menuItem.itemId) {

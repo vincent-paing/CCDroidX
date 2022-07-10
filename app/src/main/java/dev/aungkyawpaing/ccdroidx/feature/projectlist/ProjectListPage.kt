@@ -81,6 +81,39 @@ fun ProjectListTopAppBar(
   )
 }
 
+@Composable
+fun DeleteConfirmationDialog(
+  onConfirmDelete: () -> Unit,
+  onDismiss: () -> Unit
+) {
+  AlertDialog(
+    onDismissRequest = onDismiss,
+    title = {
+      Text(text = stringResource(id = R.string.confirm_delete_title))
+    },
+    text = {
+      Text(text = stringResource(id = R.string.confirm_delete_message))
+    },
+    confirmButton = {
+      TextButton(
+        onClick = {
+          onConfirmDelete()
+          onDismiss()
+        }
+      ) {
+        Text(stringResource(id = R.string.action_item_project_delete_project))
+      }
+    },
+    dismissButton = {
+      TextButton(
+        onClick = onDismiss
+      ) {
+        Text(stringResource(id = android.R.string.cancel))
+      }
+    }
+  )
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -128,34 +161,12 @@ fun ProjectListPage(
       }
 
       if (deleteConfirmDialog.value != null) {
-        AlertDialog(
-          onDismissRequest = {
+        DeleteConfirmationDialog(
+          onConfirmDelete = {
+            viewModel.onDeleteProject(deleteConfirmDialog.value!!)
+          },
+          onDismiss = {
             deleteConfirmDialog.value = null
-          },
-          title = {
-            Text(text = stringResource(id = R.string.confirm_delete_title))
-          },
-          text = {
-            Text(text = stringResource(id = R.string.confirm_delete_message))
-          },
-          confirmButton = {
-            TextButton(
-              onClick = {
-                viewModel.onDeleteProject(deleteConfirmDialog.value!!)
-                deleteConfirmDialog.value = null
-              }
-            ) {
-              Text(stringResource(id = R.string.action_item_project_delete_project))
-            }
-          },
-          dismissButton = {
-            TextButton(
-              onClick = {
-                deleteConfirmDialog.value = null
-              }
-            ) {
-              Text(stringResource(id = android.R.string.cancel))
-            }
           }
         )
       }

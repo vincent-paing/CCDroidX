@@ -10,12 +10,15 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
+import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
@@ -88,12 +91,12 @@ fun ProjectListPage(
 ) {
 
   val context = LocalContext.current
-  val projectList = viewModel.projectListLiveData.observeAsState(initial = emptyList())
-  val lastSynced = viewModel.lastSyncedLiveData.observeAsState(initial = null)
+
 
   Mdc3Theme {
     Scaffold(
       topBar = {
+        val lastSynced = viewModel.lastSyncedLiveData.observeAsState(initial = null)
         ProjectListTopAppBar(lastSynced.value, viewModel::onPressSync, onClickSettings)
       },
       floatingActionButtonPosition = FabPosition.End,
@@ -106,6 +109,9 @@ fun ProjectListPage(
         }
       }
     ) { contentPadding ->
+      val projectList = viewModel.projectListLiveData.observeAsState(initial = emptyList())
+      val deleteConfirmDialog = remember { mutableStateOf<Project?>(null) }
+
       Box(modifier = Modifier.padding(contentPadding)) {
         ProjectList(
           projectList = projectList.value,
@@ -114,11 +120,45 @@ fun ProjectListPage(
               openInBrowser(activity, project.webUrl)
             }
           },
-          onDeleteClick = viewModel::onDeleteProject,
+          onDeleteClick = { project ->
+            deleteConfirmDialog.value = project
+          },
           onToggleMute = viewModel::onToggleMute
         )
       }
-    }
 
+      if (deleteConfirmDialog.value != null) {
+        AlertDialog(
+          onDismissRequest = {
+            deleteConfirmDialog.value = null
+          },
+          title = {
+            Text(text = stringResource(id = R.string.confirm_delete_title))
+          },
+          text = {
+            Text(text = stringResource(id = R.string.confirm_delete_message))
+          },
+          confirmButton = {
+            TextButton(
+              onClick = {
+                viewModel.onDeleteProject(deleteConfirmDialog.value!!)
+                deleteConfirmDialog.value = null
+              }
+            ) {
+              Text(stringResource(id = R.string.action_item_project_delete_project))
+            }
+          },
+          dismissButton = {
+            TextButton(
+              onClick = {
+                deleteConfirmDialog.value = null
+              }
+            ) {
+              Text(stringResource(id = android.R.string.cancel))
+            }
+          }
+        )
+      }
+    }
   }
 }

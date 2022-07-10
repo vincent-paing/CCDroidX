@@ -162,11 +162,11 @@ fun ProjectCard(
         text = project.lastBuildLabel ?: "",
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier
-          .padding(horizontal = 8.dp)
+          .padding(horizontal = 8.dp, vertical = 8.dp)
           .constrainAs(buildLabel)
           {
             end.linkTo(parent.end)
-            linkTo(top = menu.bottom, bottom = parent.bottom)
+            linkTo(top = menu.bottom, bottom = lastSyncTime.bottom, bias = 1.0f)
           }
       )
 
@@ -206,7 +206,7 @@ fun ProjectCardPreview() {
     ProjectCard(
       Project(
         id = 0L,
-        name = "vincent-paing/ccdroidx",
+        name = "vincent-paing/ccdroidx with very long name here!",
         activity = BuildState.SLEEPING,
         lastBuildStatus = BuildStatus.SUCCESS,
         lastBuildLabel = "1234",

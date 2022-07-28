@@ -6,6 +6,9 @@
     <string name="select_project">Select Project</string>
 
     <string name="feed_url">Feed url</string>
+    <string name="require_auth">Require Authentication</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
     <string name="next">Next</string>
 
     <string name="last_built_x">Last built %s</string>

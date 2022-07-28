@@ -74,6 +74,10 @@ android {
   kotlinOptions {
     jvmTarget = "1.8"
   }
+
+  configurations.findByName("androidTestImplementation")?.run {
+    exclude(group = "io.mockk", module = "mockk-agent-jvm")
+  }
 }
 
 kapt {

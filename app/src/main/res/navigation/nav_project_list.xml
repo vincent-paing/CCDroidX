@@ -10,9 +10,7 @@
         android:name="dev.aungkyawpaing.ccdroidx.feature.projectlist.ProjectListFragment"
         android:label="fragment_project_list"
         tools:layout="@layout/fragment_project_list">
-        <action
-            android:id="@+id/action_fragmentProjectList_to_addProjectDialog"
-            app:destination="@id/addProjectDialog" />
+
         <action
             android:id="@+id/action_fragmentProjectList_to_settingsFragment"
             app:destination="@id/settingsFragment"
@@ -22,11 +20,6 @@
             app:popExitAnim="@anim/slide_down" />
     </fragment>
 
-    <dialog
-        android:id="@+id/addProjectDialog"
-        android:name="dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog"
-        android:label="AddProjectDialog"
-        tools:layout="@layout/dialog_add_project" />
 
     <fragment
         android:id="@+id/settingsFragment"

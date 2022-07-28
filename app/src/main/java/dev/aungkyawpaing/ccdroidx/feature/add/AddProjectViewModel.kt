@@ -1,7 +1,5 @@
 package dev.aungkyawpaing.ccdroidx.feature.add
 
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -35,43 +33,29 @@ class AddProjectViewModel @Inject constructor(
   val isLoadingLiveData: LiveData<Boolean> get() = _isLoadingLiveData
 
   val errorLiveEvent = SingleLiveEvent<String>()
-  val showProjectListLiveEvent = SingleLiveEvent<List<Project>>()
+  val showProjectListLiveEvent = MutableLiveData<List<Project>?>()
 
-  val dismissLiveEvent = SingleLiveEvent<Unit>()
-
-  val _feedUrl = ObservableField("")
-  private val feedUrl get() = _feedUrl.get() ?: ""
-
-  val _requireAuth = ObservableBoolean(false)
-  private val requireAuth get() = _requireAuth.get()
-
-  val _username = ObservableField("")
-  private val username get() = _username.get() ?: ""
-
-  val _password = ObservableField("")
-  private val password get() = _password.get() ?: ""
-
-  val feedUrlValidationResult = ObservableField(FeedUrlValidationResult.CORRECT)
-  val usernameValidationResult = ObservableField(UsernameValidationResult.CORRECT)
-  val passwordValidationResult = ObservableField(PasswordValidationResult.CORRECT)
+  val feedUrlValidationResult = MutableLiveData(FeedUrlValidationResult.CORRECT)
+  val usernameValidationResult = MutableLiveData(UsernameValidationResult.CORRECT)
+  val passwordValidationResult = MutableLiveData(PasswordValidationResult.CORRECT)
 
 
-  fun onClickNext() {
+  fun onClickNext(feedUrl: String, requireAuth: Boolean, username: String, password: String) {
     viewModelScope.launch {
       _isLoadingLiveData.postValue(true)
-      feedUrlValidationResult.set(addProjectInputValidator.validateFeedUrl(feedUrl))
+      feedUrlValidationResult.postValue(addProjectInputValidator.validateFeedUrl(feedUrl))
 
       if (requireAuth) {
-        usernameValidationResult.set(addProjectInputValidator.validateUsername(username))
-        passwordValidationResult.set(addProjectInputValidator.validatePassword(password))
+        usernameValidationResult.postValue(addProjectInputValidator.validateUsername(username))
+        passwordValidationResult.postValue(addProjectInputValidator.validatePassword(password))
       } else {
-        usernameValidationResult.set(UsernameValidationResult.CORRECT)
-        passwordValidationResult.set(PasswordValidationResult.CORRECT)
+        usernameValidationResult.postValue(UsernameValidationResult.CORRECT)
+        passwordValidationResult.postValue(PasswordValidationResult.CORRECT)
       }
 
-      if (feedUrlValidationResult.get() == FeedUrlValidationResult.CORRECT &&
-        usernameValidationResult.get() == UsernameValidationResult.CORRECT &&
-        passwordValidationResult.get() == PasswordValidationResult.CORRECT
+      if (feedUrlValidationResult.value == FeedUrlValidationResult.CORRECT &&
+        usernameValidationResult.value == UsernameValidationResult.CORRECT &&
+        passwordValidationResult.value == PasswordValidationResult.CORRECT
       ) {
         try {
           val projectList = projectRepo.fetchRepo(
@@ -97,8 +81,10 @@ class AddProjectViewModel @Inject constructor(
       withContext(dispatcherProvider.io()) {
         projectRepo.saveProject(project)
       }
-      dismissLiveEvent.postValue(Unit)
     }
+  }
 
+  fun onDismissSelectProject() {
+    showProjectListLiveEvent.postValue(null)
   }
 }

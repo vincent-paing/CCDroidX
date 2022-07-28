@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.data.Project
+import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
@@ -119,12 +120,11 @@ fun DeleteConfirmationDialog(
 @Composable
 fun ProjectListPage(
   viewModel: ProjectListViewModel = viewModel(),
-  onclickAddProject: (() -> Unit),
   onClickSettings: (() -> Unit),
 ) {
 
   val context = LocalContext.current
-
+  val addProjectDialog = remember { mutableStateOf(false) }
 
   Mdc3Theme {
     Scaffold(
@@ -134,7 +134,9 @@ fun ProjectListPage(
       },
       floatingActionButtonPosition = FabPosition.End,
       floatingActionButton = {
-        FloatingActionButton(onClick = onclickAddProject) {
+        FloatingActionButton(onClick = {
+          addProjectDialog.value = true
+        }) {
           Icon(
             Icons.Filled.Add,
             contentDescription = stringResource(R.string.cd_fab_add_project)
@@ -167,6 +169,14 @@ fun ProjectListPage(
           },
           onDismiss = {
             deleteConfirmDialog.value = null
+          }
+        )
+      }
+
+      if (addProjectDialog.value) {
+        AddProjectDialog(
+          onDismissRequest = {
+            addProjectDialog.value = false
           }
         )
       }

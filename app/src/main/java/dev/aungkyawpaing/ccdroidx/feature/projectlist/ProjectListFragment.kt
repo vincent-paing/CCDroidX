@@ -37,11 +37,7 @@ class ProjectListFragment : Fragment() {
       setContent {
         // In Compose world
         Mdc3Theme {
-          ProjectListPage(viewModel, onclickAddProject = {
-            findNavController().navigate(
-              ProjectListFragmentDirections.actionFragmentProjectListToAddProjectDialog()
-            )
-          }, onClickSettings = {
+          ProjectListPage(viewModel, onClickSettings = {
             findNavController().navigate(
               ProjectListFragmentDirections.actionFragmentProjectListToSettingsFragment()
             )

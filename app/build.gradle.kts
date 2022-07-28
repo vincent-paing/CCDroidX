@@ -66,6 +66,12 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
 
+  testOptions{
+    unitTests {
+      isIncludeAndroidResources = true
+    }
+  }
+
   composeOptions {
     kotlinCompilerExtensionVersion  = "1.1.1"
   }

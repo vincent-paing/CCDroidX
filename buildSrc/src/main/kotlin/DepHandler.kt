@@ -5,6 +5,10 @@ fun DependencyHandler.implementation(depName: String) {
   add("implementation", depName)
 }
 
+fun DependencyHandler.debugImplementation(depName: String) {
+  add("debugImplementation", depName)
+}
+
 fun DependencyHandler.kapt(depName: String) {
   add("kapt", depName)
 }

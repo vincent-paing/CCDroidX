@@ -12,7 +12,9 @@ fun DependencyHandler.compose() {
   implementation(Compose.material_theme_adapter)
   implementation(Compose.constraint_layout)
 
+  testImplementation(Compose.ui_test)
   androidTestImplementation(Compose.ui_test)
+  debugImplementation(Compose.ui_test_manifest)
 }
 
 internal object Compose {
@@ -28,7 +30,8 @@ internal object Compose {
   const val material_theme_adapter = "com.google.android.material:compose-theme-adapter-3:1.0.11"
   const val constraint_layout = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
-  const val ui_test = "androidx.compose.ui:ui-test-junit4:1.1.1"
+  const val ui_test = "androidx.compose.ui:ui-test-junit4:$version"
+  const val ui_test_manifest = "androidx.compose.ui:ui-test-manifest:$version"
 
 
 }

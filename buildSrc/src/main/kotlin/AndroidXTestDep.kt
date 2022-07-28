@@ -24,7 +24,7 @@ object AndroidXTest {
   const val core_ktx = "androidx.test:core-ktx:$version"
   const val runner = "androidx.test:runner:$version"
   const val rules = "androidx.test:rules:$version"
-  const val roboelectric = "org.robolectric:robolectric:4.4"
+  const val roboelectric = "org.robolectric:robolectric:4.8.1"
 }
 
 object AndroidXTestExt {

@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.feature.add
+package dev.aungkyawpaing.ccdroidx.feature.add.component
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.data.Project
-import dev.aungkyawpaing.ccdroidx.feature.SelectProjectList
 
 @Composable
 fun SelectProjectDialog(

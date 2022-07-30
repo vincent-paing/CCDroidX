@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.feature
+package dev.aungkyawpaing.ccdroidx.feature.add.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

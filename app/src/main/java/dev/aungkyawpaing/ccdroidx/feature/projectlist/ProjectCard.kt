@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -61,7 +62,24 @@ fun ProjectCard(
 
   var menuExpanded by remember { mutableStateOf(false) }
 
-  Card(modifier = Modifier.fillMaxWidth()) {
+  val onExpandMenu = {
+    menuExpanded = true
+  }
+
+  Card(modifier = Modifier
+    .fillMaxWidth()
+    .semantics(mergeDescendants = true) {
+      onClick(label = "More Action") {
+        onExpandMenu()
+        true
+      }
+//      customActions = listOf(
+//        CustomAccessibilityAction(label = "More Action") {
+//          onExpandMenu()
+//          true
+//        }
+//      )
+    }) {
 
     ConstraintLayout(
       modifier = Modifier
@@ -71,26 +89,7 @@ fun ProjectCard(
 
       val (buildStatusIndicator, name, lastSyncTime, menu, buildLabel) = createRefs()
 
-
-      Box(
-        modifier = Modifier
-          .size(36.dp)
-          .clip(CircleShape)
-          .border(width = 1.dp, color = MaterialTheme.colorScheme.onSurface, CircleShape)
-          .background(
-            colorResource(
-              id = getBuildStatusColor(
-                project.lastBuildStatus,
-                project.activity
-              )
-            )
-          )
-          .constrainAs(buildStatusIndicator) {
-            linkTo(top = name.top, bottom = parent.bottom)
-            start.linkTo(parent.start)
-          }
-      )
-
+      //More action
       Box(
         modifier = Modifier
           .size(24.dp)
@@ -99,10 +98,8 @@ fun ProjectCard(
             end.linkTo(parent.end)
           }
       ) {
-        IconButton(onClick = {
-          menuExpanded = true
-        }) {
-          Icon(Icons.Default.MoreVert, contentDescription = "More Actions")
+        IconButton(onClick = onExpandMenu, modifier = Modifier.clearAndSetSemantics { }) {
+          Icon(Icons.Default.MoreVert, contentDescription = null)
         }
         DropdownMenu(
           expanded = menuExpanded,
@@ -143,6 +140,7 @@ fun ProjectCard(
         }
       }
 
+      //Project name
       Text(
         modifier = Modifier
           .padding(horizontal = 8.dp)
@@ -158,6 +156,30 @@ fun ProjectCard(
         style = MaterialTheme.typography.titleMedium
       )
 
+      //Build status icon
+      Box(
+        modifier = Modifier
+          .size(36.dp)
+          .clip(CircleShape)
+          .border(width = 1.dp, color = MaterialTheme.colorScheme.onSurface, CircleShape)
+          .background(
+            colorResource(
+              id = getBuildStatusColor(
+                project.lastBuildStatus,
+                project.activity
+              )
+            )
+          )
+          .constrainAs(buildStatusIndicator) {
+            linkTo(top = name.top, bottom = parent.bottom)
+            start.linkTo(parent.start)
+          }
+          .semantics {
+            contentDescription = "Status: ${project.lastBuildStatus}"
+          }
+      )
+
+      //Last build label
       Text(
         text = project.lastBuildLabel ?: "",
         style = MaterialTheme.typography.bodyMedium,
@@ -167,6 +189,9 @@ fun ProjectCard(
           {
             end.linkTo(parent.end)
             linkTo(top = menu.bottom, bottom = lastSyncTime.bottom, bias = 1.0f)
+          }
+          .semantics {
+            contentDescription = "Build Label : ${project.lastBuildLabel}."
           }
       )
 
@@ -186,12 +211,16 @@ fun ProjectCard(
             .size(16.dp)
             .align(Alignment.CenterVertically)
         )
+        val lastBuildAgo = prettyTime.format(project.lastBuildTime)
         Text(
           style = MaterialTheme.typography.bodyMedium,
-          text = prettyTime.format(project.lastBuildTime),
+          text = lastBuildAgo,
           modifier = Modifier
             .padding(start = 4.dp)
             .align(Alignment.CenterVertically)
+            .semantics {
+              contentDescription = "Last built: $lastBuildAgo}"
+            }
         )
       }
     }

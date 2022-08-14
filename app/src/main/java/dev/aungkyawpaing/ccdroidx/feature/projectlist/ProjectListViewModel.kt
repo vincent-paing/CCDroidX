@@ -9,6 +9,8 @@ import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncMetaDataStorage
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncProjects
+import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -25,6 +27,8 @@ class ProjectListViewModel @Inject constructor(
 
   val lastSyncedLiveData = syncMetaDataStorage.getLastSyncedTime().asLiveData()
 
+  val onProgressSyncFinishEvent = SingleLiveEvent<Boolean>()
+
   fun onDeleteProject(project: Project) {
     viewModelScope.launch {
       withContext(dispatcherProvider.io()) {
@@ -38,7 +42,7 @@ class ProjectListViewModel @Inject constructor(
       withContext(dispatcherProvider.io()) {
         syncProjects.sync(
           onProjectSynced = { _, _ ->
-            //DO NOTHING
+            onProgressSyncFinishEvent.postValue(true)
           }
         )
       }
@@ -52,6 +56,13 @@ class ProjectListViewModel @Inject constructor(
       } else {
         projectRepo.muteProject(project.id)
       }
+    }
+  }
+
+  fun clearOnProgressSyncedEvent() {
+    viewModelScope.launch {
+      delay(500)
+      onProgressSyncFinishEvent.postValue(false)
     }
   }
 }

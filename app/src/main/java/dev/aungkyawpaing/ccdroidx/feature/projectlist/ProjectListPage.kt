@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
@@ -48,10 +49,12 @@ private fun getSubtitleText(lastSyncedStatus: LastSyncedStatus?): String =
 
 @Composable
 fun ProjectListTopAppBar(
-  lastSynced: LastSyncedStatus?,
-  onPressSync: () -> Unit,
+  viewModel: ProjectListViewModel,
   onClickSettings: () -> Unit
 ) {
+  val lastSynced = viewModel.lastSyncedLiveData.observeAsState(initial = null)
+  val onProgressSyncedEvent = viewModel.onProgressSyncFinishEvent.observeAsState(initial = false)
+
   SmallTopAppBar(
     title = {
       Column {
@@ -59,18 +62,28 @@ fun ProjectListTopAppBar(
           contentDescription = "CC Droid X"
         })
         Text(
-          text = getSubtitleText(lastSynced),
+          text = getSubtitleText(lastSynced.value),
           style = MaterialTheme.typography.bodyMedium
         )
       }
     },
     actions = {
-      IconButton(onClick = onPressSync) {
+      IconButton(
+        onClick = viewModel::onPressSync,
+        modifier = Modifier.semantics {
+          stateDescription = if (onProgressSyncedEvent.value) "Finished syncing" else ""
+
+          if (onProgressSyncedEvent.value) {
+            viewModel.clearOnProgressSyncedEvent()
+          }
+        }
+      ) {
         Icon(
           Icons.Filled.Sync,
           contentDescription = stringResource(R.string.menu_item_sync_project_status)
         )
       }
+
       IconButton(onClick = onClickSettings) {
         Icon(
           Icons.Filled.Settings,
@@ -133,8 +146,7 @@ fun ProjectListPage(
   Mdc3Theme {
     Scaffold(
       topBar = {
-        val lastSynced = viewModel.lastSyncedLiveData.observeAsState(initial = null)
-        ProjectListTopAppBar(lastSynced.value, viewModel::onPressSync, onClickSettings)
+        ProjectListTopAppBar(viewModel, onClickSettings)
       },
       floatingActionButtonPosition = FabPosition.End,
       floatingActionButton = {

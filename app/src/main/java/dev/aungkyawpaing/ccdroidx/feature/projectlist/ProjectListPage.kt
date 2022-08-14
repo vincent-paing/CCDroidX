@@ -15,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
@@ -53,7 +55,9 @@ fun ProjectListTopAppBar(
   SmallTopAppBar(
     title = {
       Column {
-        Text(stringResource(id = R.string.app_name))
+        Text(stringResource(id = R.string.app_name), modifier = Modifier.semantics {
+          contentDescription = "CC Droid X"
+        })
         Text(
           text = getSubtitleText(lastSynced),
           style = MaterialTheme.typography.bodyMedium

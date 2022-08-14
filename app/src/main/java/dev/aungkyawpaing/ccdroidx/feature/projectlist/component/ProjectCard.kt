@@ -17,7 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.*
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -34,6 +37,18 @@ import java.time.ZonedDateTime
 
 private val prettyTime = PrettyTime()
 
+@Composable
+fun ProjectNameText(
+  projectName: String,
+  modifier: Modifier
+) {
+  Text(
+    modifier = modifier,
+    text = projectName,
+    style = MaterialTheme.typography.titleMedium
+  )
+}
+
 fun getBuildStatusColor(buildStatus: BuildStatus, buildState: BuildState): Int {
   val buildStatusColor = when (buildState) {
     BuildState.SLEEPING -> {
@@ -49,6 +64,76 @@ fun getBuildStatusColor(buildStatus: BuildStatus, buildState: BuildState): Int {
     }
   }
   return buildStatusColor
+}
+
+
+@Composable
+fun ProjectBuildStatusIcon(
+  project: Project,
+  modifier: Modifier
+) {
+  Box(
+    modifier = modifier
+      .size(36.dp)
+      .clip(CircleShape)
+      .border(width = 1.dp, color = MaterialTheme.colorScheme.onSurface, CircleShape)
+      .background(
+        colorResource(
+          id = getBuildStatusColor(
+            project.lastBuildStatus,
+            project.activity
+          )
+        )
+      )
+      .semantics {
+        contentDescription = "Status: ${project.lastBuildStatus}"
+      }
+  )
+}
+
+@Composable
+fun ProjectLastBuildText(
+  project: Project,
+  modifier: Modifier
+) {
+  Text(
+    text = project.lastBuildLabel ?: "",
+    style = MaterialTheme.typography.bodyMedium,
+    modifier = modifier
+      .padding(horizontal = 8.dp, vertical = 8.dp)
+      .semantics {
+        contentDescription = "Build Label : ${project.lastBuildLabel}."
+      }
+  )
+}
+
+@Composable
+fun ProjectLastBuildAgoText(
+  project: Project,
+  modifier: Modifier
+) {
+  Row(
+    modifier = modifier
+      .padding(horizontal = 8.dp, vertical = 8.dp)
+  ) {
+    Icon(
+      Icons.Default.Schedule, contentDescription = null,
+      modifier = Modifier
+        .size(16.dp)
+        .align(Alignment.CenterVertically)
+    )
+    val lastBuildAgo = prettyTime.format(project.lastBuildTime)
+    Text(
+      style = MaterialTheme.typography.bodyMedium,
+      text = lastBuildAgo,
+      modifier = Modifier
+        .padding(start = 4.dp)
+        .align(Alignment.CenterVertically)
+        .semantics {
+          contentDescription = "Last built: $lastBuildAgo}"
+        }
+    )
+  }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,12 +158,6 @@ fun ProjectCard(
         onExpandMenu()
         true
       }
-//      customActions = listOf(
-//        CustomAccessibilityAction(label = "More Action") {
-//          onExpandMenu()
-//          true
-//        }
-//      )
     }) {
 
     ConstraintLayout(
@@ -140,8 +219,8 @@ fun ProjectCard(
         }
       }
 
-      //Project name
-      Text(
+      ProjectNameText(
+        projectName = project.name,
         modifier = Modifier
           .padding(horizontal = 8.dp)
           .constrainAs(name)
@@ -152,77 +231,36 @@ fun ProjectCard(
             )
             width = Dimension.fillToConstraints
           },
-        text = project.name,
-        style = MaterialTheme.typography.titleMedium
       )
 
       //Build status icon
-      Box(
-        modifier = Modifier
-          .size(36.dp)
-          .clip(CircleShape)
-          .border(width = 1.dp, color = MaterialTheme.colorScheme.onSurface, CircleShape)
-          .background(
-            colorResource(
-              id = getBuildStatusColor(
-                project.lastBuildStatus,
-                project.activity
-              )
-            )
-          )
-          .constrainAs(buildStatusIndicator) {
-            linkTo(top = name.top, bottom = parent.bottom)
-            start.linkTo(parent.start)
-          }
-          .semantics {
-            contentDescription = "Status: ${project.lastBuildStatus}"
-          }
+      ProjectBuildStatusIcon(
+        project = project,
+        modifier = Modifier.constrainAs(buildStatusIndicator) {
+          linkTo(top = name.top, bottom = parent.bottom)
+          start.linkTo(parent.start)
+        }
       )
 
       //Last build label
-      Text(
-        text = project.lastBuildLabel ?: "",
-        style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier
-          .padding(horizontal = 8.dp, vertical = 8.dp)
-          .constrainAs(buildLabel)
-          {
-            end.linkTo(parent.end)
-            linkTo(top = menu.bottom, bottom = lastSyncTime.bottom, bias = 1.0f)
-          }
-          .semantics {
-            contentDescription = "Build Label : ${project.lastBuildLabel}."
-          }
+      ProjectLastBuildText(
+        project = project,
+        modifier = Modifier.constrainAs(buildLabel)
+        {
+          end.linkTo(parent.end)
+          linkTo(top = menu.bottom, bottom = lastSyncTime.bottom, bias = 1.0f)
+        }
       )
 
-      Row(
-        modifier = Modifier
-          .padding(horizontal = 8.dp, vertical = 8.dp)
-          .constrainAs(lastSyncTime)
-          {
-            linkTo(start = buildStatusIndicator.end, end = buildLabel.start)
-            linkTo(top = name.bottom, bottom = parent.bottom)
-            width = Dimension.fillToConstraints
-          },
-      ) {
-        Icon(
-          Icons.Default.Schedule, contentDescription = null,
-          modifier = Modifier
-            .size(16.dp)
-            .align(Alignment.CenterVertically)
-        )
-        val lastBuildAgo = prettyTime.format(project.lastBuildTime)
-        Text(
-          style = MaterialTheme.typography.bodyMedium,
-          text = lastBuildAgo,
-          modifier = Modifier
-            .padding(start = 4.dp)
-            .align(Alignment.CenterVertically)
-            .semantics {
-              contentDescription = "Last built: $lastBuildAgo}"
-            }
-        )
-      }
+      ProjectLastBuildAgoText(
+        project = project,
+        modifier = Modifier.constrainAs(lastSyncTime)
+        {
+          linkTo(start = buildStatusIndicator.end, end = buildLabel.start)
+          linkTo(top = name.bottom, bottom = parent.bottom)
+          width = Dimension.fillToConstraints
+        },
+      )
     }
 
   }

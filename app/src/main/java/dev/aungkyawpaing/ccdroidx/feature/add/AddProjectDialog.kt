@@ -11,6 +11,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -78,24 +82,44 @@ fun AddProjectDialog(
           onValueChange = {
             feedUrl = it
           },
-          isDisabled = !isLoading.value,
+          isEnabled = !isLoading.value,
           feedUrlValidation = feedUrlValidation.value
         )
+
+        val onRequireAuthCheckChange: (Boolean) -> Unit = { isChecked ->
+          requireAuth = isChecked
+        }
 
         Row(
           modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp),
-          horizontalArrangement = Arrangement.Center
+            .padding(top = 8.dp)
+            .semantics(true) {
+              stateDescription = if (requireAuth) {
+                "Checked Check Box Require Authentication"
+              } else {
+                "Not checked Check Box Require Authentication"
+              }
+
+              onClick {
+                onRequireAuthCheckChange(!requireAuth)
+                true
+              }
+            },
+          horizontalArrangement = Arrangement.Center,
         ) {
           Checkbox(
-            checked = requireAuth, onCheckedChange = { requireAuth = it },
+            checked = requireAuth, onCheckedChange = onRequireAuthCheckChange,
             enabled = !isLoading.value,
-            modifier = Modifier.align(Alignment.CenterVertically)
+            modifier = Modifier
+              .align(Alignment.CenterVertically)
+              .clearAndSetSemantics { }
           )
           Text(
             text = stringResource(R.string.require_auth),
-            modifier = Modifier.align(Alignment.CenterVertically)
+            modifier = Modifier
+              .align(Alignment.CenterVertically)
+              .clearAndSetSemantics { }
           )
         }
 

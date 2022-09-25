@@ -8,6 +8,8 @@ plugins {
   id("dagger.hilt.android.plugin")
   id("com.squareup.wire")
   id("de.mannodermaus.android-junit5")
+  id("com.google.gms.google-services")
+  id("com.google.firebase.crashlytics")
 }
 
 val ENV = System.getenv()
@@ -125,6 +127,11 @@ dependencies {
   implementation("androidx.preference:preference-ktx:1.2.0")
 
   implementation(Material.material)
+
+  // Firebase
+  implementation(project.dependencies.platform("com.google.firebase:firebase-bom:30.4.1"))
+  implementation("com.google.firebase:firebase-analytics-ktx")
+  implementation("com.google.firebase:firebase-crashlytics")
 
   daggerHilt()
 

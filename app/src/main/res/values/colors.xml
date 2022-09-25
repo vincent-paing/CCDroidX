@@ -58,5 +58,5 @@
 
     <color name="build_success">#4BB543</color>
     <color name="build_fail">#B3261E</color>
-    <color name="build_in_progress">#FFEB3B</color>
+    <color name="build_in_progress">#BCAC18</color>
 </resources>

@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -111,8 +113,8 @@ fun ProjectBuildStatusIcon(
     }) {
     Icon(
       getBuildStatusIndicator(buildStatusIndicatorStyle),
-      tint = Color.Black,
       contentDescription = null,
+      tint = MaterialTheme.colorScheme.surfaceVariant,
       modifier = Modifier
         .size(24.dp)
         .align(Alignment.Center)

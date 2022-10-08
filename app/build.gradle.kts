@@ -131,7 +131,7 @@ dependencies {
   // Firebase
   implementation(project.dependencies.platform("com.google.firebase:firebase-bom:30.4.1"))
   implementation("com.google.firebase:firebase-analytics-ktx")
-  implementation("com.google.firebase:firebase-crashlytics")
+  implementation("com.google.firebase:firebase-crashlytics-ktx")
 
   daggerHilt()
 

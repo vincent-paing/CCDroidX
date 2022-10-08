@@ -1,10 +1,9 @@
 package dev.aungkyawpaing.ccdroidx
 
 import android.app.Application
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import androidx.work.WorkManager
 import com.google.android.material.color.DynamicColors
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
 import dev.aungkyawpaing.ccdroidx.work.MyWorkerFactory
 import timber.log.Timber
@@ -22,6 +21,7 @@ class CCDroidXApp : Application(), Configuration.Provider {
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
     }
+    FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
     DynamicColors.applyToActivitiesIfAvailable(this)
   }
 

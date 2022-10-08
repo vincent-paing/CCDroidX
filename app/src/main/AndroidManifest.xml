@@ -28,6 +28,10 @@
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove" />
 
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
+
     </application>
 
     <queries>
@@ -43,5 +47,6 @@
             <data android:scheme="https" />
         </intent>
     </queries>
+
 
 </manifest>

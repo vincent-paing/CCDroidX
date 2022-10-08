@@ -68,14 +68,14 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
 
-  testOptions{
+  testOptions {
     unitTests {
       isIncludeAndroidResources = true
     }
   }
 
   composeOptions {
-    kotlinCompilerExtensionVersion  = "1.1.1"
+    kotlinCompilerExtensionVersion = "1.1.1"
   }
 
 
@@ -85,6 +85,12 @@ android {
 
   configurations.findByName("androidTestImplementation")?.run {
     exclude(group = "io.mockk", module = "mockk-agent-jvm")
+  }
+
+  configurations {
+    androidTestImplementation {
+      exclude(group = "com.google.firebase", module = "firebase-perf")
+    }
   }
 }
 

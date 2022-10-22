@@ -2,6 +2,7 @@ package dev.aungkyawpaing.ccdroidx.feature.add
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aungkyawpaing.ccdroidx.api.InvalidUrlException
@@ -14,7 +15,6 @@ import dev.aungkyawpaing.ccdroidx.exception.MapNetworkExceptionToMessage
 import dev.aungkyawpaing.ccdroidx.feature.add.feedurlvalidation.FeedUrlValidationResult
 import dev.aungkyawpaing.ccdroidx.feature.add.passwordvalidation.PasswordValidationResult
 import dev.aungkyawpaing.ccdroidx.feature.add.usernamevalidation.UsernameValidationResult
-import dev.aungkyawpaing.ccdroidx.utils.databinding.ObservableViewModel
 import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,7 +27,7 @@ class AddProjectViewModel @Inject constructor(
   private val addProjectErrorMessages: AddProjectErrorMessages,
   private val addProjectInputValidator: AddProjectInputValidator,
   private val dispatcherProvider: DispatcherProvider
-) : ObservableViewModel() {
+) : ViewModel() {
 
   private val _isLoadingLiveData = MutableLiveData<Boolean>()
   val isLoadingLiveData: LiveData<Boolean> get() = _isLoadingLiveData
@@ -38,7 +38,6 @@ class AddProjectViewModel @Inject constructor(
   val feedUrlValidationResult = MutableLiveData(FeedUrlValidationResult.CORRECT)
   val usernameValidationResult = MutableLiveData(UsernameValidationResult.CORRECT)
   val passwordValidationResult = MutableLiveData(PasswordValidationResult.CORRECT)
-
 
   fun onClickNext(feedUrl: String, requireAuth: Boolean, username: String, password: String) {
     viewModelScope.launch {

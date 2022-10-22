@@ -14,7 +14,6 @@ import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
 
-
   companion object {
     private const val GITHUB_ISSUE_URL = "https://github.com/vincent-paing/CCDroidX/issues"
   }

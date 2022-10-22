@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.feature.projectlist
+package dev.aungkyawpaing.ccdroidx.feature
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,24 +8,23 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dagger.hilt.android.AndroidEntryPoint
-import dev.aungkyawpaing.ccdroidx.databinding.FragmentProjectListBinding
+import dev.aungkyawpaing.ccdroidx.databinding.FragmentMainBinding
+import dev.aungkyawpaing.ccdroidx.feature.projectlist.ProjectListPage
+import dev.aungkyawpaing.ccdroidx.feature.projectlist.ProjectListViewModel
 
 @AndroidEntryPoint
-class ProjectListFragment : Fragment() {
+class MainFragment : Fragment() {
 
-  private var _binding: FragmentProjectListBinding? = null
+  private var _binding: FragmentMainBinding? = null
   private val binding get() = _binding!!
 
   private val viewModel: ProjectListViewModel by viewModels()
 
   override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
+    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View {
-    _binding = FragmentProjectListBinding.inflate(inflater, container, false)
+    _binding = FragmentMainBinding.inflate(inflater, container, false)
     return binding.root
   }
 
@@ -35,11 +34,10 @@ class ProjectListFragment : Fragment() {
     binding.composeView.apply {
       setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
       setContent {
-        // In Compose world
-        Mdc3Theme {
+        CCDroidXApp {
           ProjectListPage(viewModel, onClickSettings = {
             findNavController().navigate(
-              ProjectListFragmentDirections.actionFragmentProjectListToSettingsFragment()
+              MainFragmentDirections.actionFragmentMainToSettingsFragment()
             )
           })
         }

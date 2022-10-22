@@ -19,7 +19,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog
@@ -143,59 +142,58 @@ fun ProjectListPage(
   val context = LocalContext.current
   val addProjectDialog = remember { mutableStateOf(false) }
 
-  Mdc3Theme {
-    Scaffold(
-      topBar = {
-        ProjectListTopAppBar(viewModel, onClickSettings)
-      },
-      floatingActionButtonPosition = FabPosition.End,
-      floatingActionButton = {
-        FloatingActionButton(onClick = {
-          addProjectDialog.value = true
-        }) {
-          Icon(
-            Icons.Filled.Add,
-            contentDescription = stringResource(R.string.cd_fab_add_project)
-          )
-        }
-      }
-    ) { contentPadding ->
-      val projectList = viewModel.projectListLiveData.observeAsState(initial = emptyList())
-      val deleteConfirmDialog = remember { mutableStateOf<Project?>(null) }
-
-      Box(modifier = Modifier.padding(contentPadding)) {
-        ProjectList(
-          projectList = projectList.value,
-          onOpenRepoClick = { project ->
-            context.findActivity()?.let { activity ->
-              openInBrowser(activity, project.webUrl)
-            }
-          },
-          onDeleteClick = { project ->
-            deleteConfirmDialog.value = project
-          },
-          onToggleMute = viewModel::onToggleMute
-        )
-      }
-
-      if (deleteConfirmDialog.value != null) {
-        DeleteConfirmationDialog(
-          onConfirmDelete = {
-            viewModel.onDeleteProject(deleteConfirmDialog.value!!)
-          },
-          onDismiss = {
-            deleteConfirmDialog.value = null
-          }
-        )
-      }
-
-      if (addProjectDialog.value) {
-        AddProjectDialog(
-          onDismissRequest = {
-            addProjectDialog.value = false
-          }
+  Scaffold(
+    topBar = {
+      ProjectListTopAppBar(viewModel, onClickSettings)
+    },
+    floatingActionButtonPosition = FabPosition.End,
+    floatingActionButton = {
+      FloatingActionButton(onClick = {
+        addProjectDialog.value = true
+      }) {
+        Icon(
+          Icons.Filled.Add,
+          contentDescription = stringResource(R.string.cd_fab_add_project)
         )
       }
     }
+  ) { contentPadding ->
+    val projectList = viewModel.projectListLiveData.observeAsState(initial = emptyList())
+    val deleteConfirmDialog = remember { mutableStateOf<Project?>(null) }
+
+    Box(modifier = Modifier.padding(contentPadding)) {
+      ProjectList(
+        projectList = projectList.value,
+        onOpenRepoClick = { project ->
+          context.findActivity()?.let { activity ->
+            openInBrowser(activity, project.webUrl)
+          }
+        },
+        onDeleteClick = { project ->
+          deleteConfirmDialog.value = project
+        },
+        onToggleMute = viewModel::onToggleMute
+      )
+    }
+
+    if (deleteConfirmDialog.value != null) {
+      DeleteConfirmationDialog(
+        onConfirmDelete = {
+          viewModel.onDeleteProject(deleteConfirmDialog.value!!)
+        },
+        onDismiss = {
+          deleteConfirmDialog.value = null
+        }
+      )
+    }
+
+    if (addProjectDialog.value) {
+      AddProjectDialog(
+        onDismissRequest = {
+          addProjectDialog.value = false
+        }
+      )
+    }
   }
+
 }

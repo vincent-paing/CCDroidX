@@ -36,5 +36,9 @@ lastBuildStatus DESC,
 lastBuildTime DESC,
 id;
 
+selectCountByNotBuildStatus:
+SELECT COUNT(*) FROM ProjectTable
+WHERE lastBuildStatus != :buildStatus;
+
 delete:
 DELETE FROM ProjectTable WHERE id = :id;

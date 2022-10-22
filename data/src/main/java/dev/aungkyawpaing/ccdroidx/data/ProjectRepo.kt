@@ -107,6 +107,10 @@ class ProjectRepo @Inject constructor(
 
   }
 
+  fun getFailingProjectCount(): Long {
+    return db.projectTableQueries.selectCountByNotBuildStatus(BuildStatus.SUCCESS).executeAsOne()
+  }
+
   suspend fun delete(projectId: Long) {
     return withContext(dispatcherProvider.io()) {
       db.projectTableQueries.delete(projectId)

@@ -7,4 +7,8 @@
     <string name="market_link_phone_app">market://details?id=dev.aungkyawpaing.ccdroidx</string>
     <string name="continue_on_phone">Continue on phone</string>
     <string name="error_open_play_store_on_phone">Failed to open play store on phone</string>
+
+    <string name="failing_project_count_complication_label">Failing Project Count</string>
+    <string name="failing_project_count_complication_title">Failing</string>
+    <string name="failing_project_count_complication_content_description">Text on how many builds are failing</string>
 </resources>

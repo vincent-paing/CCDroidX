@@ -3,7 +3,6 @@ plugins {
   kotlin("android")
   kotlin("kapt")
   id("kotlin-parcelize")
-  id("com.squareup.sqldelight")
   id("androidx.navigation.safeargs.kotlin")
   id("dagger.hilt.android.plugin")
   id("com.squareup.wire")
@@ -101,15 +100,6 @@ hilt {
   enableAggregatingTask = true
 }
 
-sqldelight {
-  database("CCDroidXDb") {
-    packageName = "dev.aungkyawpaing.ccdroidx"
-    dialect = "sqlite:3.24"
-    sourceFolders = listOf("sqldelight")
-    schemaOutputDirectory = file("build/dbs")
-  }
-}
-
 wire {
   kotlin {
   }
@@ -148,8 +138,9 @@ dependencies {
   daggerHilt()
 
   coroutine()
-  retrofit()
-  sqlDelight()
+  coroutinePlayService()
+
+  implementation(AndroidXWear.play_service_wearable)
 
   junit5()
   androidXTest()

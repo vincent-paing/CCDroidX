@@ -3,6 +3,7 @@ package dev.aungkyawpaing.ccdroidx.feature.sync
 import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
+import dev.aungkyawpaing.ccdroidx.feature.wear.WearDataLayerSource
 import kotlinx.coroutines.flow.firstOrNull
 import java.time.Clock
 import java.time.ZonedDateTime
@@ -11,6 +12,7 @@ import javax.inject.Inject
 class SyncProjects @Inject constructor(
   private val projectRepo: ProjectRepo,
   private val syncMetaDataStorage: SyncMetaDataStorage,
+  private val wearDataLayerSource: WearDataLayerSource,
   private val clock: Clock
 ) {
 
@@ -42,6 +44,7 @@ class SyncProjects @Inject constructor(
           lastSyncedState = LastSyncedState.SUCCESS
         )
       )
+      wearDataLayerSource.updateDataItems()
     } catch (networkException: NetworkException) {
       syncMetaDataStorage.saveLastSyncedTime(
         LastSyncedStatus(

@@ -78,7 +78,10 @@ hilt {
 
 dependencies {
   coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+  timber()
   implementation(project(":common"))
+
+  implementation(AndroidXDataStore.preference)
 
   compose()
   composeWear()

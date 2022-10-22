@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.utils.livedata
+package dev.aungkyawpaing.ccdroidx.common.livedata
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner
@@ -56,9 +56,5 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
   override fun setValue(t: T) {
     pending.set(true)
     super.setValue(t)
-  }
-
-  companion object {
-    private const val TAG = "SingleLiveEvent"
   }
 }

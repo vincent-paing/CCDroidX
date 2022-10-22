@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.coroutine
+package dev.aungkyawpaing.ccdroidx.common.coroutine
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

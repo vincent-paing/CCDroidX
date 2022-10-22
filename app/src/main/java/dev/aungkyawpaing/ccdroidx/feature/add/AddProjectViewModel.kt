@@ -8,14 +8,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aungkyawpaing.ccdroidx.api.InvalidUrlException
 import dev.aungkyawpaing.ccdroidx.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.api.UnsupportedServerException
-import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
+import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.exception.MapNetworkExceptionToMessage
 import dev.aungkyawpaing.ccdroidx.feature.add.feedurlvalidation.FeedUrlValidationResult
 import dev.aungkyawpaing.ccdroidx.feature.add.passwordvalidation.PasswordValidationResult
 import dev.aungkyawpaing.ccdroidx.feature.add.usernamevalidation.UsernameValidationResult
-import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
+import dev.aungkyawpaing.ccdroidx.common.livedata.SingleLiveEvent
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

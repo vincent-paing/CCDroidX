@@ -3,9 +3,9 @@ package dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
+import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.utils.databinding.ObservableViewModel
-import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
+import dev.aungkyawpaing.ccdroidx.common.livedata.SingleLiveEvent
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

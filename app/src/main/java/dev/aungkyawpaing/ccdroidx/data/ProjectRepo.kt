@@ -4,7 +4,7 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import dev.aungkyawpaing.ccdroidx.CCDroidXDb
 import dev.aungkyawpaing.ccdroidx.api.FetchProject
-import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
+import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.utils.security.Cryptography
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -1,6 +1,6 @@
 package dev.aungkyawpaing.ccdroidx._testhelper_
 
-import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
+import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

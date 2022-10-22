@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "CCDroidX"
 include ':app'
 include ':wear'
+include ':common'

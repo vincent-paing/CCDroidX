@@ -25,7 +25,7 @@ import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
-import dev.aungkyawpaing.ccdroidx.utils.extensions.findActivity
+import dev.aungkyawpaing.ccdroidx.common.extensions.findActivity
 import org.ocpsoft.prettytime.PrettyTime
 
 @Composable

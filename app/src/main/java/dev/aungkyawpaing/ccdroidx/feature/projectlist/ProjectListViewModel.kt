@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.aungkyawpaing.ccdroidx.coroutine.DispatcherProvider
+import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncMetaDataStorage
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncProjects
-import dev.aungkyawpaing.ccdroidx.utils.livedata.SingleLiveEvent
+import dev.aungkyawpaing.ccdroidx.common.livedata.SingleLiveEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

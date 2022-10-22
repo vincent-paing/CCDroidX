@@ -1,22 +1,13 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
+
 fun DependencyHandler.androidX() {
   implementation(AndroidXAppCompat.app_compat)
-  implementation(AndroidXRecyclerView.recycler_view)
-  implementation(AndroidXConstraintLayout.constraint_layout)
   implementation(AndroidXCore.core_ktx)
 }
 
-
 object AndroidXAppCompat {
   const val app_compat = "androidx.appcompat:appcompat:1.4.1"
-}
-
-object AndroidXRecyclerView {
-  private const val version = "1.2.1"
-
-  const val recycler_view = "androidx.recyclerview:recyclerview:$version"
-  const val selection = "androidx.recyclerview:recyclerview-selection:$version"
 }
 
 object AndroidXConstraintLayout {

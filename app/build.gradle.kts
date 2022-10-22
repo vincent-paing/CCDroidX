@@ -117,11 +117,15 @@ wire {
 
 dependencies {
   coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+  implementation(project(":common"))
+
   implementation("com.jakewharton.timber:timber:5.0.1")
   implementation("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
 
   compose()
   composePhone()
+
+  implementation(AndroidXConstraintLayout.constraint_layout)
   androidX()
   androidXArch()
   androidXActivity()
@@ -129,6 +133,7 @@ dependencies {
   androidXNavigation()
   androidXWorkManager()
   implementation("androidx.browser:browser:1.4.0")
+
   androidxProtoDataStore()
   implementation("androidx.preference:preference-ktx:1.2.0")
 

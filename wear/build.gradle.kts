@@ -2,19 +2,11 @@ plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
-  id("kotlin-parcelize")
-  id("com.squareup.sqldelight")
-  id("androidx.navigation.safeargs.kotlin")
   id("dagger.hilt.android.plugin")
-  id("com.squareup.wire")
-  id("de.mannodermaus.android-junit5")
-  id("com.google.gms.google-services")
-  id("com.google.firebase.crashlytics")
 }
 
-val ENV = System.getenv()
-
 android {
+  namespace = "dev.aungkyawpaing.ccdroidx"
   compileSdk = BuildConfig.compileSdk
 
   defaultConfig {
@@ -24,7 +16,7 @@ android {
     versionCode = BuildConfig.versionCode
     versionName = BuildConfig.versionName
     resourceConfigurations += setOf("en")
-    setProperty("archivesBaseName", "ccdroidx-${BuildConfig.versionName}")
+    setProperty("archivesBaseName", "ccdroidx-wear-${BuildConfig.versionName}")
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     testInstrumentationRunnerArguments["runnerBuilder"] =
@@ -32,32 +24,19 @@ android {
 
     buildFeatures {
       viewBinding = true
-      dataBinding = true
       compose = true
     }
   }
 
-  signingConfigs {
-    create("release") {
-      storeFile = File(rootDir, ENV["CCDROIDX_RELEASE_KEYSTORE_PATH"]!!)
-      storePassword = ENV["CCDROIDX_RELEASE_KEYSTORE_PASSWORD"]!!
-      keyAlias = ENV["CCDROIDX_RELEASE_KEY_ALIAS"]!!
-      keyPassword = ENV["CCDROIDX_RELEASE_KEY_ALIAS_PASSWORD"]!!
-    }
-  }
-
   buildTypes {
-    getByName("debug") {
+    debug {
       isMinifyEnabled = false
       isDebuggable = true
       versionNameSuffix = "-debug"
       applicationIdSuffix = ".debug"
     }
-
-    getByName("release") {
-      isMinifyEnabled = true
-      isDebuggable = false
-      signingConfig = signingConfigs.getByName("release")
+    release {
+      isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
@@ -93,57 +72,23 @@ android {
   }
 }
 
-kapt {
-  correctErrorTypes = true
-}
-
 hilt {
   enableAggregatingTask = true
 }
 
-sqldelight {
-  database("CCDroidXDb") {
-    packageName = "dev.aungkyawpaing.ccdroidx"
-    dialect = "sqlite:3.24"
-    sourceFolders = listOf("sqldelight")
-    schemaOutputDirectory = file("build/dbs")
-  }
-}
-
-wire {
-  kotlin {
-  }
-}
-
 dependencies {
   coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
-  implementation("com.jakewharton.timber:timber:5.0.1")
-  implementation("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
-
   compose()
-  composePhone()
+  composeWear()
+
   androidX()
+  androidXWear()
   androidXArch()
   androidXActivity()
   androidXFragment()
-  androidXNavigation()
-  androidXWorkManager()
-  implementation("androidx.browser:browser:1.4.0")
-  androidxProtoDataStore()
-  implementation("androidx.preference:preference-ktx:1.2.0")
-
-  implementation(Material.material)
-
-  // Firebase
-  implementation(project.dependencies.platform("com.google.firebase:firebase-bom:30.4.1"))
-  implementation("com.google.firebase:firebase-analytics-ktx")
-  implementation("com.google.firebase:firebase-crashlytics-ktx")
-
-  daggerHilt()
-
-  retrofit()
   coroutine()
-  sqlDelight()
+  coroutinePlayService()
+  daggerHilt()
 
   junit5()
   androidXTest()

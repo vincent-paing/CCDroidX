@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CCDroidx</string>
+
+    <string name="no_companion_app_text">Companion app is required for this app to function. Please click on the button below to install it on your phone.</string>
+    <string name="content_description_open_play_store">Open Play Store on Phone</string>
+
+    <string name="market_link_phone_app">market://details?id=dev.aungkyawpaing.ccdroidx</string>
+    <string name="continue_on_phone">Continue on phone</string>
+    <string name="error_open_play_store_on_phone">Failed to open play store on phone</string>
+</resources>

@@ -14,9 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -277,22 +274,23 @@ fun ProjectCard(
 @Composable
 fun ProjectCardPreviewSuccess() {
   Mdc3Theme {
-    ProjectCard(Project(
-      id = 0L,
-      name = "vincent-paing/ccdroidx with very long name here!",
-      activity = BuildState.SLEEPING,
-      lastBuildStatus = BuildStatus.SUCCESS,
-      lastBuildLabel = "1234",
-      lastBuildTime = ZonedDateTime.now(),
-      nextBuildTime = null,
-      webUrl = "https://www.example.com",
-      feedUrl = "https://www.example.com/cc.xml",
-      isMuted = false,
-      mutedUntil = null,
-      authentication = Authentication(
-        username = "username", password = "password"
-      )
-    ), {}, {}, {})
+    ProjectCard(
+      Project(
+        id = 0L,
+        name = "vincent-paing/ccdroidx with very long name here!",
+        activity = BuildState.SLEEPING,
+        lastBuildStatus = BuildStatus.SUCCESS,
+        lastBuildLabel = "1234",
+        lastBuildTime = ZonedDateTime.now(),
+        nextBuildTime = null,
+        webUrl = "https://www.example.com",
+        feedUrl = "https://www.example.com/cc.xml",
+        isMuted = false,
+        mutedUntil = null,
+        authentication = Authentication(
+          username = "username", password = "password"
+        )
+      ), {}, {}, {})
   }
 }
 
@@ -300,22 +298,23 @@ fun ProjectCardPreviewSuccess() {
 @Composable
 fun ProjectCardPreviewFailed() {
   Mdc3Theme {
-    ProjectCard(Project(
-      id = 0L,
-      name = "vincent-paing/ccdroidx with very long name here!",
-      activity = BuildState.SLEEPING,
-      lastBuildStatus = BuildStatus.FAILURE,
-      lastBuildLabel = "1234",
-      lastBuildTime = ZonedDateTime.now(),
-      nextBuildTime = null,
-      webUrl = "https://www.example.com",
-      feedUrl = "https://www.example.com/cc.xml",
-      isMuted = false,
-      mutedUntil = null,
-      authentication = Authentication(
-        username = "username", password = "password"
-      )
-    ), {}, {}, {})
+    ProjectCard(
+      Project(
+        id = 0L,
+        name = "vincent-paing/ccdroidx with very long name here!",
+        activity = BuildState.SLEEPING,
+        lastBuildStatus = BuildStatus.FAILURE,
+        lastBuildLabel = "1234",
+        lastBuildTime = ZonedDateTime.now(),
+        nextBuildTime = null,
+        webUrl = "https://www.example.com",
+        feedUrl = "https://www.example.com/cc.xml",
+        isMuted = false,
+        mutedUntil = null,
+        authentication = Authentication(
+          username = "username", password = "password"
+        )
+      ), {}, {}, {})
   }
 }
 
@@ -323,21 +322,22 @@ fun ProjectCardPreviewFailed() {
 @Composable
 fun ProjectCardPreviewInProgress() {
   Mdc3Theme {
-    ProjectCard(Project(
-      id = 0L,
-      name = "vincent-paing/ccdroidx with very long name here!",
-      activity = BuildState.BUILDING,
-      lastBuildStatus = BuildStatus.SUCCESS,
-      lastBuildLabel = "1234",
-      lastBuildTime = ZonedDateTime.now(),
-      nextBuildTime = null,
-      webUrl = "https://www.example.com",
-      feedUrl = "https://www.example.com/cc.xml",
-      isMuted = false,
-      mutedUntil = null,
-      authentication = Authentication(
-        username = "username", password = "password"
-      )
-    ), {}, {}, {})
+    ProjectCard(
+      Project(
+        id = 0L,
+        name = "vincent-paing/ccdroidx with very long name here!",
+        activity = BuildState.BUILDING,
+        lastBuildStatus = BuildStatus.SUCCESS,
+        lastBuildLabel = "1234",
+        lastBuildTime = ZonedDateTime.now(),
+        nextBuildTime = null,
+        webUrl = "https://www.example.com",
+        feedUrl = "https://www.example.com/cc.xml",
+        isMuted = false,
+        mutedUntil = null,
+        authentication = Authentication(
+          username = "username", password = "password"
+        )
+      ), {}, {}, {})
   }
 }

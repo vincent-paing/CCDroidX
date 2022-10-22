@@ -9,7 +9,6 @@ import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.roboeletric.FakeAndroidKeyStore
-import io.mockk.confirmVerified
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Assert

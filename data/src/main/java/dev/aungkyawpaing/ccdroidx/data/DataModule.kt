@@ -1,20 +1,18 @@
-package dev.aungkyawpaing.ccdroidx
+package dev.aungkyawpaing.ccdroidx.data
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.time.Clock
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AppModule {
+class DataModule {
 
   @Provides
   @Singleton
-  fun provideClock(): Clock {
-    return Clock.systemDefaultZone()
+  fun provideCryptography(): Cryptography {
+    return Cryptography("CCDROID")
   }
-
 }

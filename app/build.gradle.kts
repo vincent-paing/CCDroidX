@@ -118,8 +118,9 @@ wire {
 dependencies {
   coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
   implementation(project(":common"))
+  implementation(project(":data"))
 
-  implementation("com.jakewharton.timber:timber:5.0.1")
+  timber()
   implementation("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
 
   compose()
@@ -146,8 +147,8 @@ dependencies {
 
   daggerHilt()
 
-  retrofit()
   coroutine()
+  retrofit()
   sqlDelight()
 
   junit5()

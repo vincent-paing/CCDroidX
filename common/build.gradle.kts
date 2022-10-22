@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-  implementation("com.jakewharton.timber:timber:5.0.1")
+  timber()
   coroutine()
   androidX()
 }

@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.aungkyawpaing.ccdroidx.api.InvalidUrlException
-import dev.aungkyawpaing.ccdroidx.api.NetworkException
-import dev.aungkyawpaing.ccdroidx.api.UnsupportedServerException
+import dev.aungkyawpaing.ccdroidx.data.api.InvalidUrlException
+import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
+import dev.aungkyawpaing.ccdroidx.data.api.UnsupportedServerException
 import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo

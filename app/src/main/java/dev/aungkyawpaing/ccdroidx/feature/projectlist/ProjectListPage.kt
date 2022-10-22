@@ -159,7 +159,8 @@ fun ProjectListPage(
     }
   ) { contentPadding ->
     val projectList = viewModel.projectListLiveData.observeAsState(initial = emptyList())
-    val deleteConfirmDialog = remember { mutableStateOf<Project?>(null) }
+    val deleteConfirmDialog =
+      remember { mutableStateOf<Project?>(null) }
 
     Box(modifier = Modifier.padding(contentPadding)) {
       ProjectList(

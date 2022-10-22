@@ -1,6 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature.sync
 
-import dev.aungkyawpaing.ccdroidx.api.NetworkException
+import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.data.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import kotlinx.coroutines.flow.firstOrNull

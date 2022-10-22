@@ -3,7 +3,7 @@ package dev.aungkyawpaing.ccdroidx.exception
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.aungkyawpaing.ccdroidx.R
-import dev.aungkyawpaing.ccdroidx.api.NetworkException
+import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
 import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject

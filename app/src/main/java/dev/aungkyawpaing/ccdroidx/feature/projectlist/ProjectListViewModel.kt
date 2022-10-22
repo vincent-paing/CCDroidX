@@ -40,11 +40,9 @@ class ProjectListViewModel @Inject constructor(
   fun onPressSync() {
     viewModelScope.launch {
       withContext(dispatcherProvider.io()) {
-        syncProjects.sync(
-          onProjectSynced = { _, _ ->
-            onProgressSyncFinishEvent.postValue(true)
-          }
-        )
+        syncProjects.sync(onProjectSynced = { _, _ ->
+          onProgressSyncFinishEvent.postValue(true)
+        })
       }
     }
   }

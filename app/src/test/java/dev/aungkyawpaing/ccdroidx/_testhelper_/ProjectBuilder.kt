@@ -1,9 +1,9 @@
 package dev.aungkyawpaing.ccdroidx._testhelper_
 
-import dev.aungkyawpaing.ccdroidx.data.Authentication
-import dev.aungkyawpaing.ccdroidx.data.BuildState
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus
-import dev.aungkyawpaing.ccdroidx.data.Project
+import dev.aungkyawpaing.ccdroidx.common.Authentication
+import dev.aungkyawpaing.ccdroidx.common.BuildState
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
+import dev.aungkyawpaing.ccdroidx.common.Project
 import java.time.ZoneId
 import java.time.ZonedDateTime
 

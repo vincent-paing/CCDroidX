@@ -1,7 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.data.db
 
 import com.squareup.sqldelight.ColumnAdapter
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 
 object BuildStatusColumnAdapter : ColumnAdapter<BuildStatus, Long> {
 

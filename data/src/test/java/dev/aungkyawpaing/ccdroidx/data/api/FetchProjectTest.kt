@@ -1,5 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.data.api
 
+import dev.aungkyawpaing.ccdroidx.common.BuildState
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import dev.aungkyawpaing.ccdroidx.data._testhelper_.CoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -138,8 +140,8 @@ class FetchProjectTest : CoroutineTest() {
     val expected = listOf(
       ProjectResponse(
         name = "circleci/ex",
-        activity = dev.aungkyawpaing.ccdroidx.data.BuildState.SLEEPING,
-        lastBuildStatus = dev.aungkyawpaing.ccdroidx.data.BuildStatus.SUCCESS,
+        activity = BuildState.SLEEPING,
+        lastBuildStatus = BuildStatus.SUCCESS,
         lastBuildLabel = "2730",
         lastBuildTime = ZonedDateTime.of(
           2022, 4, 18, 19, 29, 37, 0,

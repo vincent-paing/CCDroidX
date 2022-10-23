@@ -1,7 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature.notification
 
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus
-import dev.aungkyawpaing.ccdroidx.data.Project
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
+import dev.aungkyawpaing.ccdroidx.common.Project
 import javax.inject.Inject
 
 class NotifyProjectStatus @Inject constructor(

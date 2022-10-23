@@ -1,12 +1,9 @@
 package dev.aungkyawpaing.ccdroidx.data.api
 
-import android.os.Parcelable
-import dev.aungkyawpaing.ccdroidx.data.BuildState
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus
-import kotlinx.parcelize.Parcelize
+import dev.aungkyawpaing.ccdroidx.common.BuildState
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import java.time.ZonedDateTime
 
-@Parcelize
 data class ProjectResponse(
   val name: String,
   val activity: BuildState,
@@ -16,4 +13,4 @@ data class ProjectResponse(
   val nextBuildTime: ZonedDateTime?,
   val webUrl: String,
   val feedUrl: String
-) : Parcelable
+)

@@ -1,5 +1,5 @@
-import dev.aungkyawpaing.ccdroidx.data.BuildState;
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus;
+import dev.aungkyawpaing.ccdroidx.common.BuildState;
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus;
 import java.time.ZonedDateTime;
 
 CREATE TABLE ProjectTable (
@@ -35,10 +35,6 @@ ORDER BY
 lastBuildStatus DESC,
 lastBuildTime DESC,
 id;
-
-selectCountByNotBuildStatus:
-SELECT COUNT(*) FROM ProjectTable
-WHERE lastBuildStatus != :buildStatus;
 
 delete:
 DELETE FROM ProjectTable WHERE id = :id;

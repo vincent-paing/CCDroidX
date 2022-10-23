@@ -109,6 +109,7 @@ dependencies {
   coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
   implementation(project(":common"))
   implementation(project(":data"))
+  implementation(project(":weardatalayer"))
 
   timber()
   implementation("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
@@ -138,9 +139,6 @@ dependencies {
   daggerHilt()
 
   coroutine()
-  coroutinePlayService()
-
-  implementation(AndroidXWear.play_service_wearable)
 
   junit5()
   androidXTest()

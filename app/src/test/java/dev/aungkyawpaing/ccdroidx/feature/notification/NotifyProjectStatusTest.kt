@@ -1,7 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature.notification
 
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder.buildProject
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import io.mockk.verify

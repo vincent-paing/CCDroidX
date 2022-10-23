@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.material.composethemeadapter3.Mdc3Theme
-import dev.aungkyawpaing.ccdroidx.data.Authentication
-import dev.aungkyawpaing.ccdroidx.data.BuildState
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus
-import dev.aungkyawpaing.ccdroidx.data.Project
+import dev.aungkyawpaing.ccdroidx.common.Authentication
+import dev.aungkyawpaing.ccdroidx.common.BuildState
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
+import dev.aungkyawpaing.ccdroidx.common.Project
 import java.time.ZonedDateTime
 
 @Composable

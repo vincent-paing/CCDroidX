@@ -1,7 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.data.api
 
-import dev.aungkyawpaing.ccdroidx.data.BuildState
-import dev.aungkyawpaing.ccdroidx.data.BuildStatus
+import dev.aungkyawpaing.ccdroidx.common.BuildState
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Protocol
 import okhttp3.Request

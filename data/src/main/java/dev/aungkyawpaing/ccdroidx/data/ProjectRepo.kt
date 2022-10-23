@@ -3,6 +3,9 @@ package dev.aungkyawpaing.ccdroidx.data
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import dev.aungkyawpaing.ccdroidx.CCDroidXDb
+import dev.aungkyawpaing.ccdroidx.common.Authentication
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
+import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.api.FetchProject
 import kotlinx.coroutines.flow.Flow
@@ -57,7 +60,7 @@ class ProjectRepo @Inject constructor(
           webUrl = project.webUrl,
           feedUrl = project.feedUrl,
           username = project.authentication?.username,
-          password = if (project.authentication != null) cryptography.encrypt(project.authentication.password) else null
+          password = if (project.authentication != null) cryptography.encrypt(project.authentication!!.password) else null
         )
       } else {
         db.projectTableQueries.update(
@@ -71,7 +74,7 @@ class ProjectRepo @Inject constructor(
           webUrl = project.webUrl,
           feedUrl = project.feedUrl,
           username = project.authentication?.username,
-          password = if (project.authentication != null) cryptography.encrypt(project.authentication.password) else null
+          password = if (project.authentication != null) cryptography.encrypt(project.authentication!!.password) else null
         )
       }
     }
@@ -104,11 +107,6 @@ class ProjectRepo @Inject constructor(
           )
         }
       }
-
-  }
-
-  fun getFailingProjectCount(): Long {
-    return db.projectTableQueries.selectCountByNotBuildStatus(BuildStatus.SUCCESS).executeAsOne()
   }
 
   suspend fun delete(projectId: Long) {

@@ -2,7 +2,6 @@ plugins {
   id("com.android.library")
   kotlin("android")
   kotlin("kapt")
-  id("kotlin-parcelize")
   id("dagger.hilt.android.plugin")
   id("com.squareup.sqldelight")
   id("de.mannodermaus.android-junit5")
@@ -11,7 +10,6 @@ plugins {
 android {
   namespace = "dev.aungkyawpaing.ccdroidx.data"
   compileSdk = BuildConfig.compileSdk
-
 
   defaultConfig {
     minSdk = BuildConfig.minSdk
@@ -73,6 +71,7 @@ dependencies {
 
   retrofit()
   sqlDelight()
+  moshi()
 
   daggerHilt()
 

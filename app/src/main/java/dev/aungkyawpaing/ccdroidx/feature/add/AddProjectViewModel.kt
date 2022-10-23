@@ -9,7 +9,7 @@ import dev.aungkyawpaing.ccdroidx.data.api.InvalidUrlException
 import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.data.api.UnsupportedServerException
 import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
-import dev.aungkyawpaing.ccdroidx.data.Project
+import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.exception.MapNetworkExceptionToMessage
 import dev.aungkyawpaing.ccdroidx.feature.add.feedurlvalidation.FeedUrlValidationResult

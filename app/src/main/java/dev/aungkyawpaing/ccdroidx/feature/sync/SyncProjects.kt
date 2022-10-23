@@ -1,7 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature.sync
 
 import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
-import dev.aungkyawpaing.ccdroidx.data.Project
+import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.feature.wear.WearDataLayerSource
 import kotlinx.coroutines.flow.firstOrNull

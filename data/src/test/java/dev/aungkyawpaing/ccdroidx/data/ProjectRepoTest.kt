@@ -2,6 +2,10 @@ package dev.aungkyawpaing.ccdroidx.data
 
 import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
 import dev.aungkyawpaing.ccdroidx.CCDroidXDb
+import dev.aungkyawpaing.ccdroidx.common.Authentication
+import dev.aungkyawpaing.ccdroidx.common.BuildState
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
+import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.data._testhelper_.CoroutineTest
 import dev.aungkyawpaing.ccdroidx.data._testhelper_.ProjectBuilder.buildProject
 import dev.aungkyawpaing.ccdroidx.data.api.FetchProject

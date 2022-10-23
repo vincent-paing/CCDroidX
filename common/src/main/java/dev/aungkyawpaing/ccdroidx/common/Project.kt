@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.data
+package dev.aungkyawpaing.ccdroidx.common
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -13,7 +13,6 @@ fun openInBrowser(activity: Activity, url: String) {
   val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
   val doesLinkOpenExternally = sharedPreferences.getBoolean("others_browser", false)
 
-
   if (doesLinkOpenExternally) {
     try {
       val viewUrlIntent = Intent(Intent.ACTION_VIEW, url.toUri())

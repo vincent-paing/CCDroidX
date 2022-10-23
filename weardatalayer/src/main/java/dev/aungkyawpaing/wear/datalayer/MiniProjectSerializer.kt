@@ -17,10 +17,11 @@ class MiniProjectSerializer @Inject constructor() {
   )
 
   fun serializeProjects(project: List<Project>): String {
-
     return serializeMiniProjects(project.map {
       MiniProject(
-        name = it.name, isSuccess = it.lastBuildStatus == BuildStatus.SUCCESS
+        id = it.id,
+        name = it.name,
+        isSuccess = it.lastBuildStatus == BuildStatus.SUCCESS
       )
     })
   }

@@ -1,9 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.appLaunch.components
 
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Shop
 import androidx.compose.runtime.Composable
@@ -18,14 +15,9 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.remote.interactions.RemoteActivityHelper
 import androidx.wear.widget.ConfirmationOverlay
 import dev.aungkyawpaing.ccdroidx.R
+import dev.aungkyawpaing.ccdroidx.common.extensions.findActivity
 import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.launch
-
-fun Context.findActivity(): AppCompatActivity? = when (this) {
-  is AppCompatActivity -> this
-  is ContextWrapper -> baseContext.findActivity()
-  else -> null
-}
 
 @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
 @Composable

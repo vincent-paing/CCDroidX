@@ -36,5 +36,9 @@ lastBuildStatus DESC,
 lastBuildTime DESC,
 id;
 
+selectById:
+SELECT * FROM ProjectTable
+WHERE id = :id;
+
 delete:
 DELETE FROM ProjectTable WHERE id = :id;

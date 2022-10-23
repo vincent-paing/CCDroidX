@@ -2,12 +2,13 @@ package dev.aungkyawpaing.ccdroidx.data
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import com.squareup.sqldelight.runtime.coroutines.mapToOne
 import dev.aungkyawpaing.ccdroidx.CCDroidXDb
 import dev.aungkyawpaing.ccdroidx.common.Authentication
-import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.api.FetchProject
+import dev.aungkyawpaing.ccdroidx.data.db.ProjectTableToProjectMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -17,6 +18,7 @@ class ProjectRepo @Inject constructor(
   private val fetchProject: FetchProject,
   private val db: CCDroidXDb,
   private val cryptography: Cryptography,
+  private val projectTableToProjectMapper: ProjectTableToProjectMapper,
   private val dispatcherProvider: DispatcherProvider
 ) {
 
@@ -85,28 +87,16 @@ class ProjectRepo @Inject constructor(
       .asFlow()
       .mapToList(dispatcherProvider.default())
       .map { projectTables ->
-        projectTables.map { projectTable ->
-          Project(
-            id = projectTable.id,
-            name = projectTable.name,
-            activity = projectTable.activity,
-            lastBuildStatus = projectTable.lastBuildStatus,
-            lastBuildLabel = projectTable.lastBuildLabel,
-            lastBuildTime = projectTable.lastBuildTime,
-            nextBuildTime = projectTable.nextBuildTime,
-            webUrl = projectTable.webUrl,
-            feedUrl = projectTable.feedUrl,
-            isMuted = projectTable.isMuted,
-            mutedUntil = projectTable.mutedUntil,
-            authentication = if (projectTable.username != null && projectTable.password != null) {
-              Authentication(
-                username = projectTable.username,
-                password = cryptography.decrypt(projectTable.password)
-              )
-            } else null
-          )
-        }
+        projectTables.map(projectTableToProjectMapper::mapProjectTable)
       }
+  }
+
+
+  fun getById(projectId: Long): Flow<Project> {
+    return db.projectTableQueries.selectById(projectId)
+      .asFlow()
+      .mapToOne(dispatcherProvider.default())
+      .map(projectTableToProjectMapper::mapProjectTable)
   }
 
   suspend fun delete(projectId: Long) {

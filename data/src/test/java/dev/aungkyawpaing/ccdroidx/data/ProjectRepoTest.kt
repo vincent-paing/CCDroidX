@@ -11,6 +11,7 @@ import dev.aungkyawpaing.ccdroidx.data._testhelper_.ProjectBuilder.buildProject
 import dev.aungkyawpaing.ccdroidx.data.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.data.api.ProjectResponse
+import dev.aungkyawpaing.ccdroidx.data.db.ProjectTableToProjectMapper
 import dev.aungkyawpaing.ccdroidx.data.db.projectTableAdapter
 import io.mockk.coEvery
 import io.mockk.every
@@ -31,7 +32,9 @@ class ProjectRepoTest : CoroutineTest() {
   private val cryptography = mockk<Cryptography>(relaxed = true)
 
   private val projectRepo = ProjectRepo(
-    fetchProject, db, cryptography, testDispatcherProvider
+    fetchProject, db, cryptography,
+    ProjectTableToProjectMapper(cryptography),
+    testDispatcherProvider
   )
 
   @BeforeEach

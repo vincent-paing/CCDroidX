@@ -24,6 +24,9 @@ fun ProjectList(
     }
     items(
       items = projects,
+      key = {
+        it.id
+      }
     ) { project ->
       ProjectChip(project = project)
     }
@@ -35,9 +38,9 @@ fun ProjectList(
 fun ProjectListPreview() {
   ProjectList(
     listOf(
-      MiniProject("some-project-one", true),
-      MiniProject("some-project-two", false),
-      MiniProject("some-project-three", true)
+      MiniProject(0, "some-project-one", true),
+      MiniProject(1, "some-project-two", false),
+      MiniProject(2, "some-project-three", true)
     ), rememberScalingLazyListState()
   )
 }

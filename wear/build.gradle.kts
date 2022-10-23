@@ -5,6 +5,8 @@ plugins {
   id("dagger.hilt.android.plugin")
 }
 
+val ENV = System.getenv()
+
 android {
   namespace = "dev.aungkyawpaing.ccdroidx"
   compileSdk = BuildConfig.compileSdk
@@ -27,6 +29,15 @@ android {
       compose = true
     }
   }
+  signingConfigs {
+    create("release") {
+      storeFile = File(rootDir, ENV["CCDROIDX_RELEASE_KEYSTORE_PATH"]!!)
+      storePassword = ENV["CCDROIDX_RELEASE_KEYSTORE_PASSWORD"]!!
+      keyAlias = ENV["CCDROIDX_RELEASE_KEY_ALIAS"]!!
+      keyPassword = ENV["CCDROIDX_RELEASE_KEY_ALIAS_PASSWORD"]!!
+    }
+  }
+
 
   buildTypes {
     debug {
@@ -36,7 +47,9 @@ android {
       applicationIdSuffix = ".debug"
     }
     release {
-      isMinifyEnabled = false
+      isMinifyEnabled = true
+      isDebuggable = false
+      signingConfig = signingConfigs.getByName("release")
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }

@@ -11,4 +11,6 @@
     <string name="failing_project_count_complication_label">Failing Project Count</string>
     <string name="failing_project_count_complication_title">Failing</string>
     <string name="failing_project_count_complication_content_description">Text on how many builds are failing</string>
+
+    <string name="project_list_header">Projects</string>
 </resources>

@@ -1,5 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.appLaunch
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,7 +12,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
+import androidx.wear.compose.material.TimeText
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.WearApp
 import dev.aungkyawpaing.ccdroidx.appLaunch.components.OpenPlayStoreOnPhoneButton
@@ -20,22 +24,28 @@ import dev.aungkyawpaing.ccdroidx.appLaunch.components.OpenPlayStoreOnPhoneButto
 @Composable
 fun InstallPhoneAppScreen() {
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .verticalScroll(
-        rememberScrollState()
+  Scaffold(
+    modifier = Modifier.background(MaterialTheme.colors.background),
+    timeText = {
+      TimeText()
+    }) {
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(
+          rememberScrollState()
+        )
+        .padding(24.dp),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+      Text(
+        text = stringResource(id = R.string.no_companion_app_text),
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth()
       )
-      .padding(24.dp),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
-    Text(
-      text = stringResource(id = R.string.no_companion_app_text),
-      textAlign = TextAlign.Center,
-      modifier = Modifier.fillMaxWidth()
-    )
-    OpenPlayStoreOnPhoneButton()
+      OpenPlayStoreOnPhoneButton()
+    }
   }
 }
 

@@ -10,6 +10,7 @@ import com.google.android.gms.wearable.CapabilityClient
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.WearApp
+import dev.aungkyawpaing.ccdroidx.projectlist.ProjectListPage
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,8 +33,8 @@ class MainActivity : ComponentActivity() {
         setContent {
           WearApp {
             if (hasPhoneApp == true) {
-              //TODO
-            } else {
+              ProjectListPage()
+            } else if (hasPhoneApp == false) {
               InstallPhoneAppScreen()
             }
           }

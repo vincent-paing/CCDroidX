@@ -16,6 +16,8 @@
 package dev.aungkyawpaing.ccdroidx.complication
 
 
+import android.app.PendingIntent
+import android.content.Intent
 import androidx.wear.watchface.complications.data.ComplicationData
 import androidx.wear.watchface.complications.data.ComplicationType
 import androidx.wear.watchface.complications.data.PlainComplicationText
@@ -25,6 +27,7 @@ import androidx.wear.watchface.complications.datasource.SuspendingComplicationDa
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.ProjectDataStore
 import dev.aungkyawpaing.ccdroidx.R
+import dev.aungkyawpaing.ccdroidx.appLaunch.MainActivity
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -42,7 +45,18 @@ class FailingProjectCountComplicationDataSourceService : SuspendingComplicationD
     getString(R.string.failing_project_count_complication_content_description)
   }
 
-  override fun getPreviewData(type: ComplicationType): ComplicationData? {
+  private fun openActivityPendingIntent(id: Int): PendingIntent {
+    val mainActivityIntent =
+      Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    return PendingIntent.getActivity(
+      this,
+      id,
+      mainActivityIntent,
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+  }
+
+  override fun getPreviewData(type: ComplicationType): ComplicationData {
     return ShortTextComplicationData.Builder(
       text = PlainComplicationText.Builder(text = "5").build(),
       contentDescription = PlainComplicationText.Builder(text = contentDescription).build()
@@ -56,9 +70,13 @@ class FailingProjectCountComplicationDataSourceService : SuspendingComplicationD
 
     return when (request.complicationType) {
       ComplicationType.SHORT_TEXT -> ShortTextComplicationData.Builder(
-        text = PlainComplicationText.Builder(text = failingCount.toString()).build(),
+        text = PlainComplicationText.Builder(
+          text = failingCount.toString()
+        ).build(),
         contentDescription = PlainComplicationText.Builder(text = contentDescription).build()
-      ).setTitle(PlainComplicationText.Builder(title).build()).setTapAction(null).build()
+      )
+        .setTitle(PlainComplicationText.Builder(title).build())
+        .setTapAction(openActivityPendingIntent(request.complicationInstanceId)).build()
       else -> {
         return null
       }

@@ -49,7 +49,12 @@ class MainActivity : AppCompatActivity() {
 
     val deepLinkUri = intent.data ?: return
     val host = deepLinkUri.host ?: ""
-    val path = deepLinkUri.path?.substring(1) ?: ""
+
+    val path = try {
+      deepLinkUri.path?.substring(1) ?: ""
+    } catch (exception: IndexOutOfBoundsException) {
+      return
+    }
 
     if (host == "project" && path.isNotEmpty()) {
       lifecycleScope.launch {

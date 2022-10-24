@@ -8,7 +8,9 @@
     <string name="continue_on_phone">Continue on phone</string>
     <string name="error_open_play_store_on_phone">Failed to open play store on phone</string>
 
+    <string name="empty_projects">There is no projects yet. Open the app on phone to start adding your projects.</string>
     <string name="error_open_app_on_phone">Failed to open app on phone</string>
+    <string name="content_description_open_app_on_phone">Open App on Phone</string>
 
     <string name="failing_project_count_complication_label">Failing Project Count</string>
     <string name="failing_project_count_complication_title">Failing</string>

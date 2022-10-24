@@ -15,7 +15,7 @@ android {
     applicationId = "dev.aungkyawpaing.ccdroidx"
     minSdk = BuildConfig.minSdk
     targetSdk = BuildConfig.targetSdk
-    versionCode = BuildConfig.versionCode
+    versionCode = BuildConfig.wearVersionCode
     versionName = BuildConfig.versionName
     resourceConfigurations += setOf("en")
     setProperty("archivesBaseName", "ccdroidx-wear-${BuildConfig.versionName}")

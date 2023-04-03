@@ -54,6 +54,10 @@
     <string name="notification_success_after_fail_title">[RECOVERED] %s</string>
     <string name="notification_success_after_fail_content">The build is successful and has recovered from failure</string>
 
+    <string name="notification_prompt_body">Enable notification to receive alerts when your pipelines status changes</string>
+    <string name="notification_prompt_enable_notification">Enable notification</string>
+    <string name="notification_prompt_close_content_description">Close prompt to enable notification</string>
+
     <string name="hint_interval_amount">Interval amount</string>
     <string name="hint_time_unit">Time unit</string>
     <string name="save">Save</string>

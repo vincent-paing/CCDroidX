@@ -27,7 +27,7 @@ import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.common.extensions.findActivity
 import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
-import dev.aungkyawpaing.ccdroidx.feature.notification.NotificationPrompt
+import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.NotificationPrompt
 import dev.aungkyawpaing.ccdroidx.feature.projectlist.component.ProjectList
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus

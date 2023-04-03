@@ -9,7 +9,7 @@ fun DependencyHandler.androidXNavigation() {
 
 
 object AndroidXNavigation {
-  private const val version = "2.4.2"
+  private const val version = "2.5.3"
 
   const val gradle_plugin = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
 

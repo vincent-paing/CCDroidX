@@ -1,4 +1,4 @@
-package dev.aungkyawpaing.ccdroidx.feature.projectlist
+package dev.aungkyawpaing.ccdroidx.feature.projectlist.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,20 +9,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.aungkyawpaing.ccdroidx.common.Project
-import dev.aungkyawpaing.ccdroidx.feature.projectlist.component.ProjectCard
 
 @Composable
 fun ProjectList(
   projectList: List<Project>,
   onOpenRepoClick: ((project: Project) -> Unit),
   onDeleteClick: ((project: Project) -> Unit),
-  onToggleMute: ((project: Project) -> Unit)
+  onToggleMute: ((project: Project) -> Unit),
+  modifier: Modifier = Modifier
 ) {
 
   LazyColumn(
     contentPadding = PaddingValues(8.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp),
-    modifier = Modifier.padding(bottom = 56.dp)
+    modifier = modifier.padding(bottom = 56.dp)
   ) {
     itemsIndexed(
       items = projectList,

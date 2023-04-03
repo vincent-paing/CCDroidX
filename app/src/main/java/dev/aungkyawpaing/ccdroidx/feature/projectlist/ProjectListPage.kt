@@ -1,7 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature.projectlist
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -18,14 +18,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.common.Project
+import dev.aungkyawpaing.ccdroidx.common.extensions.findActivity
 import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
+import dev.aungkyawpaing.ccdroidx.feature.notification.NotificationPrompt
+import dev.aungkyawpaing.ccdroidx.feature.projectlist.component.ProjectList
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
-import dev.aungkyawpaing.ccdroidx.common.extensions.findActivity
 import org.ocpsoft.prettytime.PrettyTime
 
 @Composable
@@ -37,6 +42,7 @@ private fun getSubtitleText(lastSyncedStatus: LastSyncedStatus?): String =
       LastSyncedState.SYNCING -> {
         stringResource(R.string.syncing)
       }
+
       LastSyncedState.SUCCESS, LastSyncedState.FAILED -> {
         stringResource(
           R.string.last_synced_x,
@@ -146,24 +152,18 @@ fun ProjectListPage(
   Scaffold(
     topBar = {
       ProjectListTopAppBar(viewModel, onClickSettings)
-    },
-    floatingActionButtonPosition = FabPosition.End,
-    floatingActionButton = {
-      FloatingActionButton(onClick = {
-        addProjectDialog.value = true
-      }) {
-        Icon(
-          Icons.Filled.Add,
-          contentDescription = stringResource(R.string.cd_fab_add_project)
-        )
-      }
     }
   ) { contentPadding ->
     val projectList = viewModel.projectListLiveData.observeAsState(initial = emptyList())
     val deleteConfirmDialog =
       remember { mutableStateOf<Project?>(null) }
 
-    Box(modifier = Modifier.padding(contentPadding)) {
+    ConstraintLayout(modifier = Modifier
+      .padding(contentPadding)
+      .fillMaxSize()) {
+
+      val (notificationPrompt, projectListComponent, fabAddProject) = createRefs()
+
       ProjectList(
         projectList = projectList.value,
         onOpenRepoClick = { project ->
@@ -174,8 +174,37 @@ fun ProjectListPage(
         onDeleteClick = { project ->
           deleteConfirmDialog.value = project
         },
-        onToggleMute = viewModel::onToggleMute
+        onToggleMute = viewModel::onToggleMute,
+        modifier = Modifier.constrainAs(projectListComponent) {
+          end.linkTo(parent.end)
+          start.linkTo(parent.start)
+          bottom.linkTo(notificationPrompt.top)
+          top.linkTo(parent.top)
+          height = Dimension.fillToConstraints
+          width = Dimension.fillToConstraints
+        }
       )
+
+      NotificationPrompt(modifier = Modifier.constrainAs(notificationPrompt) {
+        end.linkTo(parent.end)
+        start.linkTo(parent.start)
+        bottom.linkTo(parent.bottom)
+      })
+
+      FloatingActionButton(onClick = {
+        addProjectDialog.value = true
+      }, modifier = Modifier
+        .constrainAs(fabAddProject) {
+          end.linkTo(parent.end)
+          bottom.linkTo(notificationPrompt.top)
+        }
+        .padding(16.dp)) {
+        Icon(
+          Icons.Filled.Add,
+          contentDescription = stringResource(R.string.cd_fab_add_project)
+        )
+      }
+
     }
 
     if (deleteConfirmDialog.value != null) {

@@ -46,6 +46,7 @@ private fun getSubtitleText(lastSyncedStatus: LastSyncedStatus?): String =
     }
   }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProjectListTopAppBar(
   viewModel: ProjectListViewModel,

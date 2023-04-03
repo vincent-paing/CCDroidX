@@ -11,7 +11,7 @@ fun DependencyHandler.mockK() {
 
 
 object Mockk {
-  private const val version = "1.12.3"
+  private const val version = "1.13.4"
 
   const val mockk = "io.mockk:mockk:$version"
   const val mockk_agent_jvm = "io.mockk:mockk-agent-jvm:$version"

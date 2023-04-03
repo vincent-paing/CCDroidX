@@ -11,5 +11,5 @@ object AndroidXWear {
   const val wear = "androidx.wear:wear:1.2.0"
   const val wear_remote_interactions = "androidx.wear:wear-remote-interactions:1.0.0"
   const val complication_data_source = "androidx.wear.watchface:watchface-complications-data-source-ktx:1.1.1"
-  const val play_service_wearable = "com.google.android.gms:play-services-wearable:17.1.0"
+  const val play_service_wearable = "com.google.android.gms:play-services-wearable:18.0.0"
 }

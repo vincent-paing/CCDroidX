@@ -2,7 +2,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 
 fun DependencyHandler.compose() {
   // (Required) Writing and executing Unit Tests on the JUnit Platform
-  implementation(Compose.activityCompose)
+  implementation(AndroidXActivity.activityCompose)
 
   implementation(Compose.ui)
   implementation(Compose.ui_tooling)
@@ -35,7 +35,7 @@ fun DependencyHandler.composeWear() {
 
 
 internal object ComposeWear {
-  private const val version = "1.0.2"
+  private const val version = "1.1.2"
 
   const val material = "androidx.wear.compose:compose-material:$version"
   const val foundation = "androidx.wear.compose:compose-foundation:$version"
@@ -43,22 +43,21 @@ internal object ComposeWear {
 }
 
 internal object Compose {
-  private const val version = "1.2.1"
+  private const val version = "1.4.0"
 
   const val ui = "androidx.compose.ui:ui:$version"
   const val foundation = "androidx.compose.foundation:foundation:$version"
 
-  const val activityCompose = "androidx.activity:activity-compose:1.4.0"
-  const val material = "androidx.compose.material3:material3:1.0.0-alpha14"
+  const val material = "androidx.compose.material3:material3:1.0.1"
   const val material_icons_extended = "androidx.compose.material:material-icons-extended:$version"
   const val animation = "androidx.compose.animation:animation:$version"
 
   const val ui_tooling = "androidx.compose.ui:ui-tooling:$version"
   const val ui_tooling_preview = "androidx.compose.ui:ui-tooling-preview:$version"
 
-  const val view_model = "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
+  const val view_model = "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
   const val live_data = "androidx.compose.runtime:runtime-livedata:$version"
-  const val material_theme_adapter = "com.google.android.material:compose-theme-adapter-3:1.0.11"
+  const val material_theme_adapter = "com.google.android.material:compose-theme-adapter-3:1.1.1"
   const val constraint_layout = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
   const val ui_test = "androidx.compose.ui:ui-test-junit4:$version"

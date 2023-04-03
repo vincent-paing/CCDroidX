@@ -19,7 +19,7 @@ object SqlDelight {
 }
 
 object AndroidXSqlite {
-  private const val version = "2.2.0"
+  private const val version = "2.3.1"
 
   const val sqlite = "androidx.sqlite:sqlite:$version"
   const val sqlite_framework = "androidx.sqlite:sqlite-framework:$version"

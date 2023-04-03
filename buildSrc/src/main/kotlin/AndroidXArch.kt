@@ -10,7 +10,7 @@ fun DependencyHandler.androidXArch() {
 }
 
 object AndroidXArchLifeCycle {
-  private const val version = "2.4.1"
+  private const val version = "2.6.1"
 
   const val view_model = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
   const val saved_state = "androidx.lifecycle:lifecycle-viewmodel-savedstate:$version"
@@ -24,7 +24,7 @@ object AndroidXArchLifeCycle {
 }
 
 object AndroidXArchCore {
-  const val version = "2.1.0"
+  const val version = "2.2.0"
 
   const val common = "androidx.arch.core:core-common:$version"
   const val testing = "androidx.arch.core:core-testing:$version"

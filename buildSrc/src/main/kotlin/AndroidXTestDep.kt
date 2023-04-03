@@ -18,19 +18,19 @@ fun DependencyHandler.androidXTest() {
 
 
 object AndroidXTest {
-  private const val version = "1.4.0"
+  private const val version = "1.5.0"
 
   const val core = "androidx.test:core:$version"
   const val core_ktx = "androidx.test:core-ktx:$version"
-  const val runner = "androidx.test:runner:$version"
+  const val runner = "androidx.test:runner:1.5.2"
   const val rules = "androidx.test:rules:$version"
-  const val roboelectric = "org.robolectric:robolectric:4.8.1"
+  const val roboelectric = "org.robolectric:robolectric:4.9.2"
 }
 
 object AndroidXTestExt {
-  private const val version = "1.1.3"
+  private const val version = "1.1.5"
 
   const val junit = "androidx.test.ext:junit:$version"
   const val junit_ktx = "androidx.test.ext:junit-ktx:$version"
-  const val truth = "androidx.test.ext:truth:1.4.0"
+  const val truth = "androidx.test.ext:truth:1.5.0"
 }

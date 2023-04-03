@@ -30,6 +30,7 @@ private fun getReasonFromPasswordValidation(validation: PasswordValidationResult
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordTextField(
   value: String,

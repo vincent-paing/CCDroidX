@@ -108,13 +108,13 @@ wire {
 }
 
 dependencies {
-  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
   implementation(project(":common"))
   implementation(project(":data"))
   implementation(project(":weardatalayer"))
 
   timber()
-  implementation("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
+  implementation("org.ocpsoft.prettytime:prettytime:5.0.6.Final")
 
   compose()
   composePhone()
@@ -126,7 +126,7 @@ dependencies {
   androidXFragment()
   androidXNavigation()
   androidXWorkManager()
-  implementation("androidx.browser:browser:1.4.0")
+  implementation("androidx.browser:browser:1.5.0")
 
   androidxProtoDataStore()
   implementation("androidx.preference:preference-ktx:1.2.0")
@@ -134,7 +134,7 @@ dependencies {
   implementation(Material.material)
 
   // Firebase
-  implementation(project.dependencies.platform("com.google.firebase:firebase-bom:30.4.1"))
+  implementation(project.dependencies.platform("com.google.firebase:firebase-bom:31.4.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
 

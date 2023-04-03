@@ -18,7 +18,7 @@ fun DependencyHandler.junit5() {
 }
 
 internal object Jupiter {
-  private const val version = "5.8.2"
+  private const val version = "5.9.2"
 
   const val api = "org.junit.jupiter:junit-jupiter-api:${version}"
   const val engine = "org.junit.jupiter:junit-jupiter-engine:${version}"

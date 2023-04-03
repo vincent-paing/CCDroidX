@@ -8,7 +8,7 @@ fun DependencyHandler.androidXFragment() {
 
 
 object AndroidXFragment {
-  private const val version = "1.4.1"
+  private const val version = "1.5.6"
 
   const val fragment = "androidx.fragment:fragment:$version"
   const val fragment_ktx = "androidx.fragment:fragment-ktx:$version"

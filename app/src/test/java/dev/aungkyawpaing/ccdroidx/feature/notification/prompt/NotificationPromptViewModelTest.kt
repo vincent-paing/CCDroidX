@@ -6,6 +6,7 @@ import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.observeForTesting
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -28,15 +29,19 @@ class NotificationPromptViewModelTest : CoroutineTest() {
 
   private val projectRepo = mockk<ProjectRepo>()
   private val notificationDismissStore = mockk<NotificationDismissStore>()
+  private val notificationsEnableCheck = mockk<NotificationsEnableCheck>()
+
 
   private fun createViewModel(clock: Clock = Clock.systemDefaultZone()): NotificationPromptViewModel {
     return NotificationPromptViewModel(
       projectRepo,
       notificationDismissStore,
+      notificationsEnableCheck,
       clock,
     )
   }
 
+  private val currentTimeClock: Clock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
 
   @BeforeEach
   fun setUp() {
@@ -45,8 +50,12 @@ class NotificationPromptViewModelTest : CoroutineTest() {
     } returns flowOf(emptyList())
     coEvery {
       notificationDismissStore.getDismissTimeStamp()
-    } returns flowOf(LocalDateTime.now())
+    } returns flowOf(LocalDateTime.now(currentTimeClock).minusDays(14).minusNanos(1L))
+    every {
+      notificationsEnableCheck.areNotificationsEnabled()
+    }.returns(false)
   }
+
 
   @Nested
   @DisplayName("promptIsVisibleLiveData")
@@ -78,9 +87,21 @@ class NotificationPromptViewModelTest : CoroutineTest() {
       }
 
       @Test
-      fun `hide prompt if last dismiss time is within past 14 days`() = runTest {
-        val currentTimeClock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
+      fun `show prompt if last dismiss timestamp has not been saved yet`() = runTest {
+        coEvery {
+          notificationDismissStore.getDismissTimeStamp()
+        } returns flowOf(null)
 
+        val viewModel = createViewModel(currentTimeClock)
+
+        viewModel.promptIsVisibleLiveData.observeForTesting {
+          runCurrent()
+          Assertions.assertEquals(true, viewModel.promptIsVisibleLiveData.value)
+        }
+      }
+
+      @Test
+      fun `hide prompt if last dismiss time is within past 14 days`() = runTest {
         coEvery {
           notificationDismissStore.getDismissTimeStamp()
         } returns flowOf(LocalDateTime.now(currentTimeClock).minusDays(13))
@@ -93,22 +114,44 @@ class NotificationPromptViewModelTest : CoroutineTest() {
         }
       }
 
-      @Test
-      fun `show prompt if last dismiss time is not within past 14 days`() = runTest {
-        val currentTimeClock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
+      @Nested
+      @DisplayName("When last dismiss time is not within past 14 days")
+      internal inner class Within14Days {
 
-        coEvery {
-          notificationDismissStore.getDismissTimeStamp()
-        } returns flowOf(LocalDateTime.now(currentTimeClock).minusDays(14).minusNanos(1L))
-
-        val viewModel = createViewModel(currentTimeClock)
-
-        viewModel.promptIsVisibleLiveData.observeForTesting {
-          runCurrent()
-          Assertions.assertEquals(true, viewModel.promptIsVisibleLiveData.value)
+        @BeforeEach
+        fun setUp() {
+          coEvery {
+            notificationDismissStore.getDismissTimeStamp()
+          } returns flowOf(LocalDateTime.now(currentTimeClock).minusDays(14).minusNanos(1L))
         }
-      }
 
+        @Test
+        fun `hide prompt if notification is enabled already`() = runTest {
+          every {
+            notificationsEnableCheck.areNotificationsEnabled()
+          } returns true
+          val viewModel = createViewModel(currentTimeClock)
+
+          viewModel.promptIsVisibleLiveData.observeForTesting {
+            runCurrent()
+            Assertions.assertEquals(false, viewModel.promptIsVisibleLiveData.value)
+          }
+        }
+
+        @Test
+        fun `show prompt if notification is disabled`() = runTest {
+          every {
+            notificationsEnableCheck.areNotificationsEnabled()
+          } returns false
+          val viewModel = createViewModel(currentTimeClock)
+
+          viewModel.promptIsVisibleLiveData.observeForTesting {
+            runCurrent()
+            Assertions.assertEquals(true, viewModel.promptIsVisibleLiveData.value)
+          }
+        }
+
+      }
     }
   }
 

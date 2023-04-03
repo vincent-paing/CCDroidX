@@ -15,6 +15,7 @@ import javax.inject.Inject
 class NotificationPromptViewModel @Inject constructor(
   projectRepo: ProjectRepo,
   notificationDismissStore: NotificationDismissStore,
+  private val notificationsEnableCheck: NotificationsEnableCheck,
   private val clock: Clock
 ) : ViewModel() {
 
@@ -23,8 +24,14 @@ class NotificationPromptViewModel @Inject constructor(
       .combine(notificationDismissStore.getDismissTimeStamp()) { projectList, dismissTimeStamp ->
         return@combine Pair(projectList, dismissTimeStamp)
       }.map { (projectList, dismissTimeStamp) ->
-        return@map projectList.isNotEmpty() && LocalDateTime.now(clock).minusDays(14)
-          .isAfter(dismissTimeStamp)
+
+        val thereIsAtLeastOneProject = projectList.isNotEmpty()
+        val lastDismissTimeNotWithin14Days =
+          dismissTimeStamp == null || LocalDateTime.now(clock).minusDays(14)
+            .isAfter(dismissTimeStamp)
+        val notificationHasBeenDisabled = !notificationsEnableCheck.areNotificationsEnabled()
+
+        return@map thereIsAtLeastOneProject && lastDismissTimeNotWithin14Days && notificationHasBeenDisabled
       }.asLiveData()
 
 }

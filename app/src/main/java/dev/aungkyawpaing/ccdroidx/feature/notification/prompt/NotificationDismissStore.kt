@@ -7,6 +7,6 @@ interface NotificationDismissStore {
 
   fun saveDismissTimeStamp(dateTime: LocalDateTime)
 
-  fun getDismissTimeStamp(): Flow<LocalDateTime>
+  fun getDismissTimeStamp(): Flow<LocalDateTime?>
 
 }

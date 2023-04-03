@@ -129,6 +129,8 @@ dependencies {
   implementation("androidx.browser:browser:1.5.0")
 
   androidxProtoDataStore()
+  //TODO: Remove after migration notification prompt to its own module
+  implementation(AndroidXDataStore.preference)
   implementation("androidx.preference:preference-ktx:1.2.0")
 
   implementation(Material.material)

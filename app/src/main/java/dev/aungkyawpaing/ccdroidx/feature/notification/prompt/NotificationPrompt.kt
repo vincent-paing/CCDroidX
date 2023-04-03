@@ -18,7 +18,9 @@ fun NotificationPrompt(
 
   Box(modifier = modifier) {
     if (showPrompt.value) {
-      NotificationPromptCard(onDismissPrompt = { }, onEnableNotification = {})
+      NotificationPromptCard(onDismissPrompt = {
+        viewModel.onDismissClick()
+      }, onEnableNotification = {})
     }
   }
 }

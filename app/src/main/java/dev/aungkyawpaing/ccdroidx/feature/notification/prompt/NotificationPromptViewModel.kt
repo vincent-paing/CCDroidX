@@ -3,10 +3,12 @@ package dev.aungkyawpaing.ccdroidx.feature.notification.prompt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.time.Clock
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -14,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationPromptViewModel @Inject constructor(
   projectRepo: ProjectRepo,
-  notificationDismissStore: NotificationDismissStore,
+  private val notificationDismissStore: NotificationDismissStore,
   private val notificationsEnableCheck: NotificationsEnableCheck,
   private val clock: Clock
 ) : ViewModel() {
@@ -33,5 +35,11 @@ class NotificationPromptViewModel @Inject constructor(
 
         return@map thereIsAtLeastOneProject && lastDismissTimeNotWithin14Days && notificationHasBeenDisabled
       }.asLiveData()
+
+  fun onDismissClick() {
+    viewModelScope.launch {
+      notificationDismissStore.saveDismissTimeStamp(LocalDateTime.now(clock))
+    }
+  }
 
 }

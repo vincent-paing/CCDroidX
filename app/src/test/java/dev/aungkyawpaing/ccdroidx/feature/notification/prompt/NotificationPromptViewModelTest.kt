@@ -6,6 +6,7 @@ import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.observeForTesting
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,11 +29,12 @@ import java.time.ZoneId
 class NotificationPromptViewModelTest : CoroutineTest() {
 
   private val projectRepo = mockk<ProjectRepo>()
-  private val notificationDismissStore = mockk<NotificationDismissStore>()
+  private val notificationDismissStore = mockk<NotificationDismissStore>(relaxed = true)
   private val notificationsEnableCheck = mockk<NotificationsEnableCheck>()
 
+  private val currentTimeClock: Clock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
 
-  private fun createViewModel(clock: Clock = Clock.systemDefaultZone()): NotificationPromptViewModel {
+  private fun createViewModel(clock: Clock = currentTimeClock): NotificationPromptViewModel {
     return NotificationPromptViewModel(
       projectRepo,
       notificationDismissStore,
@@ -40,8 +42,6 @@ class NotificationPromptViewModelTest : CoroutineTest() {
       clock,
     )
   }
-
-  private val currentTimeClock: Clock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
 
   @BeforeEach
   fun setUp() {
@@ -155,5 +155,17 @@ class NotificationPromptViewModelTest : CoroutineTest() {
     }
   }
 
+  @Test
+  fun `save current time on clicking dismiss`() = runTest {
+    val viewModel = createViewModel()
 
+    viewModel.onDismissClick()
+
+    runCurrent()
+
+    coVerify(exactly = 1) {
+      notificationDismissStore.saveDismissTimeStamp(LocalDateTime.now(currentTimeClock))
+    }
+  }
+  
 }

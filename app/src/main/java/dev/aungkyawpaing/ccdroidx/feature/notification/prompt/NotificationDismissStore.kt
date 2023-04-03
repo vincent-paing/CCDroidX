@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 interface NotificationDismissStore {
 
-  fun saveDismissTimeStamp(dateTime: LocalDateTime)
+  suspend fun saveDismissTimeStamp(dateTime: LocalDateTime)
 
   fun getDismissTimeStamp(): Flow<LocalDateTime?>
 

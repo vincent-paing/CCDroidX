@@ -29,7 +29,7 @@ fun DependencyHandler.daggerHilt() {
 }
 
 object DaggerHilt {
-  private const val version = "2.41"
+  private const val version = "2.44"
 
   const val android = "com.google.dagger:hilt-android:$version"
   const val androidCompiler = "com.google.dagger:hilt-android-compiler:$version"
@@ -40,7 +40,7 @@ object DaggerHilt {
 }
 
 object Dagger {
-  private const val version = "2.28"
+  private const val version = "2.44"
 
   const val core = "com.google.dagger:dagger:$version"
   const val compiler = "com.google.dagger:dagger-compiler:$version"

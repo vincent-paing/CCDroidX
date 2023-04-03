@@ -74,12 +74,14 @@ android {
   }
 
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.1.1"
+    kotlinCompilerExtensionVersion = "1.4.4"
   }
 
   kotlinOptions {
     jvmTarget = "1.8"
   }
+
+  namespace = "dev.aungkyawpaing.ccdroidx"
 
   configurations.findByName("androidTestImplementation")?.run {
     exclude(group = "io.mockk", module = "mockk-agent-jvm")

@@ -13,7 +13,7 @@ object AndroidXDataStore {
 }
 
 object Wire {
-  private const val version = "4.3.0"
+  private const val version = "4.5.2"
 
   const val runtime = "com.squareup.wire:wire-runtime:$version"
   const val gradle_plugin = "com.squareup.wire:wire-gradle-plugin:$version"

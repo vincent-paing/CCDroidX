@@ -9,7 +9,7 @@ fun DependencyHandler.sqlDelight() {
 }
 
 object SqlDelight {
-  private const val version = "1.5.3"
+  private const val version = "1.5.5"
 
   const val gradle_plugin = "com.squareup.sqldelight:gradle-plugin:$version"
   const val android_driver = "com.squareup.sqldelight:android-driver:$version"

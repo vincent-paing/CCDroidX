@@ -2,6 +2,11 @@ package dev.aungkyawpaing.ccdroidx.feature.notification.prompt
 
 import android.content.Intent
 import android.provider.Settings
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -20,7 +25,19 @@ fun NotificationPrompt(
   val showPrompt = viewModel.promptIsVisibleLiveData.observeAsState(initial = false)
 
   Box(modifier = modifier) {
-    if (showPrompt.value) {
+    AnimatedVisibility(
+      visible = showPrompt.value,
+      enter = fadeIn() + slideInVertically(
+        initialOffsetY = {
+          it / 2
+        },
+      ),
+      exit = fadeOut() + slideOutVertically(
+        targetOffsetY = {
+          it / 2
+        },
+      )
+    ) {
       NotificationPromptCard(onDismissPrompt = {
         viewModel.onDismissClick()
       }, onEnableNotification = {

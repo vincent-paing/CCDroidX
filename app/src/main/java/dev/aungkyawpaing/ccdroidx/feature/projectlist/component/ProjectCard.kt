@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.common.Authentication
 import dev.aungkyawpaing.ccdroidx.common.BuildState

@@ -9,7 +9,6 @@ import androidx.compose.ui.test.performClick
 import androidx.lifecycle.liveData
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.roboeletric.FakeAndroidKeyStore
 import io.mockk.every
@@ -53,9 +52,7 @@ class NotificationPromptTest {
     }
 
     composeTestRule.setContent {
-      Mdc3Theme {
-        NotificationPrompt(viewModel = notificationPromptViewModel)
-      }
+      NotificationPrompt(viewModel = notificationPromptViewModel)
     }
 
     composeTestRule.onNodeWithText(notificationPromptText).assertDoesNotExist()
@@ -70,9 +67,7 @@ class NotificationPromptTest {
     }
 
     composeTestRule.setContent {
-      Mdc3Theme {
-        NotificationPrompt(viewModel = notificationPromptViewModel)
-      }
+      NotificationPrompt(viewModel = notificationPromptViewModel)
     }
 
     composeTestRule.onNodeWithText(notificationPromptText).assertIsDisplayed()
@@ -87,9 +82,7 @@ class NotificationPromptTest {
     }
 
     composeTestRule.setContent {
-      Mdc3Theme {
-        NotificationPrompt(viewModel = notificationPromptViewModel)
-      }
+      NotificationPrompt(viewModel = notificationPromptViewModel)
     }
 
     val contentDescription = ApplicationProvider.getApplicationContext<Context>()

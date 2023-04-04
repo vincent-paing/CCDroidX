@@ -5,7 +5,6 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.roboeletric.FakeAndroidKeyStore
@@ -41,9 +40,7 @@ class SelectProjectListTest {
       ProjectBuilder.buildProject(id = 1L, name = "project 2")
     )
     composeTestRule.setContent {
-      Mdc3Theme {
-        SelectProjectList(projectList = projectList, onProjectSelect = {})
-      }
+      SelectProjectList(projectList = projectList, onProjectSelect = {})
     }
 
     composeTestRule.onNodeWithText("project 1").assertIsDisplayed()
@@ -63,11 +60,9 @@ class SelectProjectListTest {
     var captureProject: Project? = null
 
     composeTestRule.setContent {
-      Mdc3Theme {
-        SelectProjectList(projectList = projectList, onProjectSelect = { project ->
-          captureProject = project
-        })
-      }
+      SelectProjectList(projectList = projectList, onProjectSelect = { project ->
+        captureProject = project
+      })
     }
 
     composeTestRule.onNodeWithText("project 1").assertIsDisplayed()

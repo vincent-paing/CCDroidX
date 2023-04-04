@@ -16,7 +16,6 @@ fun DependencyHandler.compose() {
   implementation(Compose.constraint_layout)
 
   implementation(Compose.material_icons_extended)
-  implementation(Compose.material_theme_adapter)
 
   testImplementation(Compose.ui_test)
   androidTestImplementation(Compose.ui_test)
@@ -57,9 +56,14 @@ internal object Compose {
 
   const val view_model = "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
   const val live_data = "androidx.compose.runtime:runtime-livedata:$version"
-  const val material_theme_adapter = "com.google.android.material:compose-theme-adapter-3:1.1.1"
   const val constraint_layout = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
   const val ui_test = "androidx.compose.ui:ui-test-junit4:$version"
   const val ui_test_manifest = "androidx.compose.ui:ui-test-manifest:$version"
+}
+
+ object Accompanist {
+  private const val version = "0.30.0"
+
+  const val theme_adpater_m3 = "com.google.accompanist:accompanist-themeadapter-material3:$version"
 }

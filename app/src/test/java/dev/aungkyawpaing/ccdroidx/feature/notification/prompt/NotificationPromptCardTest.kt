@@ -8,7 +8,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.roboeletric.FakeAndroidKeyStore
 import io.mockk.mockk
@@ -40,9 +39,7 @@ class NotificationPromptCardTest {
   fun `render Notification Prompt Card`() {
 
     composeTestRule.setContent {
-      Mdc3Theme {
-        NotificationPromptCard({}, {})
-      }
+      NotificationPromptCard({}, {})
     }
 
     composeTestRule.onNodeWithText("Enable notification to receive alerts when your pipelines status changes")
@@ -56,9 +53,7 @@ class NotificationPromptCardTest {
     val onDismissPrompt = mockk<() -> Unit>(relaxed = true)
 
     composeTestRule.setContent {
-      Mdc3Theme {
-        NotificationPromptCard(onDismissPrompt = onDismissPrompt, onEnableNotification =  {})
-      }
+      NotificationPromptCard(onDismissPrompt = onDismissPrompt, onEnableNotification = {})
     }
 
     val contentDescription = ApplicationProvider.getApplicationContext<Context>()
@@ -77,9 +72,7 @@ class NotificationPromptCardTest {
     val onEnableNotification = mockk<() -> Unit>(relaxed = true)
 
     composeTestRule.setContent {
-      Mdc3Theme {
-        NotificationPromptCard(onDismissPrompt = {}, onEnableNotification = onEnableNotification)
-      }
+      NotificationPromptCard(onDismissPrompt = {}, onEnableNotification = onEnableNotification)
     }
 
     composeTestRule.onNodeWithText("ENABLE NOTIFICATION").performClick()

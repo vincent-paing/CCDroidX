@@ -118,6 +118,7 @@ dependencies {
 
   compose()
   composePhone()
+  implementation(Accompanist.theme_adpater_m3)
 
   implementation(AndroidXConstraintLayout.constraint_layout)
   androidX()

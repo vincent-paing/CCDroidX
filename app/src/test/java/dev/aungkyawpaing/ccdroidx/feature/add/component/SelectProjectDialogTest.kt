@@ -5,7 +5,6 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.roboeletric.FakeAndroidKeyStore
@@ -43,9 +42,7 @@ class SelectProjectDialogTest {
       ProjectBuilder.buildProject(id = 1L, name = "project 2")
     )
     composeTestRule.setContent {
-      Mdc3Theme {
-        SelectProjectDialog(projectList = projectList, onProjectSelect = {}, onDismissRequest = {})
-      }
+      SelectProjectDialog(projectList = projectList, onProjectSelect = {}, onDismissRequest = {})
     }
 
     composeTestRule.onNodeWithText("project 1").assertIsDisplayed()
@@ -67,11 +64,9 @@ class SelectProjectDialogTest {
     var captureProject: Project? = null
 
     composeTestRule.setContent {
-      Mdc3Theme {
-        SelectProjectList(projectList = projectList, onProjectSelect = { project ->
-          captureProject = project
-        })
-      }
+      SelectProjectList(projectList = projectList, onProjectSelect = { project ->
+        captureProject = project
+      })
     }
 
     composeTestRule.onNodeWithText("project 1").assertIsDisplayed()
@@ -81,7 +76,7 @@ class SelectProjectDialogTest {
   }
 
   @Test
-  fun `invoke onDimisssRequest on clicking cancel`() {
+  fun `invoke onDismissRequest on clicking cancel`() {
 
     val project = ProjectBuilder.buildProject(id = 0L, name = "project 1")
 
@@ -93,13 +88,11 @@ class SelectProjectDialogTest {
     val onDismissRequest = mockk<() -> Unit>(relaxed = true)
 
     composeTestRule.setContent {
-      Mdc3Theme {
-        SelectProjectDialog(
-          projectList = projectList,
-          onProjectSelect = {},
-          onDismissRequest = onDismissRequest
-        )
-      }
+      SelectProjectDialog(
+        projectList = projectList,
+        onProjectSelect = {},
+        onDismissRequest = onDismissRequest
+      )
     }
 
     composeTestRule.onNodeWithText("Cancel").performClick()

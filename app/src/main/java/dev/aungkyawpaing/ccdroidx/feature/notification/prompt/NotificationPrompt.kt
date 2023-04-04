@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.google.accompanist.themeadapter.material3.Mdc3Theme
 
 @Composable
 fun NotificationPrompt(

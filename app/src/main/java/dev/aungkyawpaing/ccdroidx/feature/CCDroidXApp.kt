@@ -1,7 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature
 
 import androidx.compose.runtime.Composable
-import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.google.accompanist.themeadapter.material3.Mdc3Theme
 
 @Composable
 fun CCDroidXApp(

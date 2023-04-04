@@ -18,8 +18,8 @@ import com.google.android.material.composethemeadapter3.Mdc3Theme
 
 @Composable
 fun NotificationPrompt(
-  viewModel: NotificationPromptViewModel = viewModel(),
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  viewModel: NotificationPromptViewModel = viewModel()
 ) {
   val context = LocalContext.current
   val showPrompt = viewModel.promptIsVisibleLiveData.observeAsState(initial = false)

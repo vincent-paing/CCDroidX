@@ -4,6 +4,7 @@ import dev.aungkyawpaing.ccdroidx._testhelper_.CoroutineTest
 import dev.aungkyawpaing.ccdroidx._testhelper_.InstantTaskExecutorExtension
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
+import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.permssionflow.NotificationPermissionFlow
 import dev.aungkyawpaing.ccdroidx.observeForTesting
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -30,15 +31,15 @@ class NotificationPromptViewModelTest : CoroutineTest() {
 
   private val projectRepo = mockk<ProjectRepo>()
   private val notificationDismissStore = mockk<NotificationDismissStore>(relaxed = true)
-  private val notificationsEnableCheck = mockk<NotificationsEnableCheck>()
+  private val notificationsPermissionFlow = mockk<NotificationPermissionFlow>()
 
   private val currentTimeClock: Clock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
 
   private fun createViewModel(clock: Clock = currentTimeClock): NotificationPromptViewModel {
     return NotificationPromptViewModel(
       projectRepo,
+      notificationsPermissionFlow,
       notificationDismissStore,
-      notificationsEnableCheck,
       clock,
     )
   }
@@ -52,8 +53,8 @@ class NotificationPromptViewModelTest : CoroutineTest() {
       notificationDismissStore.getDismissTimeStamp()
     } returns flowOf(LocalDateTime.now(currentTimeClock).minusDays(14).minusNanos(1L))
     every {
-      notificationsEnableCheck.areNotificationsEnabled()
-    }.returns(false)
+      notificationsPermissionFlow.getFlow()
+    }.returns(flowOf(false))
   }
 
 
@@ -128,8 +129,8 @@ class NotificationPromptViewModelTest : CoroutineTest() {
         @Test
         fun `hide prompt if notification is enabled already`() = runTest {
           every {
-            notificationsEnableCheck.areNotificationsEnabled()
-          } returns true
+            notificationsPermissionFlow.getFlow()
+          } returns flowOf(true)
           val viewModel = createViewModel(currentTimeClock)
 
           viewModel.promptIsVisibleLiveData.observeForTesting {
@@ -141,8 +142,8 @@ class NotificationPromptViewModelTest : CoroutineTest() {
         @Test
         fun `show prompt if notification is disabled`() = runTest {
           every {
-            notificationsEnableCheck.areNotificationsEnabled()
-          } returns false
+            notificationsPermissionFlow.getFlow()
+          } returns flowOf(false)
           val viewModel = createViewModel(currentTimeClock)
 
           viewModel.promptIsVisibleLiveData.observeForTesting {
@@ -167,5 +168,5 @@ class NotificationPromptViewModelTest : CoroutineTest() {
       notificationDismissStore.saveDismissTimeStamp(LocalDateTime.now(currentTimeClock))
     }
   }
-  
+
 }

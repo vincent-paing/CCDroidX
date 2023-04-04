@@ -62,7 +62,7 @@ class NotificationPromptTest {
   }
 
   @Test
-  fun `render Notification Prompt Card`() {
+  fun `render Notification Prompt Card when prompt should be visible`() {
     every {
       notificationPromptViewModel.promptIsVisibleLiveData
     } returns liveData {

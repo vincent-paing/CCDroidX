@@ -9,6 +9,7 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.HiltAndroidApp
 import dev.aungkyawpaing.ccdroidx.work.MyWorkerFactory
+import dev.shreyaspatil.permissionFlow.PermissionFlow
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -30,6 +31,7 @@ class CCDroidXApp : Application(), Configuration.Provider {
     }
 
     DynamicColors.applyToActivitiesIfAvailable(this)
+    PermissionFlow.init(this)
   }
 
   override fun getWorkManagerConfiguration() =

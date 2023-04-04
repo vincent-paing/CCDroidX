@@ -140,6 +140,8 @@ dependencies {
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
 
+  implementation(PermissionFlow.android)
+
   daggerHilt()
 
   coroutine()

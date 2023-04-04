@@ -1,5 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -10,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncWorkerScheduler
+import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
+  @SuppressLint("MissingSuperCall")
   override fun onNewIntent(intent: Intent?) {
     super.onNewIntent(intent)
     handleIntent(intent ?: return)
@@ -70,5 +74,9 @@ class MainActivity : AppCompatActivity() {
     CustomTabsClient.connectAndInitialize(this, browserPackageName)
   }
 
+  override fun onResume() {
+    super.onResume()
+    PermissionFlow.getInstance().notifyPermissionsChanged(Manifest.permission.POST_NOTIFICATIONS)
+  }
 
 }

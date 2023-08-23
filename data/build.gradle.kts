@@ -1,19 +1,21 @@
 plugins {
-  id("com.android.library")
-  kotlin("android")
-  kotlin("kapt")
-  id("dagger.hilt.android.plugin")
-  id("com.squareup.sqldelight")
-  id("de.mannodermaus.android-junit5")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.kapt)
+  alias(libs.plugins.dagger.hilt)
+  alias(libs.plugins.sqldelight)
+  alias(libs.plugins.android.junit5)
 }
+
+val compileSdkVer : Int by rootProject.extra
+val minimumSdkVer : Int by rootProject.extra
 
 android {
   namespace = "dev.aungkyawpaing.ccdroidx.data"
-  compileSdk = BuildConfig.compileSdk
+  compileSdk = compileSdkVer
 
   defaultConfig {
-    minSdk = BuildConfig.minSdk
-    targetSdk = BuildConfig.targetSdk
+    minSdk = minimumSdkVer
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     testInstrumentationRunnerArguments["runnerBuilder"] =
@@ -60,22 +62,68 @@ sqldelight {
 }
 
 dependencies {
-  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+  coreLibraryDesugaring(libs.desugar.jdk.libs)
   implementation(project(":common"))
 
-  coroutine()
+  implementation(libs.coroutine.core)
+  implementation(libs.coroutine.android)
+  testImplementation(libs.coroutine.test)
+  androidTestImplementation(libs.coroutine.test)
 
-  timber()
+  implementation(libs.timber)
 
-  androidX()
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.core)
 
-  retrofit()
-  sqlDelight()
-  moshi()
+  implementation(libs.okhttp.client)
+  implementation(libs.okhttp.logger)
+  implementation(libs.simpleXml)
+  testImplementation(libs.okhttp.mockWebServer)
 
-  daggerHilt()
+  implementation(libs.androidx.sqlite)
+  implementation(libs.sqldelight.android)
+  implementation(libs.sqldelight.coroutine)
+  testImplementation(libs.sqldelight.jvm)
 
-  junit5()
-  androidXTest()
-  mockK()
+  implementation(libs.moshi.core)
+  implementation(libs.moshi.adapters)
+  implementation(libs.moshi.kotlin)
+  kapt(libs.moshi.codeGen)
+
+  implementation(libs.dagger.hilt.android)
+  implementation(libs.dagger.hilt.work)
+  kapt(libs.dagger.hilt.compiler)
+  kapt(libs.dagger.hilt.android.compiler)
+  androidTestImplementation(libs.dagger.hilt.android.testing)
+  kaptAndroidTest(libs.dagger.hilt.compiler)
+  kaptAndroidTest(libs.dagger.hilt.android.compiler)
+  testImplementation(libs.dagger.hilt.android.testing)
+  kaptTest(libs.dagger.hilt.compiler)
+  kaptTest(libs.dagger.hilt.android.compiler)
+
+  testImplementation(libs.junit.jupiter.api)
+  testRuntimeOnly(libs.junit.jupiter.engine)
+  testImplementation(libs.junit.jupiter.params)
+  testImplementation(libs.junit.junit4)
+  testRuntimeOnly(libs.junit.jupiter.vintageEngine)
+  androidTestImplementation(libs.junit.jupiter.api)
+  androidTestImplementation(libs.androidJunit5.core)
+  androidTestRuntimeOnly(libs.androidJunit5.runner)
+
+  testImplementation(libs.androidx.test.core)
+  testImplementation(libs.androidx.test.runner)
+  testImplementation(libs.androidx.test.rules)
+  testImplementation(libs.androidx.test.roboelectric)
+  testImplementation(libs.androidx.test.ext.junit)
+  testImplementation(libs.androidx.test.ext.truth)
+  androidTestImplementation(libs.androidx.test.core)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.test.rules)
+  androidTestImplementation(libs.androidx.test.ext.junit)
+  androidTestImplementation(libs.androidx.test.ext.truth)
+
+  testImplementation(libs.mockk)
+  testImplementation(libs.mockk.agentJvm)
+  androidTestImplementation(libs.mockk.agentJvm)
+  androidTestImplementation(libs.mockk.android)
 }

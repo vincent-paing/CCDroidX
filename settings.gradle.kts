@@ -12,9 +12,10 @@ dependencyResolutionManagement {
     mavenCentral()
   }
 }
+
 rootProject.name = "CCDroidX"
-include ':app'
-include ':wear'
-include ':common'
-include ':data'
-include ':weardatalayer'
+include(":app")
+include(":wear")
+include(":common")
+include(":data")
+include(":weardatalayer")

@@ -1,16 +1,18 @@
 plugins {
-  id("com.android.library")
-  id("org.jetbrains.kotlin.android")
-  id("kotlin-parcelize")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.pracelize)
 }
+
+val compileSdkVer : Int by rootProject.extra
+val minimumSdkVer : Int by rootProject.extra
 
 android {
   namespace = "dev.aungkyawpaing.ccdroidx.common"
-  compileSdk = BuildConfig.compileSdk
+  compileSdk = compileSdkVer
 
   defaultConfig {
-    minSdk = BuildConfig.minSdk
-    targetSdk = BuildConfig.targetSdk
+    minSdk = minimumSdkVer
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -34,7 +36,13 @@ android {
 }
 
 dependencies {
-  timber()
-  coroutine()
-  androidX()
+  implementation(libs.timber)
+
+  implementation(libs.coroutine.core)
+  implementation(libs.coroutine.android)
+  testImplementation(libs.coroutine.test)
+  androidTestImplementation(libs.coroutine.test)
+
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.core)
 }

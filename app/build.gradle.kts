@@ -1,29 +1,34 @@
 plugins {
-  id("com.android.application")
-  kotlin("android")
-  kotlin("kapt")
-  id("kotlin-parcelize")
-  id("androidx.navigation.safeargs.kotlin")
-  id("dagger.hilt.android.plugin")
-  id("com.squareup.wire")
-  id("de.mannodermaus.android-junit5")
-  id("com.google.gms.google-services")
-  id("com.google.firebase.crashlytics")
+  alias(libs.plugins.android.application)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.kapt)
+  alias(libs.plugins.kotlin.pracelize)
+  alias(libs.plugins.androidx.navigation.safeargs)
+  alias(libs.plugins.dagger.hilt)
+  alias(libs.plugins.wire)
+  alias(libs.plugins.android.junit5)
+  alias(libs.plugins.google.services)
+  alias(libs.plugins.firebase.crashlytics)
 }
 
 val ENV = System.getenv()
+val compileSdkVer : Int by rootProject.extra
+val targetSdkVer : Int by rootProject.extra
+val minimumSdkVer : Int by rootProject.extra
+val versionNameConfig : String by rootProject.extra
+val versionCodeConfig : Int by rootProject.extra
 
 android {
-  compileSdk = BuildConfig.compileSdk
+  compileSdk = compileSdkVer
 
   defaultConfig {
     applicationId = "dev.aungkyawpaing.ccdroidx"
-    minSdk = BuildConfig.minSdk
-    targetSdk = BuildConfig.targetSdk
-    versionCode = BuildConfig.versionCode
-    versionName = BuildConfig.versionName
+    minSdk = minimumSdkVer
+    targetSdk = targetSdkVer
+    versionCode = versionCodeConfig
+    versionName = versionNameConfig
     resourceConfigurations += setOf("en")
-    setProperty("archivesBaseName", "ccdroidx-${BuildConfig.versionName}")
+    setProperty("archivesBaseName", "ccdroidx-${versionNameConfig}")
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     testInstrumentationRunnerArguments["runnerBuilder"] =
@@ -108,46 +113,111 @@ wire {
 }
 
 dependencies {
-  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+  coreLibraryDesugaring(libs.desugar.jdk.libs)
   implementation(project(":common"))
   implementation(project(":data"))
   implementation(project(":weardatalayer"))
 
-  timber()
-  implementation("org.ocpsoft.prettytime:prettytime:5.0.6.Final")
+  implementation(libs.timber)
+  implementation(libs.prettytime)
 
-  compose()
-  composePhone()
-  implementation(Accompanist.theme_adpater_m3)
+  implementation(libs.compose.ui)
+  implementation(libs.compose.ui.tooling)
+  implementation(libs.compose.ui.tooling.preview)
+  testImplementation(libs.compose.ui.test)
+  androidTestImplementation(libs.compose.ui.test)
+  debugImplementation(libs.compose.ui.test.manifest)
+  implementation(libs.compose.foundation)
+  implementation(libs.compose.animation)
+  implementation(libs.compose.material3)
+  implementation(libs.compose.material.icon.extended)
+  implementation(libs.compose.constraintLayout)
+  implementation(libs.compose.liveData)
+  implementation(libs.compose.viewModel)
 
-  implementation(AndroidXConstraintLayout.constraint_layout)
-  androidX()
-  androidXArch()
-  androidXActivity()
-  androidXFragment()
-  androidXNavigation()
-  androidXWorkManager()
-  implementation("androidx.browser:browser:1.5.0")
+  implementation(libs.accompanist)
 
-  androidxProtoDataStore()
-  //TODO: Remove after migration notification prompt to its own module
-  implementation(AndroidXDataStore.preference)
-  implementation("androidx.preference:preference-ktx:1.2.0")
+  implementation(libs.androidx.constraintLayout)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.core)
 
-  implementation(Material.material)
+  implementation(libs.androidx.activity)
+  implementation(libs.androidx.fragment)
+  testImplementation(libs.androidx.fragment.testing)
+  androidTestImplementation(libs.androidx.fragment.testing)
+
+  implementation(libs.androidx.lifecycle.viewModel)
+  implementation(libs.androidx.lifecycle.liveData)
+  implementation(libs.androidx.lifecycle.extensions)
+  implementation(libs.androidx.lifecycle.java8)
+  implementation(libs.androidx.lifecycle.service)
+  testImplementation(libs.androidx.arch.testing)
+
+  implementation(libs.androidx.navigation.fragment)
+  implementation(libs.androidx.navigation.ui)
+  testImplementation(libs.androidx.navigation.testing)
+  androidTestImplementation(libs.androidx.navigation.testing)
+
+  implementation(libs.androidx.work.runtime)
+  implementation(libs.androidx.work.gcm)
+  implementation(libs.androidx.work.multiProcess)
+  androidTestImplementation(libs.androidx.work.testing)
+
+  implementation(libs.androidx.browser)
+
+  implementation(libs.androidx.dataStore)
+  implementation(libs.androidx.dataStore.preference)
+  implementation(libs.wire)
+  implementation(libs.androidx.preference)
+
+  implementation(libs.material)
 
   // Firebase
-  implementation(project.dependencies.platform("com.google.firebase:firebase-bom:31.4.0"))
-  implementation("com.google.firebase:firebase-analytics-ktx")
-  implementation("com.google.firebase:firebase-crashlytics-ktx")
+  implementation(platform(libs.firebase.bom))
+  implementation(libs.firebase.analytics)
+  implementation(libs.firebase.crashlytics)
 
-  implementation(PermissionFlow.android)
+  implementation(libs.permissionFlow.android)
 
-  daggerHilt()
+  implementation(libs.dagger.hilt.android)
+  implementation(libs.dagger.hilt.work)
+  kapt(libs.dagger.hilt.compiler)
+  kapt(libs.dagger.hilt.android.compiler)
+  androidTestImplementation(libs.dagger.hilt.android.testing)
+  kaptAndroidTest(libs.dagger.hilt.compiler)
+  kaptAndroidTest(libs.dagger.hilt.android.compiler)
+  testImplementation(libs.dagger.hilt.android.testing)
+  kaptTest(libs.dagger.hilt.compiler)
+  kaptTest(libs.dagger.hilt.android.compiler)
 
-  coroutine()
+  implementation(libs.coroutine.core)
+  implementation(libs.coroutine.android)
+  testImplementation(libs.coroutine.test)
+  androidTestImplementation(libs.coroutine.test)
 
-  junit5()
-  androidXTest()
-  mockK()
+  testImplementation(libs.junit.jupiter.api)
+  testRuntimeOnly(libs.junit.jupiter.engine)
+  testImplementation(libs.junit.jupiter.params)
+  testImplementation(libs.junit.junit4)
+  testRuntimeOnly(libs.junit.jupiter.vintageEngine)
+  androidTestImplementation(libs.junit.jupiter.api)
+  androidTestImplementation(libs.androidJunit5.core)
+  androidTestRuntimeOnly(libs.androidJunit5.runner)
+
+  testImplementation(libs.androidx.test.core)
+  testImplementation(libs.androidx.test.runner)
+  testImplementation(libs.androidx.test.rules)
+  testImplementation(libs.androidx.test.roboelectric)
+  testImplementation(libs.androidx.test.ext.junit)
+  testImplementation(libs.androidx.test.ext.truth)
+  androidTestImplementation(libs.androidx.test.core)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.test.rules)
+  androidTestImplementation(libs.androidx.test.ext.junit)
+  androidTestImplementation(libs.androidx.test.ext.truth)
+
+  testImplementation(libs.mockk)
+  testImplementation(libs.mockk.agentJvm)
+  androidTestImplementation(libs.mockk.agentJvm)
+  androidTestImplementation(libs.mockk.android)
 }

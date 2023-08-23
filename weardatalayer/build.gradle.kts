@@ -1,17 +1,19 @@
 plugins {
-  id("com.android.library")
-  kotlin("android")
-  kotlin("kapt")
-  id("dagger.hilt.android.plugin")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.kapt)
+  alias(libs.plugins.dagger.hilt)
 }
+
+val compileSdkVer : Int by rootProject.extra
+val minimumSdkVer : Int by rootProject.extra
 
 android {
   namespace = "dev.aungkyawpaing.wear.datalayer"
-  compileSdk = BuildConfig.compileSdk
+  compileSdk = compileSdkVer
 
   defaultConfig {
-    minSdk = BuildConfig.minSdk
-    targetSdk = BuildConfig.targetSdk
+    minSdk = minimumSdkVer
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -34,16 +36,38 @@ android {
 
 dependencies {
   implementation(project(":common"))
-  timber()
+  implementation(libs.timber)
 
-  coroutine()
-  coroutinePlayService()
+  implementation(libs.coroutine.core)
+  implementation(libs.coroutine.android)
+  testImplementation(libs.coroutine.test)
+  androidTestImplementation(libs.coroutine.test)
+  implementation(libs.coroutine.playServices)
 
-  implementation(AndroidXWear.play_service_wearable)
+  implementation(libs.moshi.core)
+  implementation(libs.moshi.adapters)
+  implementation(libs.moshi.kotlin)
+  kapt(libs.moshi.codeGen)
 
-  moshi()
+  implementation(libs.dagger.hilt.android)
+  implementation(libs.dagger.hilt.work)
+  kapt(libs.dagger.hilt.compiler)
+  kapt(libs.dagger.hilt.android.compiler)
+  androidTestImplementation(libs.dagger.hilt.android.testing)
+  kaptAndroidTest(libs.dagger.hilt.compiler)
+  kaptAndroidTest(libs.dagger.hilt.android.compiler)
+  testImplementation(libs.dagger.hilt.android.testing)
+  kaptTest(libs.dagger.hilt.compiler)
+  kaptTest(libs.dagger.hilt.android.compiler)
 
-  daggerHilt()
+  implementation(libs.androidx.wear.playservices)
 
-  junit5()
+  testImplementation(libs.junit.jupiter.api)
+  testRuntimeOnly(libs.junit.jupiter.engine)
+  testImplementation(libs.junit.jupiter.params)
+  testImplementation(libs.junit.junit4)
+  testRuntimeOnly(libs.junit.jupiter.vintageEngine)
+  androidTestImplementation(libs.junit.jupiter.api)
+  androidTestImplementation(libs.androidJunit5.core)
+  androidTestRuntimeOnly(libs.androidJunit5.runner)
 }

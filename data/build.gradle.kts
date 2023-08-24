@@ -113,7 +113,6 @@ dependencies {
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.androidx.test.runner)
   testImplementation(libs.androidx.test.rules)
-  testImplementation(libs.androidx.test.roboelectric)
   testImplementation(libs.androidx.test.ext.junit)
   testImplementation(libs.androidx.test.ext.truth)
   androidTestImplementation(libs.androidx.test.core)

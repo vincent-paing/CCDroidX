@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Required due to bug in mockk : https://github.com/mockk/mockk/issues/297#issuecomment-641361770-->
+    <application android:extractNativeLibs="true" />
+
+</manifest>

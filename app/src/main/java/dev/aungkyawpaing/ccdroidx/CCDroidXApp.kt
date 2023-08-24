@@ -1,7 +1,6 @@
 package dev.aungkyawpaing.ccdroidx
 
 import android.app.Application
-import android.os.Build
 import androidx.work.Configuration
 import com.google.android.material.color.DynamicColors
 import com.google.firebase.analytics.ktx.analytics
@@ -25,10 +24,8 @@ class CCDroidXApp : Application(), Configuration.Provider {
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
     }
-    if (!isRoboUnitTest()) {
-      Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
-      Firebase.analytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
-    }
+    Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+    Firebase.analytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
 
     DynamicColors.applyToActivitiesIfAvailable(this)
     PermissionFlow.init(this)
@@ -38,6 +35,4 @@ class CCDroidXApp : Application(), Configuration.Provider {
     Configuration.Builder()
       .setWorkerFactory(workerFactory)
       .build()
-
-  fun isRoboUnitTest() = "robolectric" == Build.FINGERPRINT
 }

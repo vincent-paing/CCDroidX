@@ -8,34 +8,18 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.liveData
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.aungkyawpaing.ccdroidx.R
-import dev.aungkyawpaing.ccdroidx.roboeletric.FakeAndroidKeyStore
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
+import org.junit.jupiter.api.DisplayName
 
-@RunWith(AndroidJUnit4::class)
-@Config(
-  instrumentedPackages = ["androidx.loader.content"]
-)
 class NotificationPromptTest {
 
   @get:Rule
   val composeTestRule = createComposeRule()
-
-  companion object {
-    @JvmStatic
-    @BeforeClass
-    fun beforeClass() {
-      FakeAndroidKeyStore.setup
-    }
-  }
 
   private val notificationPromptText = ApplicationProvider.getApplicationContext<Context>()
     .getString(R.string.notification_prompt_body)
@@ -43,7 +27,8 @@ class NotificationPromptTest {
   private val notificationPromptViewModel = mockk<NotificationPromptViewModel>(relaxUnitFun = true)
 
   @Test
-  fun `does not render Notification Prompt Card when prompt should not be visible`() {
+  @DisplayName("does not render Notification Prompt Card when prompt should not be visible")
+  fun doesNotRenderNotificationPromptCardWhenPromptIsNotVisible() {
 
     every {
       notificationPromptViewModel.promptIsVisibleLiveData
@@ -59,7 +44,8 @@ class NotificationPromptTest {
   }
 
   @Test
-  fun `render Notification Prompt Card when prompt should be visible`() {
+  @DisplayName("render Notification Prompt Card when prompt should be visible")
+  fun renderNotificationCardWhenPromptIsVisible() {
     every {
       notificationPromptViewModel.promptIsVisibleLiveData
     } returns liveData {
@@ -74,7 +60,8 @@ class NotificationPromptTest {
   }
 
   @Test
-  fun `invoke onDismissClick from viewModel on clicking dismiss`() {
+  @DisplayName("invoke onDismissClick on clicking dismiss")
+  fun invokeOnDismissClickOnClickingDismiss() {
     every {
       notificationPromptViewModel.promptIsVisibleLiveData
     } returns liveData {

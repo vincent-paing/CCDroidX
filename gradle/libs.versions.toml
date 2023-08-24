@@ -10,7 +10,6 @@ android-junit5 = "1.3.0"
 dagger = "2.47"
 sqldelight = "1.5.5"
 timber = "5.0.1"
-androidx-activity = "1.7.0"
 compose = "1.4.0"
 compose-wear = "1.1.2"
 androidx-lifecycle = "2.6.1"
@@ -22,13 +21,12 @@ permission-flow = "1.0.0"
 kotlinx-coroutine = "1.6.4"
 jupiter = "5.9.2"
 androidx-test = "1.5.0"
-mockk = "1.13.4"
+mockk = "1.12.3"
 okhttp = "4.9.3"
 moshi = "1.14.0"
 
 [libraries]
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
-google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
 prettytime = { module = "org.ocpsoft.prettytime:prettytime", version.ref = "prettytime" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
@@ -94,7 +92,6 @@ androidJunit5-runner = { group = "de.mannodermaus.junit5", name = "android-test-
 androidx-test-core = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version = "1.5.2" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidx-test" }
-androidx-test-roboelectric = { module = "org.robolectric:robolectric", version = "4.9.2" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit-ktx", version = "1.1.5" }
 androidx-test-ext-truth = { group = "androidx.test.ext", name = "truth", version = "1.5.0" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }

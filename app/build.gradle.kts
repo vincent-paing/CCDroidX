@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
@@ -12,11 +14,11 @@ plugins {
 }
 
 val ENV = System.getenv()
-val compileSdkVer : Int by rootProject.extra
-val targetSdkVer : Int by rootProject.extra
-val minimumSdkVer : Int by rootProject.extra
-val versionNameConfig : String by rootProject.extra
-val versionCodeConfig : Int by rootProject.extra
+val compileSdkVer: Int by rootProject.extra
+val targetSdkVer: Int by rootProject.extra
+val minimumSdkVer: Int by rootProject.extra
+val versionNameConfig: String by rootProject.extra
+val versionCodeConfig: Int by rootProject.extra
 
 android {
   compileSdk = compileSdkVer
@@ -73,6 +75,29 @@ android {
   }
 
   testOptions {
+    managedDevices {
+      devices {
+        maybeCreate<ManagedVirtualDevice>("pixel5api31aosp").apply {
+          device = "Pixel 5"
+          // Prefer to use latest image but aosp build is only available for 31 as of now
+          apiLevel = 31
+          systemImageSource = "aosp"
+        }
+        maybeCreate<ManagedVirtualDevice>("pixel5api28aosp").apply {
+          device = "Pixel 5"
+          apiLevel = 28
+          systemImageSource = "aosp"
+        }
+        groups {
+          maybeCreate("testDevices").apply {
+            targetDevices.add(devices["pixel5api31aosp"])
+            targetDevices.add(devices["pixel5api28aosp"])
+          }
+        }
+
+      }
+    }
+
     unitTests {
       isIncludeAndroidResources = true
     }
@@ -207,7 +232,6 @@ dependencies {
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.androidx.test.runner)
   testImplementation(libs.androidx.test.rules)
-  testImplementation(libs.androidx.test.roboelectric)
   testImplementation(libs.androidx.test.ext.junit)
   testImplementation(libs.androidx.test.ext.truth)
   androidTestImplementation(libs.androidx.test.core)
@@ -218,6 +242,5 @@ dependencies {
 
   testImplementation(libs.mockk)
   testImplementation(libs.mockk.agentJvm)
-  androidTestImplementation(libs.mockk.agentJvm)
   androidTestImplementation(libs.mockk.android)
 }

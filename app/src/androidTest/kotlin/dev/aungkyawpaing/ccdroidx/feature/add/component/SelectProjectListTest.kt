@@ -4,36 +4,21 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.common.Project
-import dev.aungkyawpaing.ccdroidx.roboeletric.FakeAndroidKeyStore
 import org.junit.Assert
-import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
+import org.junit.jupiter.api.DisplayName
 
-@RunWith(AndroidJUnit4::class)
-@Config(
-  instrumentedPackages = ["androidx.loader.content"]
-)
 class SelectProjectListTest {
 
   @get:Rule
   val composeTestRule = createComposeRule()
 
-  companion object {
-    @JvmStatic
-    @BeforeClass
-    fun beforeClass() {
-      FakeAndroidKeyStore.setup
-    }
-  }
-
   @Test
-  fun `render Project List`() {
+  @DisplayName("render Project List")
+  fun renderProjectList() {
 
     val projectList = listOf(
       ProjectBuilder.buildProject(id = 0L, name = "project 1"),
@@ -48,7 +33,8 @@ class SelectProjectListTest {
   }
 
   @Test
-  fun `invoke onProjectSelect on clicking an item`() {
+  @DisplayName("invoke onProjectSelect on clicking an item")
+  fun invokeOnProjectSelectOnClickingAnItem() {
 
     val project = ProjectBuilder.buildProject(id = 0L, name = "project 1")
 

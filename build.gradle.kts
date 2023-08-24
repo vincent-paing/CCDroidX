@@ -1,6 +1,6 @@
 val compileSdkVer by extra { 34 }
 val targetSdkVer by extra { 34 }
-val minimumSdkVer by extra { 24 }
+val minimumSdkVer by extra { 28 }
 
 private val versionMajor = 1
 private val versionMinor = 2

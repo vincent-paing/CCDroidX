@@ -7,36 +7,21 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.aungkyawpaing.ccdroidx.R
-import dev.aungkyawpaing.ccdroidx.roboeletric.FakeAndroidKeyStore
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
+import org.junit.jupiter.api.DisplayName
 
-@RunWith(AndroidJUnit4::class)
-@Config(
-  instrumentedPackages = ["androidx.loader.content"]
-)
 class NotificationPromptCardTest {
 
   @get:Rule
   val composeTestRule = createComposeRule()
 
-  companion object {
-    @JvmStatic
-    @BeforeClass
-    fun beforeClass() {
-      FakeAndroidKeyStore.setup
-    }
-  }
-
   @Test
-  fun `render Notification Prompt Card`() {
+  @DisplayName("render Notification Prompt Card")
+  fun renderNotificationPromptCard() {
 
     composeTestRule.setContent {
       NotificationPromptCard({}, {})
@@ -48,7 +33,8 @@ class NotificationPromptCardTest {
   }
 
   @Test
-  fun `invoke onDismissPrompt on clicking cross`() {
+  @DisplayName("invoke onDismissPrompt on clicking cross")
+  fun invokeOnDismissPromptOnClickingCross() {
 
     val onDismissPrompt = mockk<() -> Unit>(relaxed = true)
 
@@ -67,7 +53,8 @@ class NotificationPromptCardTest {
   }
 
   @Test
-  fun `invoke onEnableNotification on clicking enable notification`() {
+  @DisplayName("invoke onEnableNotification on clicking enable notification")
+  fun invokeOnEnableNotificationOnClickingEnableNotification() {
 
     val onEnableNotification = mockk<() -> Unit>(relaxed = true)
 

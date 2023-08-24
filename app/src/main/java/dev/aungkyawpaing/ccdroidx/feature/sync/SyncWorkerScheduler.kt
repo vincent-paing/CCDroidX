@@ -5,7 +5,7 @@ import androidx.work.*
 import dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval.SyncInterval
 import java.time.Duration
 
-class SyncWorkerScheduler constructor(
+class SyncWorkerScheduler(
   val context: Context
 ) {
 
@@ -29,7 +29,7 @@ class SyncWorkerScheduler constructor(
     WorkManager.getInstance(context)
       .enqueueUniquePeriodicWork(
         SyncProjectWorker.TAG,
-        ExistingPeriodicWorkPolicy.REPLACE,
+        ExistingPeriodicWorkPolicy.UPDATE,
         syncWorkRequest
       )
 

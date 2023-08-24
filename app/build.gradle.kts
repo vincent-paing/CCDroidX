@@ -68,6 +68,13 @@ android {
     }
   }
 
+  flavorDimensions += "version"
+  productFlavors {
+    create("floss") {}
+    create("full") {}
+  }
+
+
   compileOptions {
     isCoreLibraryDesugaringEnabled = true
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -141,7 +148,7 @@ dependencies {
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   implementation(project(":common"))
   implementation(project(":data"))
-  implementation(project(":weardatalayer"))
+  "fullImplementation"(project(":weardatalayer"))
 
   implementation(libs.timber)
   implementation(libs.prettytime)
@@ -184,7 +191,7 @@ dependencies {
   androidTestImplementation(libs.androidx.navigation.testing)
 
   implementation(libs.androidx.work.runtime)
-  implementation(libs.androidx.work.gcm)
+  "fullImplementation"(libs.androidx.work.gcm)
   implementation(libs.androidx.work.multiProcess)
   androidTestImplementation(libs.androidx.work.testing)
 
@@ -198,9 +205,9 @@ dependencies {
   implementation(libs.material)
 
   // Firebase
-  implementation(platform(libs.firebase.bom))
-  implementation(libs.firebase.analytics)
-  implementation(libs.firebase.crashlytics)
+  "fullImplementation"(platform(libs.firebase.bom))
+  "fullImplementation"(libs.firebase.analytics)
+  "fullImplementation"(libs.firebase.crashlytics)
 
   implementation(libs.permissionFlow.android)
 

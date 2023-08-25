@@ -84,21 +84,15 @@ android {
   testOptions {
     managedDevices {
       devices {
-        maybeCreate<ManagedVirtualDevice>("pixel5api31aosp").apply {
+        maybeCreate<ManagedVirtualDevice>("Pixel 5").apply {
           device = "Pixel 5"
-          // Prefer to use latest image but aosp build is only available for 31 as of now
-          apiLevel = 31
-          systemImageSource = "aosp"
-        }
-        maybeCreate<ManagedVirtualDevice>("pixel5api28aosp").apply {
-          device = "Pixel 5"
-          apiLevel = 28
-          systemImageSource = "aosp"
+          // Prefer to use latest image but aosp-atd build is only available for 30 as of now
+          apiLevel = 30
+          systemImageSource = "aosp-atd"
         }
         groups {
           maybeCreate("testDevices").apply {
-            targetDevices.add(devices["pixel5api31aosp"])
-            targetDevices.add(devices["pixel5api28aosp"])
+            targetDevices.add(devices["Pixel 5"])
           }
         }
 

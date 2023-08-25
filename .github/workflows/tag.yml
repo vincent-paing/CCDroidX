@@ -44,7 +44,7 @@ jobs:
         run: ./gradlew lintDebug
 
       - name: Unit Test
-        run: ./gradlew testDebug
+        run: ./gradlew testDebugUnitTest
 
   create_apk:
     needs: test

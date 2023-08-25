@@ -30,3 +30,12 @@
 -keepclassmembers class * {
     @org.simpleframework.xml.* *;
 }
+
+# Added becuase of issue with r8 in AGP 8.0
+# Ref: https://stackoverflow.com/a/76312120
+-dontwarn org.xmlpull.v1.**
+-dontwarn org.kxml2.io.**
+-dontwarn android.content.res.**
+
+-keep class org.xmlpull.** { *; }
+-keepclassmembers class org.xmlpull.** { *; }

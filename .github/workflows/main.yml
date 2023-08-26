@@ -21,6 +21,9 @@ jobs:
         run: |
           touch release.keystore
 
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
       - name: Decrypt google service json
         run: |
           TMP_GOOGLE_SERVICE_JSON_DIR="${RUNNER_TEMP}"/play
@@ -67,6 +70,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
 
       - name: Stub release keystore file
         run: |

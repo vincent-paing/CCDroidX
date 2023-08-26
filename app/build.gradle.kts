@@ -84,7 +84,7 @@ android {
   testOptions {
     managedDevices {
       devices {
-        maybeCreate<ManagedVirtualDevice>("Pixel 5").apply {
+        maybeCreate<ManagedVirtualDevice>("Pixel5").apply {
           device = "Pixel 5"
           // Prefer to use latest image but aosp-atd build is only available for 30 as of now
           apiLevel = 30
@@ -92,7 +92,7 @@ android {
         }
         groups {
           maybeCreate("testDevices").apply {
-            targetDevices.add(devices["Pixel 5"])
+            targetDevices.add(devices["Pixel5"])
           }
         }
 

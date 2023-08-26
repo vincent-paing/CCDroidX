@@ -40,8 +40,20 @@ jobs:
       - name: Lint check
         run: ./gradlew lintDebug
 
+      - name: Upload lint reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: lint-reports
+          path: '**/build/reports/lint-results-*.html'
+
       - name: Unit Test
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testFlossDebugUnitTest testFullDebugUnitTest testDebugUnitTest
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-unit
+          path: '**/build/reports/tests/test*UnitTest'
 
   androidTest:
     runs-on: macOS-latest
@@ -85,3 +97,9 @@ jobs:
       - name: Run Android Test
         run: ./gradlew testDevicesGroupFlossDebugAndroidTest testDevicesGroupFullDebugAndroidTest --no-parallel --max-workers=1
           -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
+
+      - name: Upload Android test reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports-GMD
+          path: '**/build/reports/androidTests/managedDevice/debug/flavors'

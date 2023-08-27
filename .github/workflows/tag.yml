@@ -44,7 +44,7 @@ jobs:
           mv "${TMP_KEYSTORE_FILE_PATH}"/release.keystore release.keystore
 
       - name: Build app
-        run: ./gradlew assembleFlossRelease assembleFullRelease
+        run: ./gradlew assembleFlossRelease assembleFullRelease wear:assembleRelease
 
       - name: Create Release
         id: create_release

@@ -1,5 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature.add.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
@@ -12,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -24,6 +26,7 @@ private fun getReasonFromPasswordValidation(validation: PasswordValidationResult
     PasswordValidationResult.CORRECT -> {
       ""
     }
+
     PasswordValidationResult.INCORRECT_EMPTY_TEXT -> {
       return stringResource(R.string.error_password_url_empty_text)
     }
@@ -41,6 +44,7 @@ fun PasswordTextField(
 
   var passwordVisible by rememberSaveable { mutableStateOf(false) }
   val isPasswordValidationError = passwordValidationResult != PasswordValidationResult.CORRECT
+  val error = getReasonFromPasswordValidation(passwordValidationResult)
 
   OutlinedTextField(
     value = value, onValueChange = onValueChange,
@@ -62,11 +66,17 @@ fun PasswordTextField(
     visualTransformation = if (passwordVisible) PasswordVisualTransformation() else VisualTransformation.None,
     singleLine = true,
     isError = isPasswordValidationError,
-    modifier = Modifier.padding(top = 8.dp)
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(top = 8.dp)
+      .semantics {
+        if (isPasswordValidationError)
+          error(error)
+      }
   )
   if (isPasswordValidationError) {
     Text(
-      text = getReasonFromPasswordValidation(passwordValidationResult),
+      text = error,
       color = MaterialTheme.colorScheme.error,
       style = MaterialTheme.typography.bodySmall,
       modifier = Modifier.padding(start = 16.dp)

@@ -1,5 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature.add.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -8,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.feature.add.usernamevalidation.UsernameValidationResult
@@ -18,6 +20,7 @@ private fun getReasonFromUsernameValidation(validation: UsernameValidationResult
     UsernameValidationResult.CORRECT -> {
       ""
     }
+
     UsernameValidationResult.INCORRECT_EMPTY_TEXT -> {
       stringResource(id = R.string.error_username_empty_text)
     }
@@ -34,6 +37,7 @@ fun UsernameTextField(
 ) {
 
   val isUsernameValidationError = usernameValidation != UsernameValidationResult.CORRECT
+  val error = getReasonFromUsernameValidation(usernameValidation)
 
   OutlinedTextField(
     value = value,
@@ -47,11 +51,17 @@ fun UsernameTextField(
     },
     isError = isUsernameValidationError,
     singleLine = true,
-    modifier = Modifier.padding(top = 8.dp)
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(top = 8.dp)
+      .semantics {
+        if (isUsernameValidationError)
+          error(error)
+      }
   )
   if (isUsernameValidationError) {
     Text(
-      text = getReasonFromUsernameValidation(usernameValidation),
+      text = error,
       color = MaterialTheme.colorScheme.error,
       style = MaterialTheme.typography.bodySmall,
       modifier = Modifier.padding(start = 16.dp)

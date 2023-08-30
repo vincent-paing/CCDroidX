@@ -1,5 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature.add.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,9 +24,11 @@ private fun getFeedUrlValidation(validation: FeedUrlValidationResult): String {
     FeedUrlValidationResult.CORRECT -> {
       ""
     }
+
     FeedUrlValidationResult.INCORRECT_EMPTY_TEXT -> {
       stringResource(id = (R.string.error_feed_url_empty_text))
     }
+
     FeedUrlValidationResult.INCORRECT_INVALID_URL -> {
       stringResource(id = R.string.error_feed_url_invalid)
     }
@@ -59,10 +62,12 @@ fun FeedUrlTextField(
         keyboardController?.hide()
       }
     ),
-    modifier = Modifier.semantics {
-      if (isFeedUrlError)
-        error(error)
-    }
+    modifier = Modifier
+      .fillMaxWidth()
+      .semantics {
+        if (isFeedUrlError)
+          error(error)
+      }
   )
   if (isFeedUrlError) {
     Text(

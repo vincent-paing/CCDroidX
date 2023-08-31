@@ -1,7 +1,7 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.kotlin.kapt)
+  alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.dagger.hilt)
 }
 
@@ -148,14 +148,14 @@ dependencies {
 
   implementation(libs.dagger.hilt.android)
   implementation(libs.dagger.hilt.work)
-  kapt(libs.dagger.hilt.compiler)
-  kapt(libs.dagger.hilt.android.compiler)
+  ksp(libs.dagger.hilt.compiler)
+  ksp(libs.dagger.hilt.android.compiler)
   androidTestImplementation(libs.dagger.hilt.android.testing)
-  kaptAndroidTest(libs.dagger.hilt.compiler)
-  kaptAndroidTest(libs.dagger.hilt.android.compiler)
+  kspAndroidTest(libs.dagger.hilt.compiler)
+  kspAndroidTest(libs.dagger.hilt.android.compiler)
   testImplementation(libs.dagger.hilt.android.testing)
-  kaptTest(libs.dagger.hilt.compiler)
-  kaptTest(libs.dagger.hilt.android.compiler)
+  kspTest(libs.dagger.hilt.compiler)
+  kspTest(libs.dagger.hilt.android.compiler)
 
   testImplementation(libs.junit.jupiter.api)
   testRuntimeOnly(libs.junit.jupiter.engine)

@@ -1,9 +1,11 @@
+import androidx.navigation.safe.args.generator.ext.capitalize
 import com.android.build.api.dsl.ManagedVirtualDevice
+import com.google.devtools.ksp.gradle.KspTaskJvm
 
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.kotlin.kapt)
+  alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.kotlin.pracelize)
   alias(libs.plugins.androidx.navigation.safeargs)
   alias(libs.plugins.dagger.hilt)
@@ -125,10 +127,6 @@ android {
   }
 }
 
-kapt {
-  correctErrorTypes = true
-}
-
 hilt {
   enableAggregatingTask = true
 }
@@ -207,14 +205,14 @@ dependencies {
 
   implementation(libs.dagger.hilt.android)
   implementation(libs.dagger.hilt.work)
-  kapt(libs.dagger.hilt.compiler)
-  kapt(libs.dagger.hilt.android.compiler)
+  ksp(libs.dagger.hilt.compiler)
+  ksp(libs.dagger.hilt.android.compiler)
   androidTestImplementation(libs.dagger.hilt.android.testing)
-  kaptAndroidTest(libs.dagger.hilt.compiler)
-  kaptAndroidTest(libs.dagger.hilt.android.compiler)
+  kspAndroidTest(libs.dagger.hilt.compiler)
+  kspAndroidTest(libs.dagger.hilt.android.compiler)
   testImplementation(libs.dagger.hilt.android.testing)
-  kaptTest(libs.dagger.hilt.compiler)
-  kaptTest(libs.dagger.hilt.android.compiler)
+  kspTest(libs.dagger.hilt.compiler)
+  kspTest(libs.dagger.hilt.android.compiler)
 
   implementation(libs.coroutine.core)
   implementation(libs.coroutine.android)
@@ -244,4 +242,17 @@ dependencies {
   testImplementation(libs.mockk)
   testImplementation(libs.mockk.agentJvm)
   androidTestImplementation(libs.mockk.android)
+}
+
+androidComponents {
+  onVariants { variant ->
+    // https://github.com/square/wire/issues/2335
+    val buildType = variant.buildType.toString()
+    val flavor = variant.flavorName.toString()
+    tasks.withType<KspTaskJvm> {
+      if (name.contains(buildType, ignoreCase = true) && name.contains(flavor, ignoreCase = true)) {
+        dependsOn("generate${flavor.capitalize()}${buildType.capitalize()}Protos")
+      }
+    }
+  }
 }

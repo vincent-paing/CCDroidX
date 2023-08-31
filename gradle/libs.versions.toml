@@ -9,7 +9,7 @@ androidx-test = "1.5.0"
 androidx-work = "2.8.1"
 compose = "1.4.0"
 compose-wear = "1.1.2"
-dagger = "2.47"
+dagger = "2.48"
 desugar-jdk-libs = "2.0.3"
 firebase-crashlytics-gradle = "2.9.8"
 google-services = "4.3.15"
@@ -124,7 +124,7 @@ dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-ksp = { id= "com.google.devtools.ksp", version="1.8.10-1.0.9"}
 kotlin-pracelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
 wire = { id = "com.squareup.wire", version.ref = "wire" }

@@ -61,7 +61,7 @@ fun ProjectListTopAppBar(
   val lastSynced = viewModel.lastSyncedLiveData.observeAsState(initial = null)
   val onProgressSyncedEvent = viewModel.onProgressSyncFinishEvent.observeAsState(initial = false)
 
-  SmallTopAppBar(
+  TopAppBar(
     title = {
       Column {
         Text(stringResource(id = R.string.app_name), modifier = Modifier.semantics {

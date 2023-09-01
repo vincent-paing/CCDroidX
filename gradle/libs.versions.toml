@@ -67,7 +67,7 @@ compose-constraintLayout = { module = "androidx.constraintlayout:constraintlayou
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-liveData = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose" }
 compose-material-icon-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
-compose-material3 = { module = "androidx.compose.material3:material3", version = "1.0.1" }
+compose-material3 = { module = "androidx.compose.material3:material3", version = "1.1.1" }
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
 compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose" }

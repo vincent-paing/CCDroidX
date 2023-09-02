@@ -13,13 +13,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 
 @Composable
 fun NotificationPrompt(
   modifier: Modifier = Modifier,
-  viewModel: NotificationPromptViewModel = viewModel()
+  viewModel: NotificationPromptViewModel = hiltViewModel()
 ) {
   val context = LocalContext.current
   val showPrompt = viewModel.promptIsVisibleLiveData.observeAsState(initial = false)

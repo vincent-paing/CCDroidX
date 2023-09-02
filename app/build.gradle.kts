@@ -161,6 +161,10 @@ dependencies {
 
   implementation(libs.accompanist)
 
+  implementation(libs.androidx.hilt.navigation)
+  implementation(libs.compose.destinations.core)
+  ksp(libs.compose.destinations.ksp)
+
   implementation(libs.androidx.constraintLayout)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.core)

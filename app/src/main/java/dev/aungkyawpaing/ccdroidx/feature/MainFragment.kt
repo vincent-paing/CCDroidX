@@ -6,19 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentMainBinding
-import dev.aungkyawpaing.ccdroidx.feature.projectlist.ProjectListPage
-import dev.aungkyawpaing.ccdroidx.feature.projectlist.ProjectListViewModel
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
 
   private var _binding: FragmentMainBinding? = null
   private val binding get() = _binding!!
-
-  private val viewModel: ProjectListViewModel by viewModels()
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -34,9 +30,7 @@ class MainFragment : Fragment() {
       setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
       setContent {
         CCDroidXApp {
-          ProjectListPage(viewModel, onClickSettings = {
-            TODO()
-          })
+          DestinationsNavHost(navGraph = NavGraphs.root)
         }
       }
     }

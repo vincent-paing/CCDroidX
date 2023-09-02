@@ -30,7 +30,6 @@ import dev.aungkyawpaing.ccdroidx.feature.settings.Settings
 import dev.aungkyawpaing.ccdroidx.feature.settings.settingsDataStore
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 private fun getValidationErrorString(validationResult: SyncIntervalValidationResult): String? {

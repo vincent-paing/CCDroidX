@@ -19,6 +19,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import dev.aungkyawpaing.ccdroidx.BuildConfig
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.common.extensions.findActivity
@@ -31,14 +34,16 @@ import dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval.SyncIntervalInpu
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsTopAppBar(
-  onClickBack: () -> Unit
+  navigator: DestinationsNavigator
 ) {
   TopAppBar(
     title = {
       Text(stringResource(id = R.string.settings))
     },
     navigationIcon = {
-      IconButton(onClick = onClickBack) {
+      IconButton(onClick = {
+        navigator.navigateUp()
+      }) {
         Icon(Icons.Filled.Close, "Close", tint = MaterialTheme.colorScheme.onPrimary)
       }
     },
@@ -50,16 +55,17 @@ fun SettingsTopAppBar(
   )
 }
 
+@Destination
 @Composable
 fun SettingsPage(
-  onClickBack: () -> Unit,
+  navigator: DestinationsNavigator
 ) {
   val context = LocalContext.current
   val showSyncIntervalInputDialog = remember { mutableStateOf(false) }
 
   Scaffold(
     topBar = {
-      SettingsTopAppBar(onClickBack)
+      SettingsTopAppBar(navigator)
     }
   ) { contentPadding ->
     PreferenceScreen(
@@ -113,6 +119,6 @@ fun SettingsPage(
 @Composable
 fun SettingsPagePreview() {
   Mdc3Theme {
-    SettingsPage({})
+    SettingsPage(EmptyDestinationsNavigator)
   }
 }

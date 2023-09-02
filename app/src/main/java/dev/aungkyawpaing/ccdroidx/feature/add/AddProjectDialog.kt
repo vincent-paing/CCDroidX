@@ -25,7 +25,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.feature.add.component.FeedUrlTextField
 import dev.aungkyawpaing.ccdroidx.feature.add.component.PasswordTextField
@@ -37,7 +37,7 @@ import dev.aungkyawpaing.ccdroidx.feature.add.usernamevalidation.UsernameValidat
 
 @Composable
 fun AddProjectDialog(
-  viewModel: AddProjectViewModel = viewModel(),
+  viewModel: AddProjectViewModel = hiltViewModel(),
   onDismissRequest: () -> Unit
 ) {
 

@@ -7,7 +7,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Sync
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -21,12 +31,16 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.common.extensions.findActivity
 import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
+import dev.aungkyawpaing.ccdroidx.feature.destinations.SettingsPageDestination
 import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.NotificationPrompt
 import dev.aungkyawpaing.ccdroidx.feature.projectlist.component.ProjectList
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
@@ -56,7 +70,7 @@ private fun getSubtitleText(lastSyncedStatus: LastSyncedStatus?): String =
 @Composable
 fun ProjectListTopAppBar(
   viewModel: ProjectListViewModel,
-  onClickSettings: () -> Unit
+  navigator: DestinationsNavigator
 ) {
   val lastSynced = viewModel.lastSyncedLiveData.observeAsState(initial = null)
   val onProgressSyncedEvent = viewModel.onProgressSyncFinishEvent.observeAsState(initial = false)
@@ -90,14 +104,16 @@ fun ProjectListTopAppBar(
         )
       }
 
-      IconButton(onClick = onClickSettings) {
+      IconButton(onClick = {
+        navigator.navigate(SettingsPageDestination())
+      }) {
         Icon(
           Icons.Filled.Settings,
           contentDescription = stringResource(R.string.menu_item_settings)
         )
       }
     },
-    colors = TopAppBarDefaults.smallTopAppBarColors(
+    colors = TopAppBarDefaults.topAppBarColors(
       containerColor = MaterialTheme.colorScheme.primary,
       titleContentColor = MaterialTheme.colorScheme.onPrimary,
       actionIconContentColor = MaterialTheme.colorScheme.onPrimary
@@ -138,12 +154,12 @@ fun DeleteConfirmationDialog(
   )
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun ProjectListPage(
-  viewModel: ProjectListViewModel = viewModel(),
-  onClickSettings: (() -> Unit),
+  navigator: DestinationsNavigator,
+  viewModel: ProjectListViewModel = hiltViewModel()
 ) {
 
   val context = LocalContext.current
@@ -151,16 +167,18 @@ fun ProjectListPage(
 
   Scaffold(
     topBar = {
-      ProjectListTopAppBar(viewModel, onClickSettings)
+      ProjectListTopAppBar(viewModel, navigator)
     }
   ) { contentPadding ->
     val projectList = viewModel.projectListLiveData.observeAsState(initial = emptyList())
     val deleteConfirmDialog =
       remember { mutableStateOf<Project?>(null) }
 
-    ConstraintLayout(modifier = Modifier
-      .padding(contentPadding)
-      .fillMaxSize()) {
+    ConstraintLayout(
+      modifier = Modifier
+        .padding(contentPadding)
+        .fillMaxSize()
+    ) {
 
       val (notificationPrompt, projectListComponent, fabAddProject) = createRefs()
 
@@ -226,5 +244,4 @@ fun ProjectListPage(
       )
     }
   }
-
 }

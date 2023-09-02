@@ -1,7 +1,15 @@
 package dev.aungkyawpaing.ccdroidx.feature.add
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -27,7 +35,6 @@ import dev.aungkyawpaing.ccdroidx.feature.add.feedurlvalidation.FeedUrlValidatio
 import dev.aungkyawpaing.ccdroidx.feature.add.passwordvalidation.PasswordValidationResult
 import dev.aungkyawpaing.ccdroidx.feature.add.usernamevalidation.UsernameValidationResult
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddProjectDialog(
   viewModel: AddProjectViewModel = viewModel(),
@@ -55,9 +62,7 @@ fun AddProjectDialog(
   AlertDialog(
     onDismissRequest = onDismissRequest,
     title = {
-
       Column {
-
         Text(text = stringResource(id = R.string.add_new_project))
 
         if (isLoading.value) {
@@ -76,7 +81,6 @@ fun AddProjectDialog(
     ),
     text = {
       Column {
-
         FeedUrlTextField(
           value = feedUrl,
           onValueChange = {
@@ -129,7 +133,6 @@ fun AddProjectDialog(
           isEnabled = requireAuth && !isLoading.value,
           usernameValidation = usernameValidation.value
         )
-
 
         PasswordTextField(
           value = password,

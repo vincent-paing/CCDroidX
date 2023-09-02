@@ -58,7 +58,6 @@
     <string name="notification_prompt_enable_notification">Enable notification</string>
     <string name="notification_prompt_close_content_description">Close prompt to enable notification</string>
 
-    <string name="hint_interval_amount">Interval amount</string>
     <string name="hint_time_unit">Time unit</string>
     <string name="save">Save</string>
     <string name="settings">Settings</string>
@@ -82,6 +81,8 @@
     <string name="sync_category_title">Sync</string>
     <string name="sync_interval_pref_title">Sync Interval</string>
     <string name="sync_interval_pref_summary">How often CCDroidX retrieves status information from build server</string>
+    <string name="sync_interval_input_dialog_title">Update Sync Interval</string>
+    <string name="sync_interval_input_dialog_hint_interval_amount">Interval amount in minutes</string>
 
     <string name="others_category_title">Others</string>
     <string name="others_browser_pref_title">Links open externally</string>

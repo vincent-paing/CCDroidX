@@ -1,117 +1,150 @@
 package dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval
 
-import android.app.Dialog
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.error
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.datastore.preferences.core.edit
+import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
-import dev.aungkyawpaing.ccdroidx.databinding.DialogSyncIntervalInputBinding
+import dev.aungkyawpaing.ccdroidx.feature.settings.Settings
+import dev.aungkyawpaing.ccdroidx.feature.settings.settingsDataStore
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@AndroidEntryPoint
-class SyncIntervalInputDialog : DialogFragment() {
+@Composable
+private fun getValidationErrorString(validationResult: SyncIntervalValidationResult): String? {
+  when (validationResult) {
+    SyncIntervalValidationResult.CORRECT -> {
+      return null
+    }
 
-  private var _binding: DialogSyncIntervalInputBinding? = null
-  private val binding get() = _binding!!
-  private val viewModel: SyncIntervalInputViewModel by viewModels()
+    SyncIntervalValidationResult.INCORRECT_EMPTY_VALUE -> {
+      return stringResource(R.string.error_interval_empty_text)
+    }
 
-  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    _binding = DialogSyncIntervalInputBinding.inflate(this.layoutInflater)
-    return MaterialAlertDialogBuilder(requireContext())
-      .setTitle("Update Sync Interval")
-      .setView(binding.root)
-      .create()
+    SyncIntervalValidationResult.INCORRECT_NON_INTEGER -> {
+      return stringResource(R.string.error_interval_non_integer)
+    }
+
+    SyncIntervalValidationResult.INCORRECT_LESS_THAN_MINIMUM_15_MINUTES -> {
+      return stringResource(R.string.error_interval_less_than_minimum)
+    }
+  }
+}
+
+
+@Composable
+fun SyncIntervalInputDialog(
+  onDismissRequest: () -> Unit,
+) {
+  val scope = rememberCoroutineScope()
+  val dataStore = LocalContext.current.settingsDataStore
+  val syncIntervalValidation = SyncIntervalValidation()
+  var value by rememberSaveable { mutableStateOf<String?>(null) }
+
+
+  LaunchedEffect(Unit) {
+    value = (dataStore.data.firstOrNull()?.get(Settings.KEY_SYNC_INTERVAL)
+      ?: Settings.DEFAULT_SYNC_INTERVAL.toMinutes()).toString()
   }
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    return binding.root
-  }
+  value?.let { inputValue ->
+    val validationResult =
+      syncIntervalValidation.validateSyncInterval(inputValue, SyncIntervalTimeUnit.MINUTES)
+    val errorString = getValidationErrorString(validationResult)
+    val isError = errorString != null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    binding.viewModel = viewModel
-    binding.lifecycleOwner = viewLifecycleOwner
-
-    val adapter = ArrayAdapter.createFromResource(
-      requireContext(),
-      R.array.sync_interval_time_units,
-      R.layout.item_dropdown_menu
-    )
-
-    (binding.dropDownTimeUnit).setAdapter(adapter)
-    binding.dropDownTimeUnit.setOnItemClickListener { _, _, position, _ ->
-      setTimeUnitWithPosition(position)
-    }
-
-    binding.buttonSave.setOnClickListener {
-      viewModel.onSaveSyncInterval()
-    }
-
-    binding.buttonCancel.setOnClickListener {
-      this.dismiss()
-    }
-
-    viewModel.prefillSyncIntervalEvent.observe(viewLifecycleOwner) { syncInterval ->
-      try {
-        val position = when (syncInterval.timeUnit) {
-          SyncIntervalTimeUnit.MINUTES -> 0
-          SyncIntervalTimeUnit.HOUR -> 1
-          SyncIntervalTimeUnit.DAY -> 2
-        }
-        setTimeUnitWithPosition(position)
-        binding.dropDownTimeUnit.setText(adapter.getItem(position), false)
-      } catch (exception: ArrayIndexOutOfBoundsException) {
-        Timber.e(exception)
+    val onConfirmClick = suspend {
+      dataStore.edit {
+        it[Settings.KEY_SYNC_INTERVAL] = inputValue.toInt()
       }
+      onDismissRequest()
     }
 
-    viewModel.validationLiveEvent.observe(viewLifecycleOwner) { validationResult ->
-      @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
-      when (validationResult) {
-        SyncIntervalValidationResult.CORRECT -> {
-          binding.textInputTimeAmount.error = null
+    AlertDialog(
+      onDismissRequest = onDismissRequest,
+      title = {
+        Text(text = stringResource(id = R.string.sync_interval_input_dialog_title))
+      },
+      text = {
+        Column {
+          OutlinedTextField(
+            value = inputValue,
+            onValueChange = {
+              value = it
+            },
+            label = {
+              Text(text = stringResource(R.string.sync_interval_input_dialog_hint_interval_amount))
+            },
+            isError = isError,
+            singleLine = true,
+            supportingText = {
+              if (isError) {
+                Text(
+                  text = errorString!!,
+                  color = MaterialTheme.colorScheme.error,
+                  style = MaterialTheme.typography.bodySmall,
+                  modifier = Modifier.fillMaxWidth(),
+                )
+              }
+            },
+            modifier = Modifier
+              .fillMaxWidth()
+              .semantics {
+                if (isError) {
+                  error(errorString!!)
+                }
+              })
+          Spacer(modifier = Modifier.height(8.dp))
         }
-        SyncIntervalValidationResult.INCORRECT_EMPTY_VALUE -> {
-          binding.textInputTimeAmount.error = getString(R.string.error_interval_empty_text)
+      },
+      confirmButton = {
+        TextButton(
+          onClick = {
+            scope.launch {
+              onConfirmClick()
+            }
+          },
+          enabled = !isError
+        ) {
+          Text(stringResource(id = R.string.save))
         }
-        SyncIntervalValidationResult.INCORRECT_NON_INTEGER -> {
-          binding.textInputTimeAmount.error = getString(R.string.error_interval_non_integer)
+      },
+      dismissButton = {
+        TextButton(
+          onClick = onDismissRequest,
+        ) {
+          Text(stringResource(id = android.R.string.cancel))
         }
-        SyncIntervalValidationResult.INCORRECT_LESS_THAN_MINIMUM_15_MINUTES -> {
-          binding.textInputTimeAmount.error = getString(R.string.error_interval_less_than_minimum)
-        }
-      }
-    }
-
-    viewModel.dismissLiveEvent.observe(viewLifecycleOwner) {
-      this.dismiss()
-    }
-
+      })
   }
+}
 
-  private fun setTimeUnitWithPosition(position: Int) {
-    val timeUnit = when (position) {
-      0 -> SyncIntervalTimeUnit.MINUTES
-      1 -> SyncIntervalTimeUnit.HOUR
-      2 -> SyncIntervalTimeUnit.DAY
-      else -> throw IllegalStateException()
-    }
-    viewModel.setTimeUnit(timeUnit)
+@Composable
+@Preview
+fun SyncIntervalInputDialogPreview() {
+  Mdc3Theme {
+    SyncIntervalInputDialog({})
   }
-
-  override fun onDestroyView() {
-    _binding = null
-    super.onDestroyView()
-  }
-
 }

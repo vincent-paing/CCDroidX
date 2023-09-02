@@ -1,6 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature.settings.preference
 
 sealed class PreferenceItem {
+
   data class CategoryItem(
     val title: String
   ) : PreferenceItem()

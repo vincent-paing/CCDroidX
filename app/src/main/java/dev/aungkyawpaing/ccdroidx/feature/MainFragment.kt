@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.databinding.FragmentMainBinding
 import dev.aungkyawpaing.ccdroidx.feature.projectlist.ProjectListPage
@@ -36,9 +35,7 @@ class MainFragment : Fragment() {
       setContent {
         CCDroidXApp {
           ProjectListPage(viewModel, onClickSettings = {
-            findNavController().navigate(
-              MainFragmentDirections.actionFragmentMainToSettingsFragment()
-            )
+            TODO()
           })
         }
       }

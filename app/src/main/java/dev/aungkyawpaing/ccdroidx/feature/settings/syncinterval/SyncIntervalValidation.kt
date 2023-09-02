@@ -11,7 +11,7 @@ enum class SyncIntervalValidationResult {
 
 class SyncIntervalValidation @Inject constructor() {
 
-  fun validateProjectFeedUrl(
+  fun validateSyncInterval(
     value: String?,
     timeUnit: SyncIntervalTimeUnit?
   ): SyncIntervalValidationResult {

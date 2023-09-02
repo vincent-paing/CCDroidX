@@ -39,8 +39,6 @@ android {
       "de.mannodermaus.junit5.AndroidJUnit5Builder"
 
     buildFeatures {
-      viewBinding = true
-      dataBinding = true
       compose = true
     }
   }

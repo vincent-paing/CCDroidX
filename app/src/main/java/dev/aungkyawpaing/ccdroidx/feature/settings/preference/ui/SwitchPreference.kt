@@ -42,7 +42,7 @@ fun SwitchPreference(
     scope.launch {
       if (value != null) {
         dataStore.edit {
-          it[prefKey] = value
+          it[prefKey] = !value
         }
       }
     }

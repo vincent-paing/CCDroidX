@@ -2,15 +2,14 @@ package dev.aungkyawpaing.ccdroidx.feature.sync
 
 import android.content.Context
 import androidx.work.*
-import dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval.SyncInterval
 import java.time.Duration
 
 class SyncWorkerScheduler(
   val context: Context
 ) {
 
-  fun removeExistingAndScheduleWorker(syncInterval: SyncInterval) {
-    scheduleWorker(syncInterval.asDuration())
+  fun removeExistingAndScheduleWorker(syncInterval: Duration) {
+    scheduleWorker(syncInterval)
   }
 
   private fun scheduleWorker(duration: Duration) {

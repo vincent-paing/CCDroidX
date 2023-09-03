@@ -12,18 +12,15 @@ enum class SyncIntervalValidationResult {
 class SyncIntervalValidation @Inject constructor() {
 
   fun validateSyncInterval(
-    value: String?,
-    timeUnit: SyncIntervalTimeUnit?
+    value: String
   ): SyncIntervalValidationResult {
 
-    if (value.isNullOrEmpty() || timeUnit == null) return SyncIntervalValidationResult.INCORRECT_EMPTY_VALUE
+    if (value.isEmpty()) return SyncIntervalValidationResult.INCORRECT_EMPTY_VALUE
 
-    val intValue = value.toIntOrNull()
+    val longValue = value.toLongOrNull()
       ?: return SyncIntervalValidationResult.INCORRECT_NON_INTEGER
 
-    if (timeUnit == SyncIntervalTimeUnit.MINUTES && intValue < 15
-      || intValue == 0
-    ) {
+    if (longValue < 15) {
       return SyncIntervalValidationResult.INCORRECT_LESS_THAN_MINIMUM_15_MINUTES
     }
 

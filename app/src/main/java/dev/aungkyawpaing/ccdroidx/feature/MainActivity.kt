@@ -11,11 +11,16 @@ import androidx.browser.customtabs.CustomTabsClient
 import androidx.lifecycle.lifecycleScope
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
-import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
+import dev.aungkyawpaing.ccdroidx.feature.settings.Settings
+import dev.aungkyawpaing.ccdroidx.feature.settings.settingsDataStore
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncWorkerScheduler
 import dev.shreyaspatil.permissionFlow.PermissionFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import java.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -36,12 +41,21 @@ class MainActivity : AppCompatActivity() {
         DestinationsNavHost(navGraph = NavGraphs.root)
       }
     }
+
     warmupBrowser()
-
+    setupSyncWorker()
     handleIntent(intent)
+  }
 
-    viewModel.syncIntervalLiveData.observe(this) { syncInterval ->
-      syncWorkerScheduler.removeExistingAndScheduleWorker(syncInterval)
+  private fun setupSyncWorker() {
+    lifecycleScope.launch {
+      val syncInterval = settingsDataStore.data.firstOrNull()?.get(Settings.KEY_SYNC_INTERVAL)
+      val duration = if (syncInterval != null) {
+        Duration.ofMinutes(syncInterval)
+      } else {
+        Settings.DEFAULT_SYNC_INTERVAL
+      }
+      syncWorkerScheduler.removeExistingAndScheduleWorker(duration)
     }
   }
 

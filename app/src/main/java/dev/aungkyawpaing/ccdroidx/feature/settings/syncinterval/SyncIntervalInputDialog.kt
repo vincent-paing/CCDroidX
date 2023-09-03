@@ -70,13 +70,13 @@ fun SyncIntervalInputDialog(
 
   value?.let { inputValue ->
     val validationResult =
-      syncIntervalValidation.validateSyncInterval(inputValue, SyncIntervalTimeUnit.MINUTES)
+      syncIntervalValidation.validateSyncInterval(inputValue)
     val errorString = getValidationErrorString(validationResult)
     val isError = errorString != null
 
     val onConfirmClick = suspend {
       dataStore.edit {
-        it[Settings.KEY_SYNC_INTERVAL] = inputValue.toInt()
+        it[Settings.KEY_SYNC_INTERVAL] = inputValue.toLong()
       }
       onDismissRequest()
     }

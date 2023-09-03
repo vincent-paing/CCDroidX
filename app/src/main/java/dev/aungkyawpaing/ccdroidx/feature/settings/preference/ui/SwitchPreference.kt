@@ -1,5 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature.settings.preference.ui
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
@@ -25,6 +27,11 @@ import dev.aungkyawpaing.ccdroidx.feature.settings.settingsDataStore
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+private fun Context.switchData(key: Preferences.Key<Boolean>, defaultValue: Boolean) =
+  settingsDataStore.data.map { preferences ->
+    preferences[key] ?: defaultValue
+  }
+
 @Composable
 fun SwitchPreference(
   switchPreferenceItem: PreferenceItem.SwitchPreferenceItem,
@@ -32,9 +39,8 @@ fun SwitchPreference(
 ) {
   val dataStore = LocalContext.current.settingsDataStore
   val (key, title, defaultValue, subtitle) = switchPreferenceItem
-  val value = dataStore.data.map { preferences ->
-    preferences[key] ?: defaultValue
-  }.collectAsState(initial = null).value
+  val value =
+    LocalContext.current.switchData(key, defaultValue).collectAsState(initial = null).value
   val scope = rememberCoroutineScope()
 
   val onCheckedChange = {

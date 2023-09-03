@@ -32,9 +32,8 @@ fun SwitchPreference(
 ) {
   val dataStore = LocalContext.current.settingsDataStore
   val (key, title, defaultValue, subtitle) = switchPreferenceItem
-  val prefKey = booleanPreferencesKey(key)
   val value = dataStore.data.map { preferences ->
-    preferences[prefKey] ?: defaultValue
+    preferences[key] ?: defaultValue
   }.collectAsState(initial = null).value
   val scope = rememberCoroutineScope()
 
@@ -42,7 +41,7 @@ fun SwitchPreference(
     scope.launch {
       if (value != null) {
         dataStore.edit {
-          it[prefKey] = !value
+          it[key] = !value
         }
       }
     }
@@ -89,7 +88,7 @@ fun SwitchPreferencePreviewTitleOnly() {
     Surface {
       SwitchPreference(
         PreferenceItem.SwitchPreferenceItem(
-          key = " preview",
+          key = booleanPreferencesKey("preview"),
           title = "Some title",
           defaultValue = false
         )
@@ -105,7 +104,7 @@ fun SwitchPreferencePreviewTitleAndSubtitleOnly() {
     Surface {
       SwitchPreference(
         PreferenceItem.SwitchPreferenceItem(
-          key = " preview",
+          key = booleanPreferencesKey("preview"),
           title = "Some title",
           subtitle = "Some subtitle",
           defaultValue = true

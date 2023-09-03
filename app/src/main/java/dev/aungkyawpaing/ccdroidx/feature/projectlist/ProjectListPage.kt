@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -45,6 +46,7 @@ import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.NotificationPrompt
 import dev.aungkyawpaing.ccdroidx.feature.projectlist.component.ProjectList
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
+import kotlinx.coroutines.launch
 import org.ocpsoft.prettytime.PrettyTime
 
 @Composable
@@ -163,6 +165,7 @@ fun ProjectListPage(
 ) {
 
   val context = LocalContext.current
+  val scope = rememberCoroutineScope()
   val addProjectDialog = remember { mutableStateOf(false) }
 
   Scaffold(
@@ -186,7 +189,9 @@ fun ProjectListPage(
         projectList = projectList.value,
         onOpenRepoClick = { project ->
           context.findActivity()?.let { activity ->
-            openInBrowser(activity, project.webUrl)
+            scope.launch {
+              openInBrowser(activity, project.webUrl)
+            }
           }
         },
         onDeleteClick = { project ->

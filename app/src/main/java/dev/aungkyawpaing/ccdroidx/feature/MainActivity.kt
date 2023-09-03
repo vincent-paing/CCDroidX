@@ -19,8 +19,6 @@ import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.Duration
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -66,8 +64,11 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun handleIntent(intent: Intent) {
+
     intent.getStringExtra(INTENT_EXTRA_URL)?.let { url ->
-      openInBrowser(this@MainActivity, url)
+      lifecycleScope.launch {
+        openInBrowser(this@MainActivity, url)
+      }
       return
     }
 

@@ -1,4 +1,3 @@
-import androidx.navigation.safe.args.generator.ext.capitalize
 import com.android.build.api.dsl.ManagedVirtualDevice
 import com.google.devtools.ksp.gradle.KspTaskJvm
 
@@ -194,7 +193,6 @@ dependencies {
   implementation(libs.androidx.dataStore)
   implementation(libs.androidx.dataStore.preference)
   implementation(libs.wire)
-  implementation(libs.androidx.preference)
 
   implementation(libs.material)
 

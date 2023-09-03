@@ -1,5 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.feature.settings.preference
 
+import androidx.datastore.preferences.core.Preferences
+
 sealed class PreferenceItem {
 
   data class CategoryItem(
@@ -13,7 +15,7 @@ sealed class PreferenceItem {
   ) : PreferenceItem()
 
   data class SwitchPreferenceItem(
-    val key: String,
+    val key: Preferences.Key<Boolean>,
     val title: String,
     val defaultValue: Boolean,
     val subtitle: String? = null

@@ -6,12 +6,15 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
-import androidx.preference.PreferenceManager
 import dev.aungkyawpaing.ccdroidx.R
+import dev.aungkyawpaing.ccdroidx.feature.settings.Settings
+import dev.aungkyawpaing.ccdroidx.feature.settings.settingsDataStore
+import kotlinx.coroutines.flow.firstOrNull
 
-fun openInBrowser(activity: Activity, url: String) {
-  val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-  val doesLinkOpenExternally = sharedPreferences.getBoolean("others_browser", false)
+suspend fun openInBrowser(activity: Activity, url: String) {
+  val doesLinkOpenExternally =
+    activity.settingsDataStore.data.firstOrNull()?.get(Settings.KEY_OPEN_EXTERNAL_BROWSER)
+      ?: Settings.DEFAULT_OPEN_EXTERNAL_BROWSER
 
   if (doesLinkOpenExternally) {
     try {

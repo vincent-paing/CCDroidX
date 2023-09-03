@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -29,6 +30,7 @@ import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.settings.preference.PreferenceItem
 import dev.aungkyawpaing.ccdroidx.feature.settings.preference.ui.PreferenceScreen
 import dev.aungkyawpaing.ccdroidx.feature.settings.syncinterval.SyncIntervalInputDialog
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +63,7 @@ fun SettingsPage(
   navigator: DestinationsNavigator
 ) {
   val context = LocalContext.current
+  val scope = rememberCoroutineScope()
   val showSyncIntervalInputDialog = remember { mutableStateOf(false) }
 
   Scaffold(
@@ -81,9 +84,9 @@ fun SettingsPage(
         PreferenceItem.Divider,
         PreferenceItem.CategoryItem(stringResource(id = R.string.others_category_title)),
         PreferenceItem.SwitchPreferenceItem(
-          key = "open_external_browser",
+          key = Settings.KEY_OPEN_EXTERNAL_BROWSER,
           title = stringResource(id = R.string.others_browser_pref_title),
-          defaultValue = false
+          defaultValue = Settings.DEFAULT_OPEN_EXTERNAL_BROWSER
         ),
         PreferenceItem.Divider,
         PreferenceItem.CategoryItem(stringResource(id = R.string.help_category_title)),
@@ -92,7 +95,9 @@ fun SettingsPage(
           subtitle = stringResource(id = R.string.sync_interval_pref_summary),
           onClick = {
             context.findActivity()?.let { activityContext ->
-              openInBrowser(activityContext, "https://github.com/vincent-paing/CCDroidX/issues")
+              scope.launch {
+                openInBrowser(activityContext, "https://github.com/vincent-paing/CCDroidX/issues")
+              }
             }
           }),
         PreferenceItem.TextPreferenceItem(

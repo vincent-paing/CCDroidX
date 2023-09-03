@@ -49,7 +49,6 @@ androidx-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle
 androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidx-navigation" }
 androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "androidx-navigation" }
-androidx-preference = { module = "androidx.preference:preference-ktx", version = "1.2.1" }
 androidx-sqlite = { module = "androidx.sqlite:sqlite-ktx", version = "2.3.1" }
 androidx-test-core = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit-ktx", version = "1.1.5" }

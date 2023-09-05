@@ -43,14 +43,16 @@ import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.destinations.SettingsPageDestination
 import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.NotificationPrompt
+import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.NotificationPromptViewModel
 import dev.aungkyawpaing.ccdroidx.feature.projectlist.component.ProjectList
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
 import kotlinx.coroutines.launch
 import org.ocpsoft.prettytime.PrettyTime
+import java.time.Clock
 
 @Composable
-private fun getSubtitleText(lastSyncedStatus: LastSyncedStatus?): String =
+private fun getSubtitleText(lastSyncedStatus: LastSyncedStatus?, clock: Clock): String =
   if (lastSyncedStatus == null) {
     stringResource(R.string.welcome)
   } else {
@@ -62,7 +64,7 @@ private fun getSubtitleText(lastSyncedStatus: LastSyncedStatus?): String =
       LastSyncedState.SUCCESS, LastSyncedState.FAILED -> {
         stringResource(
           R.string.last_synced_x,
-          PrettyTime().format(lastSyncedStatus.lastSyncedDateTime)
+          PrettyTime(clock.instant()).format(lastSyncedStatus.lastSyncedDateTime)
         )
       }
     }
@@ -71,12 +73,13 @@ private fun getSubtitleText(lastSyncedStatus: LastSyncedStatus?): String =
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProjectListTopAppBar(
-  viewModel: ProjectListViewModel,
-  navigator: DestinationsNavigator
+  lastSyncedStatus: LastSyncedStatus?,
+  onProgressSyncedEvent: Boolean,
+  onPressSync: () -> Unit,
+  clearOnProgressSyncedEvent: () -> Unit,
+  navigator: DestinationsNavigator,
+  clock: Clock
 ) {
-  val lastSynced = viewModel.lastSyncedLiveData.observeAsState(initial = null)
-  val onProgressSyncedEvent = viewModel.onProgressSyncFinishEvent.observeAsState(initial = false)
-
   TopAppBar(
     title = {
       Column {
@@ -84,19 +87,19 @@ fun ProjectListTopAppBar(
           contentDescription = "CC Droid X"
         })
         Text(
-          text = getSubtitleText(lastSynced.value),
+          text = getSubtitleText(lastSyncedStatus, clock),
           style = MaterialTheme.typography.bodyMedium
         )
       }
     },
     actions = {
       IconButton(
-        onClick = viewModel::onPressSync,
+        onClick = onPressSync,
         modifier = Modifier.semantics {
-          stateDescription = if (onProgressSyncedEvent.value) "Finished syncing" else ""
+          stateDescription = if (onProgressSyncedEvent) "Finished syncing" else ""
 
-          if (onProgressSyncedEvent.value) {
-            viewModel.clearOnProgressSyncedEvent()
+          if (onProgressSyncedEvent) {
+            clearOnProgressSyncedEvent()
           }
         }
       ) {
@@ -156,12 +159,19 @@ fun DeleteConfirmationDialog(
   )
 }
 
-@RootNavGraph(start = true)
-@Destination
 @Composable
-fun ProjectListPage(
+fun ProjectListPageContent(
+  projectList: List<Project>,
+  lastSyncedStatus: LastSyncedStatus?,
+  onProgressSyncedEvent: Boolean,
+  onToggleMute: (project: Project) -> Unit,
+  onPressSync: () -> Unit,
+  clearOnProgressSyncedEvent: () -> Unit,
+  onDeleteProject: (project: Project) -> Unit,
+  isNotificationPromptVisible: Boolean,
+  onDismissNotificationPrompt: () -> Unit,
   navigator: DestinationsNavigator,
-  viewModel: ProjectListViewModel = hiltViewModel()
+  clock: Clock = Clock.systemDefaultZone()
 ) {
 
   val context = LocalContext.current
@@ -170,10 +180,16 @@ fun ProjectListPage(
 
   Scaffold(
     topBar = {
-      ProjectListTopAppBar(viewModel, navigator)
+      ProjectListTopAppBar(
+        lastSyncedStatus,
+        onProgressSyncedEvent,
+        onPressSync,
+        clearOnProgressSyncedEvent,
+        navigator,
+        clock
+      )
     }
   ) { contentPadding ->
-    val projectList = viewModel.projectListLiveData.observeAsState(initial = emptyList())
     val deleteConfirmDialog =
       remember { mutableStateOf<Project?>(null) }
 
@@ -186,7 +202,7 @@ fun ProjectListPage(
       val (notificationPrompt, projectListComponent, fabAddProject) = createRefs()
 
       ProjectList(
-        projectList = projectList.value,
+        projectList = projectList,
         onOpenRepoClick = { project ->
           context.findActivity()?.let { activity ->
             scope.launch {
@@ -197,7 +213,7 @@ fun ProjectListPage(
         onDeleteClick = { project ->
           deleteConfirmDialog.value = project
         },
-        onToggleMute = viewModel::onToggleMute,
+        onToggleMute = onToggleMute,
         modifier = Modifier.constrainAs(projectListComponent) {
           end.linkTo(parent.end)
           start.linkTo(parent.start)
@@ -205,14 +221,18 @@ fun ProjectListPage(
           top.linkTo(parent.top)
           height = Dimension.fillToConstraints
           width = Dimension.fillToConstraints
-        }
+        },
+        clock = clock
       )
 
-      NotificationPrompt(modifier = Modifier.constrainAs(notificationPrompt) {
-        end.linkTo(parent.end)
-        start.linkTo(parent.start)
-        bottom.linkTo(parent.bottom)
-      })
+      NotificationPrompt(
+        isNotificationPromptVisible = isNotificationPromptVisible,
+        onDismissNotificationPrompt = onDismissNotificationPrompt,
+        modifier = Modifier.constrainAs(notificationPrompt) {
+          end.linkTo(parent.end)
+          start.linkTo(parent.start)
+          bottom.linkTo(parent.bottom)
+        })
 
       FloatingActionButton(onClick = {
         addProjectDialog.value = true
@@ -233,7 +253,7 @@ fun ProjectListPage(
     if (deleteConfirmDialog.value != null) {
       DeleteConfirmationDialog(
         onConfirmDelete = {
-          viewModel.onDeleteProject(deleteConfirmDialog.value!!)
+          onDeleteProject(deleteConfirmDialog.value!!)
         },
         onDismiss = {
           deleteConfirmDialog.value = null
@@ -249,4 +269,28 @@ fun ProjectListPage(
       )
     }
   }
+}
+
+@RootNavGraph(start = true)
+@Destination
+@Composable
+fun ProjectListPage(
+  navigator: DestinationsNavigator,
+  projectListViewModel: ProjectListViewModel = hiltViewModel(),
+  notificationPromptViewModel: NotificationPromptViewModel = hiltViewModel()
+) {
+  ProjectListPageContent(
+    projectList = projectListViewModel.projectListLiveData.observeAsState(initial = emptyList()).value,
+    onToggleMute = projectListViewModel::onToggleMute,
+    lastSyncedStatus = projectListViewModel.lastSyncedLiveData.observeAsState(initial = null).value,
+    onProgressSyncedEvent = projectListViewModel.onProgressSyncFinishEvent.observeAsState(initial = false).value,
+    clearOnProgressSyncedEvent = projectListViewModel::clearOnProgressSyncedEvent,
+    onPressSync = projectListViewModel::onPressSync,
+    onDeleteProject = projectListViewModel::onDeleteProject,
+    isNotificationPromptVisible = notificationPromptViewModel.promptIsVisibleLiveData.observeAsState(
+      initial = false
+    ).value,
+    onDismissNotificationPrompt = notificationPromptViewModel::onDismissClick,
+    navigator = navigator
+  )
 }

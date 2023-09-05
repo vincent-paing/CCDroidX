@@ -18,4 +18,5 @@ plugins {
   alias(libs.plugins.kotlin.ksp) apply false
   alias(libs.plugins.kotlin.pracelize) apply false
   alias(libs.plugins.dagger.hilt) apply false
+  alias(libs.plugins.roborazzi) apply false
 }

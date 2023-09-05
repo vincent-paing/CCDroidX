@@ -22,6 +22,7 @@ moshi = "1.14.0"
 okhttp = "5.0.0-alpha.11"
 permission-flow = "1.0.0"
 prettytime = "5.0.6.Final"
+roborazzi = "1.5.0-rc-1"
 sqldelight = "1.5.5"
 timber = "5.0.1"
 wire = "4.5.2"
@@ -111,6 +112,10 @@ okhttp-logger = { group = "com.squareup.okhttp3", name = "logging-interceptor", 
 okhttp-mockWebServer = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 permissionFlow-android = { group = "dev.shreyaspatil.permission-flow", name = "permission-flow-android", version.ref = "permission-flow" }
 prettytime = { module = "org.ocpsoft.prettytime:prettytime", version.ref = "prettytime" }
+robolectric = { module = "org.robolectric:robolectric", version = "4.10.3" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi_compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
+roborazzi_junit_rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
 simpleXml = { module = "org.simpleframework:simple-xml", version = "2.7.1" }
 sqldelight-android = { group = "com.squareup.sqldelight", name = "android-driver", version.ref = "sqldelight" }
 sqldelight-coroutine = { group = "com.squareup.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
@@ -129,6 +134,7 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version = "1.8.10-1.0.9" }
 kotlin-pracelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
 wire = { id = "com.squareup.wire", version.ref = "wire" }
 

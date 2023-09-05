@@ -13,6 +13,7 @@ object ProjectBuilder {
     id: Long = 1,
     name: String = "Project Name",
     lastBuildStatus: BuildStatus = BuildStatus.SUCCESS,
+    lastBuildLabel: String? = null,
     webUrl: String = "https://example.com/master",
     lastBuildTime: ZonedDateTime = ZonedDateTime.of(2022, 4, 21, 0, 0, 0, 0, ZoneId.of("UTC"))
   ): Project {
@@ -21,7 +22,7 @@ object ProjectBuilder {
       name = name,
       activity = BuildState.SLEEPING,
       lastBuildStatus = lastBuildStatus,
-      lastBuildLabel = null,
+      lastBuildLabel = lastBuildLabel,
       lastBuildTime = lastBuildTime,
       nextBuildTime = null,
       webUrl = webUrl,

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.aungkyawpaing.ccdroidx.common.Project
+import java.time.Clock
 
 @Composable
 fun ProjectList(
@@ -17,6 +18,7 @@ fun ProjectList(
   onOpenRepoClick: ((project: Project) -> Unit),
   onDeleteClick: ((project: Project) -> Unit),
   onToggleMute: ((project: Project) -> Unit),
+  clock: Clock,
   modifier: Modifier = Modifier
 ) {
   LazyVerticalGrid(
@@ -36,7 +38,8 @@ fun ProjectList(
         project = project,
         onOpenRepoClick = onOpenRepoClick,
         onDeleteClick = onDeleteClick,
-        onToggleMute = onToggleMute
+        onToggleMute = onToggleMute,
+        clock = clock,
       )
     }
   }

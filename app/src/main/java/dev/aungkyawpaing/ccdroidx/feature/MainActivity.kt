@@ -9,7 +9,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsClient
 import androidx.lifecycle.lifecycleScope
-import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.settings.Settings
@@ -35,9 +34,7 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      CCDroidXApp {
-        DestinationsNavHost(navGraph = NavGraphs.root)
-      }
+      CCDroidXApp()
     }
 
     warmupBrowser()

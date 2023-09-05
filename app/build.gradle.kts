@@ -12,6 +12,7 @@ plugins {
   alias(libs.plugins.android.junit5)
   alias(libs.plugins.google.services)
   alias(libs.plugins.firebase.crashlytics)
+  alias(libs.plugins.roborazzi)
 }
 
 val ENV = System.getenv()
@@ -227,6 +228,11 @@ dependencies {
   androidTestImplementation(libs.junit.jupiter.api)
   androidTestImplementation(libs.androidJunit5.core)
   androidTestRuntimeOnly(libs.androidJunit5.runner)
+
+  testImplementation(libs.robolectric)
+  testImplementation(libs.roborazzi)
+  testImplementation(libs.roborazzi.compose)
+  testImplementation(libs.roborazzi.junit.rule)
 
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.androidx.test.runner)

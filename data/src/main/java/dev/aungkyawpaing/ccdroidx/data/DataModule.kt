@@ -13,6 +13,6 @@ class DataModule {
   @Provides
   @Singleton
   fun provideCryptography(): Cryptography {
-    return Cryptography("CCDROID")
+    return CryptographyImpl("CCDROID")
   }
 }

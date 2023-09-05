@@ -12,6 +12,7 @@ compose-destinations = "1.8.42-beta"
 compose-wear = "1.1.2"
 dagger = "2.48"
 desugar-jdk-libs = "2.0.3"
+espresso = "3.4.0"
 firebase-crashlytics-gradle = "2.9.8"
 google-services = "4.3.15"
 jupiter = "5.9.2"
@@ -52,6 +53,8 @@ androidx-navigation-testing = { group = "androidx.navigation", name = "navigatio
 androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "androidx-navigation" }
 androidx-sqlite = { module = "androidx.sqlite:sqlite-ktx", version = "2.3.1" }
 androidx-test-core = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test" }
+androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+androidx-test-espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit-ktx", version = "1.1.5" }
 androidx-test-ext-truth = { group = "androidx.test.ext", name = "truth", version = "1.5.0" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidx-test" }

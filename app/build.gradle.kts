@@ -244,6 +244,8 @@ dependencies {
   androidTestImplementation(libs.androidx.test.rules)
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.androidx.test.ext.truth)
+  androidTestImplementation(libs.androidx.test.espresso)
+  androidTestImplementation(libs.androidx.test.espresso.intents)
 
   testImplementation(libs.mockk)
   testImplementation(libs.mockk.agentJvm)

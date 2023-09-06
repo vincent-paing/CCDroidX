@@ -1,0 +1,15 @@
+# Smoke test happy path for adding new project
+# This test should never break as this is the critical path of the app
+
+appId: dev.aungkyawpaing.ccdroidx.debug
+---
+- launchApp
+- tapOn: "Add New Project"
+- tapOn: "Feed url"
+- inputText: "https://api.travis-ci.com/repos/vincent-paing/Burtha/cc.xml?branch=master"
+- tapOn: "Next"
+- tapOn: "vincent-paing/Burtha"
+- tapOn:
+      point: "91%,13%"
+- tapOn: "Delete"
+- tapOn: "Delete"

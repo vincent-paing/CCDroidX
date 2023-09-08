@@ -39,8 +39,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import dev.aungkyawpaing.ccdroidx.R
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.common.extensions.findActivity
-import dev.aungkyawpaing.ccdroidx.feature.add.AddProjectDialog
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
+import dev.aungkyawpaing.ccdroidx.feature.destinations.AddProjectDialogScreenDestination
 import dev.aungkyawpaing.ccdroidx.feature.destinations.SettingsPageDestination
 import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.NotificationPrompt
 import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.NotificationPromptViewModel
@@ -176,7 +176,6 @@ fun ProjectListPageContent(
 
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
-  val addProjectDialog = remember { mutableStateOf(false) }
 
   Scaffold(
     topBar = {
@@ -235,7 +234,7 @@ fun ProjectListPageContent(
         })
 
       FloatingActionButton(onClick = {
-        addProjectDialog.value = true
+        navigator.navigate(AddProjectDialogScreenDestination())
       }, modifier = Modifier
         .constrainAs(fabAddProject) {
           end.linkTo(parent.end)
@@ -257,14 +256,6 @@ fun ProjectListPageContent(
         },
         onDismiss = {
           deleteConfirmDialog.value = null
-        }
-      )
-    }
-
-    if (addProjectDialog.value) {
-      AddProjectDialog(
-        onDismissRequest = {
-          addProjectDialog.value = false
         }
       )
     }

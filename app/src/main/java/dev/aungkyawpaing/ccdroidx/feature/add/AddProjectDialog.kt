@@ -26,7 +26,11 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.spec.DestinationStyle
 import dev.aungkyawpaing.ccdroidx.R
+import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.feature.add.component.FeedUrlTextField
 import dev.aungkyawpaing.ccdroidx.feature.add.component.PasswordTextField
 import dev.aungkyawpaing.ccdroidx.feature.add.component.SelectProjectDialog
@@ -35,37 +39,52 @@ import dev.aungkyawpaing.ccdroidx.feature.add.feedurlvalidation.FeedUrlValidatio
 import dev.aungkyawpaing.ccdroidx.feature.add.passwordvalidation.PasswordValidationResult
 import dev.aungkyawpaing.ccdroidx.feature.add.usernamevalidation.UsernameValidationResult
 
+@Destination(style = DestinationStyle.Dialog::class)
 @Composable
-fun AddProjectDialog(
+fun AddProjectDialogScreen(
   viewModel: AddProjectViewModel = hiltViewModel(),
-  onDismissRequest: () -> Unit
+  navigator: DestinationsNavigator
+) {
+  AddProjectDialogContent(
+    feedUrlValidation = viewModel.feedUrlValidationResult.observeAsState(initial = FeedUrlValidationResult.CORRECT).value,
+    usernameValidation = viewModel.usernameValidationResult.observeAsState(initial = UsernameValidationResult.CORRECT).value,
+    passwordValidation = viewModel.passwordValidationResult.observeAsState(initial = PasswordValidationResult.CORRECT).value,
+    isLoading = viewModel.isLoadingLiveData.observeAsState(initial = false).value,
+    showProjectListEvent = viewModel.showProjectListLiveEvent.observeAsState().value,
+    onClickNext = viewModel::onClickNext,
+    onSelectProject = viewModel::onSelectProject,
+    onDismissSelectProject = viewModel::onDismissSelectProject,
+    navigator = navigator
+  )
+}
+
+@Composable
+fun AddProjectDialogContent(
+  feedUrlValidation: FeedUrlValidationResult,
+  usernameValidation: UsernameValidationResult,
+  passwordValidation: PasswordValidationResult,
+  isLoading: Boolean,
+  showProjectListEvent: List<Project>?,
+  onClickNext: (feedUrl: String, requireAuth: Boolean, username: String, password: String) -> Unit,
+  onSelectProject: (project: Project) -> Unit,
+  onDismissSelectProject: () -> Unit,
+  navigator: DestinationsNavigator
 ) {
 
   var feedUrl by rememberSaveable { mutableStateOf("") }
-  val feedUrlValidation =
-    viewModel.feedUrlValidationResult.observeAsState(initial = FeedUrlValidationResult.CORRECT)
-
   var requireAuth by rememberSaveable { mutableStateOf(false) }
-
   var username by rememberSaveable { mutableStateOf("") }
-  val usernameValidation =
-    viewModel.usernameValidationResult.observeAsState(initial = UsernameValidationResult.CORRECT)
-
   var password by rememberSaveable { mutableStateOf("") }
-  val passwordValidation =
-    viewModel.passwordValidationResult.observeAsState(initial = PasswordValidationResult.CORRECT)
-
-  val isLoading = viewModel.isLoadingLiveData.observeAsState(initial = false)
-
-  val showProjectEvent = viewModel.showProjectListLiveEvent.observeAsState()
 
   AlertDialog(
-    onDismissRequest = onDismissRequest,
+    onDismissRequest = {
+      navigator.navigateUp()
+    },
     title = {
       Column {
         Text(text = stringResource(id = R.string.add_new_project))
 
-        if (isLoading.value) {
+        if (isLoading) {
           LinearProgressIndicator(
             modifier = Modifier
               .fillMaxWidth()
@@ -76,8 +95,8 @@ fun AddProjectDialog(
       }
     },
     properties = DialogProperties(
-      dismissOnClickOutside = !isLoading.value,
-      dismissOnBackPress = !isLoading.value
+      dismissOnClickOutside = !isLoading,
+      dismissOnBackPress = !isLoading
     ),
     text = {
       Column {
@@ -86,8 +105,8 @@ fun AddProjectDialog(
           onValueChange = {
             feedUrl = it
           },
-          isEnabled = !isLoading.value,
-          feedUrlValidation = feedUrlValidation.value
+          isEnabled = !isLoading,
+          feedUrlValidation = feedUrlValidation
         )
 
         val onRequireAuthCheckChange: (Boolean) -> Unit = { isChecked ->
@@ -114,7 +133,7 @@ fun AddProjectDialog(
         ) {
           Checkbox(
             checked = requireAuth, onCheckedChange = onRequireAuthCheckChange,
-            enabled = !isLoading.value,
+            enabled = !isLoading,
             modifier = Modifier
               .align(Alignment.CenterVertically)
               .clearAndSetSemantics { }
@@ -130,8 +149,8 @@ fun AddProjectDialog(
         UsernameTextField(
           value = username,
           onValueChange = { username = it },
-          isEnabled = requireAuth && !isLoading.value,
-          usernameValidation = usernameValidation.value
+          isEnabled = requireAuth && !isLoading,
+          usernameValidation = usernameValidation
         )
 
         PasswordTextField(
@@ -139,48 +158,48 @@ fun AddProjectDialog(
           onValueChange = {
             password = it
           },
-          isEnabled = requireAuth && !isLoading.value,
-          passwordValidationResult = passwordValidation.value
+          isEnabled = requireAuth && !isLoading,
+          passwordValidationResult = passwordValidation
         )
       }
-
     },
     confirmButton = {
       TextButton(
         onClick = {
-          viewModel.onClickNext(
-            feedUrl = feedUrl,
-            requireAuth = requireAuth,
-            username = username,
-            password = password
+          onClickNext(
+            feedUrl,
+            requireAuth,
+            username,
+            password
           )
         },
-        enabled = !isLoading.value
+        enabled = !isLoading
       ) {
         Text(stringResource(id = R.string.next))
       }
     },
     dismissButton = {
       TextButton(
-        onClick = onDismissRequest,
-        enabled = !isLoading.value
+        onClick = {
+          navigator.navigateUp()
+        },
+        enabled = !isLoading
       ) {
         Text(stringResource(id = android.R.string.cancel))
       }
     }
   )
 
-  val projectList = showProjectEvent.value
-  if (projectList != null) {
+  if (showProjectListEvent != null) {
     SelectProjectDialog(
-      projectList,
+      showProjectListEvent,
       onProjectSelect = {
-        viewModel.onSelectProject(it)
-        viewModel.onDismissSelectProject()
-        onDismissRequest()
+        onSelectProject(it)
+        onDismissSelectProject()
+        navigator.navigateUp()
       },
       onDismissRequest = {
-        viewModel.onDismissSelectProject()
+        onDismissSelectProject()
       }
     )
   }

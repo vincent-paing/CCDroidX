@@ -48,22 +48,21 @@ fun UsernameTextField(
     placeholder = {
       Text(text = "John Doe")
     },
+    supportingText = {
+      Text(
+        text = error,
+        color = MaterialTheme.colorScheme.error,
+        style = MaterialTheme.typography.bodySmall,
+        modifier = Modifier.padding(start = 16.dp)
+      )
+    },
     isError = isUsernameValidationError,
     singleLine = true,
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 8.dp)
       .semantics {
         if (isUsernameValidationError)
           error(error)
       }
   )
-  if (isUsernameValidationError) {
-    Text(
-      text = error,
-      color = MaterialTheme.colorScheme.error,
-      style = MaterialTheme.typography.bodySmall,
-      modifier = Modifier.padding(start = 16.dp)
-    )
-  }
 }

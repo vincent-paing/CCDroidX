@@ -24,11 +24,9 @@ private fun getFeedUrlValidation(validation: FeedUrlValidationResult): String {
     FeedUrlValidationResult.CORRECT -> {
       ""
     }
-
     FeedUrlValidationResult.INCORRECT_EMPTY_TEXT -> {
       stringResource(id = (R.string.error_feed_url_empty_text))
     }
-
     FeedUrlValidationResult.INCORRECT_INVALID_URL -> {
       stringResource(id = R.string.error_feed_url_invalid)
     }
@@ -39,9 +37,9 @@ private fun getFeedUrlValidation(validation: FeedUrlValidationResult): String {
 @Composable
 fun FeedUrlTextField(
   value: String,
-  onValueChange: (String) -> Unit,
   isEnabled: Boolean,
-  feedUrlValidation: FeedUrlValidationResult
+  feedUrlValidation: FeedUrlValidationResult,
+  onValueChange: (String) -> Unit
 ) {
 
   val keyboardController = LocalSoftwareKeyboardController.current
@@ -56,6 +54,16 @@ fun FeedUrlTextField(
     label = {
       Text(text = stringResource(R.string.feed_url))
     },
+    supportingText = {
+      if (isFeedUrlError) {
+        Text(
+          text = error,
+          color = MaterialTheme.colorScheme.error,
+          style = MaterialTheme.typography.bodySmall,
+          modifier = Modifier.padding(start = 16.dp)
+        )
+      }
+    },
     singleLine = true,
     keyboardActions = KeyboardActions(
       onDone = {
@@ -69,12 +77,4 @@ fun FeedUrlTextField(
           error(error)
       }
   )
-  if (isFeedUrlError) {
-    Text(
-      text = error,
-      color = MaterialTheme.colorScheme.error,
-      style = MaterialTheme.typography.bodySmall,
-      modifier = Modifier.padding(start = 16.dp)
-    )
-  }
 }

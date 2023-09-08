@@ -6,7 +6,7 @@ import com.github.takahirom.roborazzi.captureRoboImage
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
-import dev.aungkyawpaing.ccdroidx._testhelper_.screenshotPath
+import dev.aungkyawpaing.ccdroidx._testhelper_.ScreenshotTest
 import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
@@ -27,7 +27,7 @@ import java.time.ZonedDateTime
 class ProjectListScreenshotTest(
   private val deviceName: String,
   private val deviceQualifier: String,
-) {
+) : ScreenshotTest() {
 
   companion object {
     @JvmStatic
@@ -60,7 +60,7 @@ class ProjectListScreenshotTest(
       }
     }
     composeTestRule.onRoot()
-      .captureRoboImage(screenshotPath("projectList_emptyState_${deviceName}"))
+      .captureRoboImage(getScreenshotPath("emptyState_${deviceName}"))
   }
 
   @Test
@@ -112,8 +112,9 @@ class ProjectListScreenshotTest(
         )
       }
     }
+
     composeTestRule.onRoot()
-      .captureRoboImage(screenshotPath("projectList_withProjects_${deviceName}"))
+      .captureRoboImage(getScreenshotPath("withProjects_${deviceName}"))
   }
 
   @Test
@@ -139,7 +140,7 @@ class ProjectListScreenshotTest(
       }
     }
     composeTestRule.onRoot()
-      .captureRoboImage(screenshotPath("projectList_syncing_${deviceName}"))
+      .captureRoboImage(getScreenshotPath("syncing_${deviceName}"))
   }
 
   @Test
@@ -168,7 +169,8 @@ class ProjectListScreenshotTest(
         )
       }
     }
+
     composeTestRule.onRoot()
-      .captureRoboImage(screenshotPath("projectList_synced_${deviceName}"))
+      .captureRoboImage(getScreenshotPath("synced_${deviceName}"))
   }
 }

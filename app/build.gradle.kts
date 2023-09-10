@@ -6,7 +6,6 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.kotlin.pracelize)
-  alias(libs.plugins.androidx.navigation.safeargs)
   alias(libs.plugins.dagger.hilt)
   alias(libs.plugins.wire)
   alias(libs.plugins.android.junit5)
@@ -178,11 +177,6 @@ dependencies {
   implementation(libs.androidx.lifecycle.java8)
   implementation(libs.androidx.lifecycle.service)
   testImplementation(libs.androidx.arch.testing)
-
-  implementation(libs.androidx.navigation.fragment)
-  implementation(libs.androidx.navigation.ui)
-  testImplementation(libs.androidx.navigation.testing)
-  androidTestImplementation(libs.androidx.navigation.testing)
 
   implementation(libs.androidx.work.runtime)
   "fullImplementation"(libs.androidx.work.gcm)

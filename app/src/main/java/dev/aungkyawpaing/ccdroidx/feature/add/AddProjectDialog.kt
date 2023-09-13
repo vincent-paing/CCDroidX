@@ -6,11 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +28,6 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import com.ramcosta.composedestinations.annotation.Destination
@@ -49,6 +43,7 @@ import dev.aungkyawpaing.ccdroidx.feature.add.component.UsernameTextField
 import dev.aungkyawpaing.ccdroidx.feature.add.feedurlvalidation.FeedUrlValidationResult
 import dev.aungkyawpaing.ccdroidx.feature.add.passwordvalidation.PasswordValidationResult
 import dev.aungkyawpaing.ccdroidx.feature.add.usernamevalidation.UsernameValidationResult
+import dev.aungkyawpaing.ccdroidx.ui.DialogScaffold
 
 @Destination(style = DestinationStyle.Dialog::class)
 @Composable
@@ -87,39 +82,24 @@ fun AddProjectDialogContent(
   var username by rememberSaveable { mutableStateOf("") }
   var password by rememberSaveable { mutableStateOf("") }
 
-  // Width and padding set according to https://m3.material.io/components/dialogs/specs
-  Card(
-    shape = RoundedCornerShape(28.dp),
-    colors = CardDefaults.cardColors(
-      containerColor = MaterialTheme.colorScheme.surfaceVariant,
-      contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-    ),
-    modifier = Modifier
-      .widthIn(min = 280.dp, max = 560.dp)
-      .wrapContentHeight()
-      .zIndex(8.0f)
-  ) {
+  DialogScaffold(
+    title = {
+      Text(
+        text = stringResource(id = R.string.add_new_project),
+        style = MaterialTheme.typography.headlineSmall,
+        color = MaterialTheme.colorScheme.onSurface
+      )
 
-    Column(
-      modifier = Modifier.padding(24.dp)
-    ) {
-      Column {
-        Text(
-          text = stringResource(id = R.string.add_new_project),
-          style = MaterialTheme.typography.headlineSmall,
-          color = MaterialTheme.colorScheme.onSurface
+      if (isLoading) {
+        LinearProgressIndicator(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
         )
-
-        if (isLoading) {
-          LinearProgressIndicator(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(top = 8.dp)
-          )
-        }
       }
-
-      Column(modifier = Modifier.padding(top = 16.dp, bottom = 24.dp)) {
+    },
+    content = {
+      Column {
         FeedUrlTextField(
           value = feedUrl,
           onValueChange = {
@@ -185,32 +165,32 @@ fun AddProjectDialogContent(
           passwordValidationResult = passwordValidation
         )
       }
-
-      Row(modifier = Modifier.align(Alignment.End)) {
-        TextButton(
-          onClick = {
-            navigator.navigateUp()
-          },
-          enabled = !isLoading
-        ) {
-          Text(stringResource(id = android.R.string.cancel))
-        }
-        TextButton(
-          onClick = {
-            onClickNext(
-              feedUrl,
-              requireAuth,
-              username,
-              password
-            )
-          },
-          enabled = !isLoading
-        ) {
-          Text(stringResource(id = R.string.next))
-        }
+    },
+    confirmButton = {
+      TextButton(
+        onClick = {
+          onClickNext(
+            feedUrl,
+            requireAuth,
+            username,
+            password
+          )
+        },
+        enabled = !isLoading
+      ) {
+        Text(stringResource(id = R.string.next))
       }
-    }
-  }
+    },
+    dismissButton = {
+      TextButton(
+        onClick = {
+          navigator.navigateUp()
+        },
+        enabled = !isLoading
+      ) {
+        Text(stringResource(id = android.R.string.cancel))
+      }
+    })
 
   if (showProjectListEvent != null) {
     SelectProjectDialog(

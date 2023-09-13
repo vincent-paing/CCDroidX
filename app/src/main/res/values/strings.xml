@@ -63,7 +63,7 @@
     <string name="settings">Settings</string>
     <string name="sync_interval_limitation_notice">*Due to background worker limitation on Android, interval cannot be less than 15 minutes</string>
 
-    <string name="error_feed_url_empty_text">Please fill the url of your server\'s cctray feed here.</string>
+    <string name="error_feed_url_empty_text">Feed url cannot be empty</string>
     <string name="error_feed_url_invalid">The url you entered is invalid</string>
     <string name="error_username_empty_text">Username cannot be empty.</string>
     <string name="error_password_url_empty_text">Password cannot be empty.</string>

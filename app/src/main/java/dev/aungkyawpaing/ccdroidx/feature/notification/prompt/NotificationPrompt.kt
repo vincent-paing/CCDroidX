@@ -82,7 +82,7 @@ fun NotificationPromptContent(
             start.linkTo(notificationIcon.end)
             end.linkTo(parent.end)
             width = Dimension.fillToConstraints
-            linkTo(top = closeIcon.bottom, bottom = enableButton.top, bias = 0.0f)
+            linkTo(top = closeIcon.bottom, bottom = enableButton.top, bias = 0.5f)
           }
           .padding(start = 8.dp)
       )

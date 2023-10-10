@@ -1,23 +1,15 @@
 package dev.aungkyawpaing.ccdroidx.feature.projectlist
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -26,9 +18,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -41,122 +30,36 @@ import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.common.extensions.findActivity
 import dev.aungkyawpaing.ccdroidx.feature.browser.openInBrowser
 import dev.aungkyawpaing.ccdroidx.feature.destinations.AddProjectDialogScreenDestination
-import dev.aungkyawpaing.ccdroidx.feature.destinations.SettingsPageDestination
 import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.NotificationPrompt
 import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.NotificationPromptViewModel
 import dev.aungkyawpaing.ccdroidx.feature.projectlist.component.ProjectList
-import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
+import dev.aungkyawpaing.ccdroidx.feature.projectlist.component.ProjectListTopAppBar
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
 import kotlinx.coroutines.launch
-import org.ocpsoft.prettytime.PrettyTime
 import java.time.Clock
 
 @Composable
-private fun getSubtitleText(lastSyncedStatus: LastSyncedStatus?, clock: Clock): String =
-  if (lastSyncedStatus == null) {
-    stringResource(R.string.welcome)
-  } else {
-    when (lastSyncedStatus.lastSyncedState) {
-      LastSyncedState.SYNCING -> {
-        stringResource(R.string.syncing)
-      }
-
-      LastSyncedState.SUCCESS, LastSyncedState.FAILED -> {
-        stringResource(
-          R.string.last_synced_x,
-          PrettyTime(clock.instant()).format(lastSyncedStatus.lastSyncedDateTime)
-        )
-      }
-    }
-  }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ProjectListTopAppBar(
-  lastSyncedStatus: LastSyncedStatus?,
-  onProgressSyncedEvent: Boolean,
-  onPressSync: () -> Unit,
-  clearOnProgressSyncedEvent: () -> Unit,
-  navigator: DestinationsNavigator,
-  clock: Clock
-) {
-  TopAppBar(
-    title = {
-      Column {
-        Text(stringResource(id = R.string.app_name), modifier = Modifier.semantics {
-          contentDescription = "CC Droid X"
-        })
-        Text(
-          text = getSubtitleText(lastSyncedStatus, clock),
-          style = MaterialTheme.typography.bodyMedium
-        )
-      }
-    },
-    actions = {
-      IconButton(
-        onClick = onPressSync,
-        modifier = Modifier.semantics {
-          stateDescription = if (onProgressSyncedEvent) "Finished syncing" else ""
-
-          if (onProgressSyncedEvent) {
-            clearOnProgressSyncedEvent()
-          }
-        }
-      ) {
-        Icon(
-          Icons.Filled.Sync,
-          contentDescription = stringResource(R.string.menu_item_sync_project_status)
-        )
-      }
-
-      IconButton(onClick = {
-        navigator.navigate(SettingsPageDestination())
-      }) {
-        Icon(
-          Icons.Filled.Settings,
-          contentDescription = stringResource(R.string.menu_item_settings)
-        )
-      }
-    },
-    colors = TopAppBarDefaults.topAppBarColors(
-      containerColor = MaterialTheme.colorScheme.primary,
-      titleContentColor = MaterialTheme.colorScheme.onPrimary,
-      actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-    )
-  )
-}
-
-@Composable
 fun DeleteConfirmationDialog(
-  onConfirmDelete: () -> Unit,
-  onDismiss: () -> Unit
+  onConfirmDelete: () -> Unit, onDismiss: () -> Unit
 ) {
-  AlertDialog(
-    onDismissRequest = onDismiss,
-    title = {
-      Text(text = stringResource(id = R.string.confirm_delete_title))
-    },
-    text = {
-      Text(text = stringResource(id = R.string.confirm_delete_message))
-    },
-    confirmButton = {
-      TextButton(
-        onClick = {
-          onConfirmDelete()
-          onDismiss()
-        }
-      ) {
-        Text(stringResource(id = R.string.action_item_project_delete_project))
-      }
-    },
-    dismissButton = {
-      TextButton(
-        onClick = onDismiss
-      ) {
-        Text(stringResource(id = android.R.string.cancel))
-      }
+  AlertDialog(onDismissRequest = onDismiss, title = {
+    Text(text = stringResource(id = R.string.confirm_delete_title))
+  }, text = {
+    Text(text = stringResource(id = R.string.confirm_delete_message))
+  }, confirmButton = {
+    TextButton(onClick = {
+      onConfirmDelete()
+      onDismiss()
+    }) {
+      Text(stringResource(id = R.string.action_item_project_delete_project))
     }
-  )
+  }, dismissButton = {
+    TextButton(
+      onClick = onDismiss
+    ) {
+      Text(stringResource(id = android.R.string.cancel))
+    }
+  })
 }
 
 @Composable
@@ -176,20 +79,17 @@ fun ProjectListPageContent(
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
 
-  Scaffold(
-    topBar = {
-      ProjectListTopAppBar(
-        lastSyncedStatus,
-        onProgressSyncedEvent,
-        onPressSync,
-        clearOnProgressSyncedEvent,
-        navigator,
-        clock
-      )
-    }
-  ) { contentPadding ->
-    val deleteConfirmDialog =
-      remember { mutableStateOf<Project?>(null) }
+  Scaffold(topBar = {
+    ProjectListTopAppBar(
+      lastSyncedStatus,
+      onProgressSyncedEvent,
+      onPressSync,
+      clearOnProgressSyncedEvent,
+      navigator,
+      clock
+    )
+  }) { contentPadding ->
+    val deleteConfirmDialog = remember { mutableStateOf<Project?>(null) }
 
     ConstraintLayout(
       modifier = Modifier
@@ -199,28 +99,22 @@ fun ProjectListPageContent(
 
       val (notificationPrompt, projectListComponent, fabAddProject) = createRefs()
 
-      ProjectList(
-        projectList = projectList,
-        onOpenRepoClick = { project ->
-          context.findActivity()?.let { activity ->
-            scope.launch {
-              openInBrowser(activity, project.webUrl)
-            }
+      ProjectList(projectList = projectList, onOpenRepoClick = { project ->
+        context.findActivity()?.let { activity ->
+          scope.launch {
+            openInBrowser(activity, project.webUrl)
           }
-        },
-        onDeleteClick = { project ->
-          deleteConfirmDialog.value = project
-        },
-        onToggleMute = onToggleMute,
-        modifier = Modifier.constrainAs(projectListComponent) {
-          end.linkTo(parent.end)
-          start.linkTo(parent.start)
-          bottom.linkTo(notificationPrompt.top)
-          top.linkTo(parent.top)
-          height = Dimension.fillToConstraints
-          width = Dimension.fillToConstraints
-        },
-        clock = clock
+        }
+      }, onDeleteClick = { project ->
+        deleteConfirmDialog.value = project
+      }, onToggleMute = onToggleMute, modifier = Modifier.constrainAs(projectListComponent) {
+        end.linkTo(parent.end)
+        start.linkTo(parent.start)
+        bottom.linkTo(notificationPrompt.top)
+        top.linkTo(parent.top)
+        height = Dimension.fillToConstraints
+        width = Dimension.fillToConstraints
+      }, clock = clock
       )
 
       NotificationPrompt(
@@ -240,22 +134,18 @@ fun ProjectListPageContent(
         }
         .padding(16.dp)) {
         Icon(
-          Icons.Filled.Add,
-          contentDescription = stringResource(R.string.cd_fab_add_project)
+          Icons.Filled.Add, contentDescription = stringResource(R.string.cd_fab_add_project)
         )
       }
 
     }
 
     if (deleteConfirmDialog.value != null) {
-      DeleteConfirmationDialog(
-        onConfirmDelete = {
-          onDeleteProject(deleteConfirmDialog.value!!)
-        },
-        onDismiss = {
-          deleteConfirmDialog.value = null
-        }
-      )
+      DeleteConfirmationDialog(onConfirmDelete = {
+        onDeleteProject(deleteConfirmDialog.value!!)
+      }, onDismiss = {
+        deleteConfirmDialog.value = null
+      })
     }
   }
 }

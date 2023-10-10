@@ -12,6 +12,7 @@ object ProjectBuilder {
   fun buildProject(
     id: Long = 1,
     name: String = "Project Name",
+    activity: BuildState = BuildState.SLEEPING,
     lastBuildStatus: BuildStatus = BuildStatus.SUCCESS,
     lastBuildLabel: String? = null,
     webUrl: String = "https://example.com/master",
@@ -20,7 +21,7 @@ object ProjectBuilder {
     return Project(
       id = id,
       name = name,
-      activity = BuildState.SLEEPING,
+      activity = activity,
       lastBuildStatus = lastBuildStatus,
       lastBuildLabel = lastBuildLabel,
       lastBuildTime = lastBuildTime,

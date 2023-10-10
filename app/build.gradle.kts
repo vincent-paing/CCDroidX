@@ -219,8 +219,8 @@ dependencies {
   testImplementation(libs.junit.jupiter.params)
   testImplementation(libs.junit.junit4)
   testRuntimeOnly(libs.junit.jupiter.vintageEngine)
+  androidTestImplementation(libs.androidJunit5.compose)
   androidTestImplementation(libs.junit.jupiter.api)
-  androidTestImplementation(libs.androidJunit5.core)
   androidTestRuntimeOnly(libs.androidJunit5.runner)
 
   testImplementation(libs.robolectric)
@@ -244,6 +244,8 @@ dependencies {
   testImplementation(libs.mockk)
   testImplementation(libs.mockk.agentJvm)
   androidTestImplementation(libs.mockk.android)
+
+  testImplementation(libs.turbine)
 }
 
 androidComponents {

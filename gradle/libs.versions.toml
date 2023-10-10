@@ -6,7 +6,7 @@ androidx-fragment = "1.6.1"
 androidx-lifecycle = "2.6.1"
 androidx-test = "1.5.0"
 androidx-work = "2.8.1"
-compose = "1.4.0"
+compose = "1.5.3"
 compose-destinations = "1.8.42-beta"
 compose-wear = "1.1.2"
 dagger = "2.48"
@@ -14,7 +14,7 @@ desugar-jdk-libs = "2.0.3"
 espresso = "3.4.0"
 firebase-crashlytics-gradle = "2.9.8"
 google-services = "4.3.15"
-jupiter = "5.9.2"
+jupiter = "5.9.3"
 kotlin = "1.8.10"
 kotlinx-coroutine = "1.6.4"
 mockk = "1.12.3"
@@ -31,6 +31,7 @@ wire = "4.5.2"
 accompanist = { group = "com.google.accompanist", name = "accompanist-themeadapter-material3", version = "0.30.0" }
 androidJunit5-core = { group = "de.mannodermaus.junit5", name = "android-test-core", version.ref = "android-junit5" }
 androidJunit5-runner = { group = "de.mannodermaus.junit5", name = "android-test-runner", version.ref = "android-junit5" }
+androidJunit5-compose = { group = "de.mannodermaus.junit5", name = "android-test-compose", version = "1.0.0-SNAPSHOT" }
 androidx-activity = { module = "androidx.activity:activity-ktx", version = "1.7.2" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
 androidx-arch-testing = { module = "androidx.arch.core:core-testing", version = "2.2.0" }
@@ -120,11 +121,12 @@ sqldelight-android = { group = "com.squareup.sqldelight", name = "android-driver
 sqldelight-coroutine = { group = "com.squareup.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-jvm = { group = "com.squareup.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 wire = { group = "com.squareup.wire", name = "wire-runtime", version.ref = "wire" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-plugin" }
-android-junit5 = { id = "de.mannodermaus.android-junit5", version = "1.8.2.1" }
+android-junit5 = { id = "de.mannodermaus.android-junit5", version = "1.9.3.0" }
 android-library = { id = "com.android.library", version.ref = "android-plugin" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }

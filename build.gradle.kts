@@ -10,7 +10,6 @@ val versionNameConfig by extra { "$versionMajor.$versionMinor.$versionPatch" }
 val versionCodeConfig by extra {   versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild * 10 }
 val wearVersionCodeConfig by extra {  versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild * 10 + 1 }
 
-
 plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false

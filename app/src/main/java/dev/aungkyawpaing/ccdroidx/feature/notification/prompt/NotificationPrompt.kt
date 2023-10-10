@@ -22,9 +22,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -33,7 +35,7 @@ import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import dev.aungkyawpaing.ccdroidx.R
 
 @Composable
-private fun NotificationPromptCard(
+fun NotificationPromptContent(
   onDismissPrompt: () -> Unit,
   onEnableNotification: () -> Unit
 ) {
@@ -100,15 +102,14 @@ private fun NotificationPromptCard(
 
 @Composable
 fun NotificationPrompt(
-  isNotificationPromptVisible: Boolean,
-  onDismissNotificationPrompt: () -> Unit,
+  notificationPromptViewModel: NotificationPromptViewModel,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
 
   Box(modifier = modifier) {
     AnimatedVisibility(
-      visible = isNotificationPromptVisible,
+      visible = notificationPromptViewModel.promptIsVisible.collectAsState(false).value,
       enter = fadeIn() + slideInVertically(
         initialOffsetY = {
           it / 2
@@ -120,22 +121,29 @@ fun NotificationPrompt(
         },
       )
     ) {
-      NotificationPromptCard(onDismissPrompt = onDismissNotificationPrompt, onEnableNotification = {
-        kotlin.runCatching {
-          val settingsIntent: Intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-          context.startActivity(settingsIntent)
-        }
-      })
+      NotificationPromptContent(
+        onDismissPrompt = notificationPromptViewModel::onDismissClick,
+        onEnableNotification = {
+          kotlin.runCatching {
+            val settingsIntent: Intent =
+              Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            context.startActivity(settingsIntent)
+          }
+        })
     }
   }
 }
 
-@Preview
+@Preview(
+  name = "Phone", device = Devices.PHONE
+)
+@Preview(
+  name = "Tablet", device = Devices.TABLET
+)
 @Composable
 fun NotificationPromptPreview() {
   Mdc3Theme {
-    NotificationPrompt(isNotificationPromptVisible = true, {})
+    NotificationPromptContent({}, {})
   }
 }

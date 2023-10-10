@@ -1,14 +1,15 @@
 package dev.aungkyawpaing.ccdroidx.feature.notification.prompt
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.permssionflow.NotificationPermissionFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.Clock
 import java.time.LocalDateTime
@@ -22,7 +23,7 @@ class NotificationPromptViewModel @Inject constructor(
   private val clock: Clock
 ) : ViewModel() {
 
-  val promptIsVisibleLiveData: LiveData<Boolean> = combine(
+  val promptIsVisible: StateFlow<Boolean> = combine(
     projectRepo.getAll(),
     notificationDismissStore.getDismissTimeStamp(),
     notificationsPermissionFlow.getFlow(),
@@ -35,7 +36,7 @@ class NotificationPromptViewModel @Inject constructor(
         .isAfter(dismissTimeStamp)
 
     return@map thereIsAtLeastOneProject && lastDismissTimeNotWithin14Days && !isPermissionGranted
-  }.asLiveData()
+  }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
   fun onDismissClick() {
     viewModelScope.launch {

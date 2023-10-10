@@ -1,11 +1,11 @@
 package dev.aungkyawpaing.ccdroidx.feature.notification.prompt
 
+import app.cash.turbine.test
 import dev.aungkyawpaing.ccdroidx._testhelper_.CoroutineTest
 import dev.aungkyawpaing.ccdroidx._testhelper_.InstantTaskExecutorExtension
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.feature.notification.prompt.permssionflow.NotificationPermissionFlow
-import dev.aungkyawpaing.ccdroidx.observeForTesting
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -14,7 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -70,9 +70,9 @@ class NotificationPromptViewModelTest : CoroutineTest() {
 
       val viewModel = createViewModel()
 
-      viewModel.promptIsVisibleLiveData.observeForTesting {
-        runCurrent()
-        Assertions.assertEquals(false, viewModel.promptIsVisibleLiveData.value)
+      viewModel.promptIsVisible.test {
+        assertEquals(false, awaitItem())
+        cancelAndConsumeRemainingEvents()
       }
     }
 
@@ -95,9 +95,10 @@ class NotificationPromptViewModelTest : CoroutineTest() {
 
         val viewModel = createViewModel(currentTimeClock)
 
-        viewModel.promptIsVisibleLiveData.observeForTesting {
-          runCurrent()
-          Assertions.assertEquals(true, viewModel.promptIsVisibleLiveData.value)
+        viewModel.promptIsVisible.test {
+          skipItems(1)
+          assertEquals(true, awaitItem())
+          cancelAndConsumeRemainingEvents()
         }
       }
 
@@ -109,9 +110,9 @@ class NotificationPromptViewModelTest : CoroutineTest() {
 
         val viewModel = createViewModel(currentTimeClock)
 
-        viewModel.promptIsVisibleLiveData.observeForTesting {
-          runCurrent()
-          Assertions.assertEquals(false, viewModel.promptIsVisibleLiveData.value)
+        viewModel.promptIsVisible.test {
+          assertEquals(false, awaitItem())
+          cancelAndConsumeRemainingEvents()
         }
       }
 
@@ -133,9 +134,9 @@ class NotificationPromptViewModelTest : CoroutineTest() {
           } returns flowOf(true)
           val viewModel = createViewModel(currentTimeClock)
 
-          viewModel.promptIsVisibleLiveData.observeForTesting {
-            runCurrent()
-            Assertions.assertEquals(false, viewModel.promptIsVisibleLiveData.value)
+          viewModel.promptIsVisible.test {
+            assertEquals(false, awaitItem())
+            cancelAndConsumeRemainingEvents()
           }
         }
 
@@ -146,12 +147,12 @@ class NotificationPromptViewModelTest : CoroutineTest() {
           } returns flowOf(false)
           val viewModel = createViewModel(currentTimeClock)
 
-          viewModel.promptIsVisibleLiveData.observeForTesting {
-            runCurrent()
-            Assertions.assertEquals(true, viewModel.promptIsVisibleLiveData.value)
+          viewModel.promptIsVisible.test {
+            skipItems(1)
+            assertEquals(true, awaitItem())
+            cancelAndConsumeRemainingEvents()
           }
         }
-
       }
     }
   }
@@ -161,7 +162,6 @@ class NotificationPromptViewModelTest : CoroutineTest() {
     val viewModel = createViewModel()
 
     viewModel.onDismissClick()
-
     runCurrent()
 
     coVerify(exactly = 1) {

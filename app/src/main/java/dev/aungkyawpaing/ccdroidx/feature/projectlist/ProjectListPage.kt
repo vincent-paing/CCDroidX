@@ -168,8 +168,7 @@ fun ProjectListPageContent(
   onPressSync: () -> Unit,
   clearOnProgressSyncedEvent: () -> Unit,
   onDeleteProject: (project: Project) -> Unit,
-  isNotificationPromptVisible: Boolean,
-  onDismissNotificationPrompt: () -> Unit,
+  notificationPromptViewModel: NotificationPromptViewModel,
   navigator: DestinationsNavigator,
   clock: Clock = Clock.systemDefaultZone()
 ) {
@@ -225,8 +224,7 @@ fun ProjectListPageContent(
       )
 
       NotificationPrompt(
-        isNotificationPromptVisible = isNotificationPromptVisible,
-        onDismissNotificationPrompt = onDismissNotificationPrompt,
+        notificationPromptViewModel = notificationPromptViewModel,
         modifier = Modifier.constrainAs(notificationPrompt) {
           end.linkTo(parent.end)
           start.linkTo(parent.start)
@@ -278,10 +276,7 @@ fun ProjectListPage(
     clearOnProgressSyncedEvent = projectListViewModel::clearOnProgressSyncedEvent,
     onPressSync = projectListViewModel::onPressSync,
     onDeleteProject = projectListViewModel::onDeleteProject,
-    isNotificationPromptVisible = notificationPromptViewModel.promptIsVisibleLiveData.observeAsState(
-      initial = false
-    ).value,
-    onDismissNotificationPrompt = notificationPromptViewModel::onDismissClick,
+    notificationPromptViewModel = notificationPromptViewModel,
     navigator = navigator
   )
 }

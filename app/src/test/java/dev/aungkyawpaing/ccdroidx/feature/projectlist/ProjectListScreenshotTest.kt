@@ -11,6 +11,7 @@ import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
 import dev.aungkyawpaing.ccdroidx.testDevices
+import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,8 +54,7 @@ class ProjectListScreenshotTest(
           onPressSync = { },
           clearOnProgressSyncedEvent = { },
           onDeleteProject = { },
-          isNotificationPromptVisible = false,
-          onDismissNotificationPrompt = { },
+          notificationPromptViewModel = mockk(relaxed = true),
           navigator = EmptyDestinationsNavigator
         )
       }
@@ -102,8 +102,7 @@ class ProjectListScreenshotTest(
           onPressSync = { },
           clearOnProgressSyncedEvent = { },
           onDeleteProject = { },
-          isNotificationPromptVisible = true,
-          onDismissNotificationPrompt = { },
+          notificationPromptViewModel = mockk(relaxed = true),
           navigator = EmptyDestinationsNavigator,
           clock = Clock.fixed(
             currentDateTime.toInstant(),
@@ -133,8 +132,7 @@ class ProjectListScreenshotTest(
           onPressSync = { },
           clearOnProgressSyncedEvent = { },
           onDeleteProject = { },
-          isNotificationPromptVisible = false,
-          onDismissNotificationPrompt = { },
+          notificationPromptViewModel = mockk(relaxed = true),
           navigator = EmptyDestinationsNavigator
         )
       }
@@ -159,8 +157,7 @@ class ProjectListScreenshotTest(
           onPressSync = { },
           clearOnProgressSyncedEvent = { },
           onDeleteProject = { },
-          isNotificationPromptVisible = false,
-          onDismissNotificationPrompt = { },
+          notificationPromptViewModel = mockk(relaxed = true),
           navigator = EmptyDestinationsNavigator,
           clock = Clock.fixed(
             currentDateTime.toInstant(),

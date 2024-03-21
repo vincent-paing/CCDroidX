@@ -1,5 +1,0 @@
-ALTER TABLE ProjectTable
-ADD username TEXT DEFAULT NULL;
-
-ALTER TABLE ProjectTable
-ADD password TEXT DEFAULT NULL;

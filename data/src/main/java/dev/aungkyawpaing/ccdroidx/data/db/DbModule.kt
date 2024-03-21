@@ -1,14 +1,12 @@
 package dev.aungkyawpaing.ccdroidx.data.db
 
 import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import com.squareup.sqldelight.db.SqlDriver
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.aungkyawpaing.ccdroidx.CCDroidXDb
 import javax.inject.Singleton
 
 @Module
@@ -17,15 +15,16 @@ internal object DbModule {
 
   @Provides
   @Singleton
-  fun provideSqlDriver(@ApplicationContext context: Context): SqlDriver {
-    return AndroidSqliteDriver(CCDroidXDb.Schema, context, "ccdroidx.db")
+  fun database(@ApplicationContext context: Context): CCDroidXDb {
+    return Room.databaseBuilder(
+      context,
+      CCDroidXDb::class.java, "ccdroidx.db"
+    ).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()
   }
 
   @Provides
-  @Singleton
-  fun database(driver: SqlDriver): CCDroidXDb {
-    return CCDroidXDb(
-      driver = driver, ProjectTableAdapter = projectTableAdapter
-    )
+  fun projectTableDao(ccDroidXDb: CCDroidXDb): ProjectTableDao {
+    return ccDroidXDb.projectTableDao()
   }
+
 }

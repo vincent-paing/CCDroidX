@@ -1,13 +1,10 @@
 package dev.aungkyawpaing.ccdroidx.data
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
-import com.squareup.sqldelight.runtime.coroutines.mapToOne
-import dev.aungkyawpaing.ccdroidx.CCDroidXDb
 import dev.aungkyawpaing.ccdroidx.common.Authentication
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.api.FetchProject
+import dev.aungkyawpaing.ccdroidx.data.db.ProjectTableDao
 import dev.aungkyawpaing.ccdroidx.data.db.ProjectTableToProjectMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -16,7 +13,7 @@ import javax.inject.Inject
 
 class ProjectRepo @Inject constructor(
   private val fetchProject: FetchProject,
-  private val db: CCDroidXDb,
+  private val projectTableDao: ProjectTableDao,
   private val cryptography: Cryptography,
   private val projectTableToProjectMapper: ProjectTableToProjectMapper,
   private val dispatcherProvider: DispatcherProvider
@@ -52,7 +49,7 @@ class ProjectRepo @Inject constructor(
   suspend fun saveProject(project: Project) {
     withContext(dispatcherProvider.io()) {
       if (project.id == -1L) {
-        db.projectTableQueries.insert(
+        projectTableDao.insert(
           name = project.name,
           activity = project.activity,
           lastBuildStatus = project.lastBuildStatus,
@@ -65,7 +62,7 @@ class ProjectRepo @Inject constructor(
           password = if (project.authentication != null) cryptography.encrypt(project.authentication!!.password) else null
         )
       } else {
-        db.projectTableQueries.update(
+        projectTableDao.update(
           id = project.id,
           name = project.name,
           activity = project.activity,
@@ -83,37 +80,32 @@ class ProjectRepo @Inject constructor(
   }
 
   fun getAll(): Flow<List<Project>> {
-    return db.projectTableQueries.selectAll()
-      .asFlow()
-      .mapToList(dispatcherProvider.default())
+    return projectTableDao.selectAll()
       .map { projectTables ->
         projectTables.map(projectTableToProjectMapper::mapProjectTable)
       }
   }
 
 
-  fun getById(projectId: Long): Flow<Project> {
-    return db.projectTableQueries.selectById(projectId)
-      .asFlow()
-      .mapToOne(dispatcherProvider.default())
-      .map(projectTableToProjectMapper::mapProjectTable)
+  fun getById(projectId: Long): Project {
+    return projectTableToProjectMapper.mapProjectTable(projectTableDao.selectById(projectId))
   }
 
   suspend fun delete(projectId: Long) {
     return withContext(dispatcherProvider.io()) {
-      db.projectTableQueries.delete(projectId)
+      projectTableDao.delete(projectId)
     }
   }
 
   suspend fun unmuteProject(projectId: Long) {
     withContext(dispatcherProvider.io()) {
-      db.projectTableQueries.updateMute(false, null, projectId)
+      projectTableDao.updateMute(false, null, projectId)
     }
   }
 
   suspend fun muteProject(projectId: Long) {
     withContext(dispatcherProvider.io()) {
-      db.projectTableQueries.updateMute(true, null, projectId)
+      projectTableDao.updateMute(true, null, projectId)
     }
   }
 

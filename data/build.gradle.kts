@@ -3,12 +3,11 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.dagger.hilt)
-  alias(libs.plugins.sqldelight)
   alias(libs.plugins.android.junit5)
 }
 
-val compileSdkVer : Int by rootProject.extra
-val minimumSdkVer : Int by rootProject.extra
+val compileSdkVer: Int by rootProject.extra
+val minimumSdkVer: Int by rootProject.extra
 
 android {
   namespace = "dev.aungkyawpaing.ccdroidx.data"
@@ -52,15 +51,6 @@ android {
   }
 }
 
-sqldelight {
-  database("CCDroidXDb") {
-    packageName = "dev.aungkyawpaing.ccdroidx"
-    dialect = "sqlite:3.24"
-    sourceFolders = listOf("sqldelight")
-    schemaOutputDirectory = file("build/dbs")
-  }
-}
-
 dependencies {
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   implementation(project(":common"))
@@ -82,10 +72,10 @@ dependencies {
   }
   testImplementation(libs.okhttp.mockWebServer)
 
-  implementation(libs.androidx.sqlite)
-  implementation(libs.sqldelight.android)
-  implementation(libs.sqldelight.coroutine)
-  testImplementation(libs.sqldelight.jvm)
+  implementation(libs.room.runtime)
+  ksp(libs.room.compiler)
+  implementation(libs.room.ktx)
+  testImplementation(libs.room.testing)
 
   implementation(libs.moshi.core)
   implementation(libs.moshi.adapters)

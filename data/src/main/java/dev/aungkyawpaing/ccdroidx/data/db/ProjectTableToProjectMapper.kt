@@ -1,6 +1,5 @@
 package dev.aungkyawpaing.ccdroidx.data.db
 
-import dev.aungkyawpaing.ccdroidx.ProjectTable
 import dev.aungkyawpaing.ccdroidx.common.Authentication
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.data.Cryptography
@@ -12,7 +11,7 @@ class ProjectTableToProjectMapper @Inject constructor(
 
   fun mapProjectTable(projectTable: ProjectTable): Project {
     return Project(
-      id = projectTable.id,
+      id = projectTable.id!!,
       name = projectTable.name,
       activity = projectTable.activity,
       lastBuildStatus = projectTable.lastBuildStatus,

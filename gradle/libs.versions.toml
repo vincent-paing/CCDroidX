@@ -15,7 +15,7 @@ espresso = "3.4.0"
 firebase-crashlytics-gradle = "2.9.8"
 google-services = "4.3.15"
 jupiter = "5.9.3"
-kotlin = "1.8.10"
+kotlin = "1.9.22"
 kotlinx-coroutine = "1.6.4"
 mockk = "1.12.3"
 moshi = "1.14.0"
@@ -23,7 +23,7 @@ okhttp = "5.0.0-alpha.11"
 permission-flow = "1.0.0"
 prettytime = "5.0.6.Final"
 roborazzi = "1.5.0-rc-1"
-sqldelight = "1.5.5"
+room = "2.6.1"
 timber = "5.0.1"
 wire = "4.5.2"
 
@@ -117,9 +117,10 @@ roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", versi
 roborazzi_compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
 roborazzi_junit_rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
 simpleXml = { module = "org.simpleframework:simple-xml", version = "2.7.1" }
-sqldelight-android = { group = "com.squareup.sqldelight", name = "android-driver", version.ref = "sqldelight" }
-sqldelight-coroutine = { group = "com.squareup.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
-sqldelight-jvm = { group = "com.squareup.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 wire = { group = "com.squareup.wire", name = "wire-runtime", version.ref = "wire" }
@@ -132,10 +133,9 @@ dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-ksp = { id = "com.google.devtools.ksp", version = "1.8.10-1.0.9" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version = "1.9.22-1.0.17" }
 kotlin-pracelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
-sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
 wire = { id = "com.squareup.wire", version.ref = "wire" }
 
 [bundles]

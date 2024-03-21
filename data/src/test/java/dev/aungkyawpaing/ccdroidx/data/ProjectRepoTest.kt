@@ -1,25 +1,26 @@
 package dev.aungkyawpaing.ccdroidx.data
 
-import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
-import dev.aungkyawpaing.ccdroidx.CCDroidXDb
 import dev.aungkyawpaing.ccdroidx.common.Authentication
 import dev.aungkyawpaing.ccdroidx.common.BuildState
 import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.data._testhelper_.CoroutineTest
+import dev.aungkyawpaing.ccdroidx.data._testhelper_.FakeProjectTableDao
 import dev.aungkyawpaing.ccdroidx.data._testhelper_.ProjectBuilder.buildProject
 import dev.aungkyawpaing.ccdroidx.data.api.FetchProject
 import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.data.api.ProjectResponse
 import dev.aungkyawpaing.ccdroidx.data.db.ProjectTableToProjectMapper
-import dev.aungkyawpaing.ccdroidx.data.db.projectTableAdapter
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -27,20 +28,16 @@ import java.time.ZonedDateTime
 class ProjectRepoTest : CoroutineTest() {
 
   private val fetchProject = mockk<FetchProject>()
-  private val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
-  private val db = CCDroidXDb(driver, projectTableAdapter)
+
   private val cryptography = mockk<Cryptography>(relaxed = true)
 
+  private val projectTableDao = FakeProjectTableDao()
+
   private val projectRepo = ProjectRepo(
-    fetchProject, db, cryptography,
+    fetchProject, projectTableDao, cryptography,
     ProjectTableToProjectMapper(cryptography),
     testDispatcherProvider
   )
-
-  @BeforeEach
-  fun setUp() {
-    CCDroidXDb.Schema.create(driver)
-  }
 
   @Nested
   @DisplayName("fetchRepo")
@@ -192,7 +189,7 @@ class ProjectRepoTest : CoroutineTest() {
     fun `updated isMuted to false`() = runTest {
       val project = buildProject(id = 1)
 
-      db.projectTableQueries.insert(
+      projectTableDao.insert(
         name = project.name,
         activity = project.activity,
         lastBuildStatus = project.lastBuildStatus,
@@ -204,7 +201,7 @@ class ProjectRepoTest : CoroutineTest() {
         username = null,
         password = null
       )
-      db.projectTableQueries.updateMute(true, null, project.id)
+      projectTableDao.updateMute(true, null, project.id)
 
       projectRepo.unmuteProject(project.id)
 
@@ -220,7 +217,7 @@ class ProjectRepoTest : CoroutineTest() {
     fun `updated isMuted to true`() = runTest {
       val project = buildProject(id = 1)
 
-      db.projectTableQueries.insert(
+      projectTableDao.insert(
         name = project.name,
         activity = project.activity,
         lastBuildStatus = project.lastBuildStatus,
@@ -232,7 +229,7 @@ class ProjectRepoTest : CoroutineTest() {
         username = null,
         password = null
       )
-      db.projectTableQueries.updateMute(false, null, project.id)
+      projectTableDao.updateMute(false, null, project.id)
 
       projectRepo.muteProject(project.id)
 

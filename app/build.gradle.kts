@@ -142,10 +142,12 @@ dependencies {
   implementation(libs.timber)
   implementation(libs.prettytime)
 
+  implementation(platform(libs.compose.bom))
   implementation(libs.compose.ui)
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.ui.tooling.preview)
   testImplementation(libs.compose.ui.test)
+  androidTestImplementation(platform(libs.compose.bom))
   androidTestImplementation(libs.compose.ui.test)
   debugImplementation(libs.compose.ui.test.manifest)
   implementation(libs.compose.foundation)
@@ -162,7 +164,6 @@ dependencies {
   implementation(libs.compose.destinations.core)
   ksp(libs.compose.destinations.ksp)
 
-  implementation(libs.androidx.constraintLayout)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.core)
 

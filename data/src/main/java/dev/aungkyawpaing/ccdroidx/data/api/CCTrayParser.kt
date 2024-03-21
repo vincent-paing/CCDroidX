@@ -21,7 +21,7 @@ object CCTrayParser {
 
   fun parseResponse(response: Response): List<ProjectResponse> {
     val serializer = Persister()
-    val data = serializer.read(CCTrayProjects::class.java, response.body?.byteStream())
+    val data = serializer.read(CCTrayProjects::class.java, response.body.byteStream())
     return data.project?.map {
       ProjectResponse(
         name = it.name!!,

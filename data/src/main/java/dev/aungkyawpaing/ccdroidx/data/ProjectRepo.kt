@@ -1,6 +1,7 @@
 package dev.aungkyawpaing.ccdroidx.data
 
 import dev.aungkyawpaing.ccdroidx.common.Authentication
+import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.common.coroutine.DispatcherProvider
 import dev.aungkyawpaing.ccdroidx.data.api.FetchProject
@@ -86,6 +87,12 @@ class ProjectRepo @Inject constructor(
       }
   }
 
+  fun getAllNotBuildStatus(buildStatus: BuildStatus): Flow<List<Project>> {
+    return projectTableDao.selectByNotBuildStatus(buildStatus)
+      .map { projectTables ->
+        projectTables.map(projectTableToProjectMapper::mapProjectTable)
+      }
+  }
 
   fun getById(projectId: Long): Project {
     return projectTableToProjectMapper.mapProjectTable(projectTableDao.selectById(projectId))

@@ -2,14 +2,15 @@ package dev.aungkyawpaing.ccdroidx.feature
 
 import dev.aungkyawpaing.ccdroidx._testhelper_.CoroutineTest
 import dev.aungkyawpaing.ccdroidx._testhelper_.ProjectBuilder
-import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
+import dev.aungkyawpaing.ccdroidx.data.api.NetworkException
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedState
 import dev.aungkyawpaing.ccdroidx.feature.sync.LastSyncedStatus
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncMetaDataStorage
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncProjects
 import dev.aungkyawpaing.ccdroidx.feature.wear.WearDataLayerSource
+import dev.aungkyawpaing.ccdroidx.feature.widget.WidgetManager
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
@@ -30,6 +31,7 @@ class SyncProjectsTest : CoroutineTest() {
   private val clock: Clock = Clock.fixed(Instant.ofEpochSecond(6000), ZoneId.of("UTC"))
   private val syncMetaDataStorage = mockk<SyncMetaDataStorage>(relaxed = true)
   private val wearDataLayerSource = mockk<WearDataLayerSource>(relaxed = true)
+  private val widgetManager = mockk<WidgetManager>(relaxed = true)
 
   private val projectRepo = mockk<ProjectRepo>(relaxUnitFun = true)
   private val syncProject = SyncProjects(
@@ -37,6 +39,7 @@ class SyncProjectsTest : CoroutineTest() {
     syncMetaDataStorage,
     wearDataLayerSource,
     clock,
+    widgetManager
   )
 
   @Test
@@ -208,6 +211,25 @@ class SyncProjectsTest : CoroutineTest() {
 
     coVerify(exactly = 1) {
       wearDataLayerSource.updateDataItems()
+    }
+  }
+
+  @Test
+  fun `update widget manager on success`() = runTest {
+    val projectList = listOf(ProjectBuilder.buildProject())
+
+    coEvery {
+      projectRepo.getAll()
+    } returns flow { emit(projectList) }
+
+    coEvery {
+      projectRepo.fetchRepo(any(), any(), any())
+    } returns projectList
+
+    syncProject.sync(mockk(relaxed = true))
+
+    coVerify(exactly = 1) {
+      widgetManager.updateDashboardWidget()
     }
   }
 }

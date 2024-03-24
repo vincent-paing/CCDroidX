@@ -83,6 +83,10 @@ class FakeProjectTableDao : ProjectTableDao {
     return flowOf(projectTables.values.toList())
   }
 
+  override fun selectByNotBuildStatus(lastBuildStatus: BuildStatus): Flow<List<ProjectTable>> {
+    return flowOf(projectTables.values.filter { it.lastBuildStatus != lastBuildStatus })
+  }
+
   override fun selectById(id: Long): ProjectTable {
     return projectTables[idCounter]!!
   }

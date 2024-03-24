@@ -1,7 +1,12 @@
 package dev.aungkyawpaing.ccdroidx.feature.sync
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import java.time.Duration
 
 class SyncWorkerScheduler(
@@ -9,10 +14,10 @@ class SyncWorkerScheduler(
 ) {
 
   fun removeExistingAndScheduleWorker(syncInterval: Duration) {
-    scheduleWorker(syncInterval)
+    schedulePeriodicWork(syncInterval)
   }
 
-  private fun scheduleWorker(duration: Duration) {
+  private fun schedulePeriodicWork(duration: Duration) {
     val constraints = Constraints.Builder()
       .setRequiredNetworkType(NetworkType.CONNECTED)
       .setRequiresBatteryNotLow(true)
@@ -31,6 +36,20 @@ class SyncWorkerScheduler(
         ExistingPeriodicWorkPolicy.UPDATE,
         syncWorkRequest
       )
+  }
 
+  fun scheduleOneTimeWork() {
+    val constraints = Constraints.Builder()
+      .setRequiredNetworkType(NetworkType.CONNECTED)
+      .build()
+
+    val syncWorkRequest =
+      OneTimeWorkRequestBuilder<SyncProjectWorker>()
+        .addTag(SyncProjectWorker.TAG)
+        .setConstraints(constraints)
+        .build()
+
+    WorkManager.getInstance(context)
+      .enqueue(syncWorkRequest)
   }
 }

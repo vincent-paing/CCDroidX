@@ -54,6 +54,9 @@ interface ProjectTableDao {
   @Query("SELECT * FROM ProjectTable ORDER BY lastBuildStatus DESC, lastBuildTime DESC, id")
   fun selectAll(): Flow<List<ProjectTable>>
 
+  @Query("SELECT * FROM ProjectTable WHERE lastBuildStatus != :lastBuildStatus")
+  fun selectByNotBuildStatus(lastBuildStatus: BuildStatus): Flow<List<ProjectTable>>
+
   @Query("SELECT * FROM ProjectTable WHERE id = :id")
   fun selectById(id: Long): ProjectTable
 

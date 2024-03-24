@@ -83,7 +83,6 @@ dependencies {
   ksp(libs.moshi.codeGen)
 
   implementation(libs.dagger.hilt.android)
-  implementation(libs.dagger.hilt.work)
   ksp(libs.dagger.hilt.compiler)
   ksp(libs.dagger.hilt.android.compiler)
   androidTestImplementation(libs.dagger.hilt.android.testing)

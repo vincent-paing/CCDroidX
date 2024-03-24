@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     if (host == "project" && path.isNotEmpty()) {
       lifecycleScope.launch {
         val projectId = path.toLongOrNull() ?: return@launch
-        val url = viewModel.getProjectUrlById(projectId) ?: return@launch
+        val url = viewModel.getProjectUrlById(projectId)
         openInBrowser(this@MainActivity, url)
       }
     }

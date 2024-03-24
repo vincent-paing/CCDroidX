@@ -1,0 +1,10 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/dashboard_widget_description"
+    android:initialLayout="@layout/glance_default_loading_layout"
+    android:minWidth="100dp"
+    android:minHeight="150dp"
+    android:previewImage="@drawable/dashboard_widget_preview"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellWidth="2"
+    android:targetCellHeight="3"
+    android:widgetCategory="home_screen" />

@@ -15,7 +15,7 @@ class SyncProjectWorker @AssistedInject constructor(
   @Assisted appContext: Context,
   @Assisted workerParams: WorkerParameters,
   val syncProjects: SyncProjects,
-  val notifyProjectStatus: NotifyProjectStatus
+  val notifyProjectStatus: NotifyProjectStatus,
 ) : CoroutineWorker(appContext, workerParams) {
 
   companion object {
@@ -33,7 +33,7 @@ class SyncProjectWorker @AssistedInject constructor(
       return Result.failure()
     }
 
-    Timber.i("finished syncing")
+    Timber.i("finished syncing successfully")
     return Result.success()
   }
 

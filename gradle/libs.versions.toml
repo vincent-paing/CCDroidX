@@ -10,9 +10,11 @@ composeBom = "2024.03.00"
 compose-destinations = "1.10.2"
 compose-wear = "1.3.0"
 dagger = "2.51"
+androidx-hilt = "1.2.0"
 desugar-jdk-libs = "2.0.4"
 espresso = "3.5.1"
 firebase-crashlytics-gradle = "2.9.9"
+glance = "1.1.0-alpha01"
 google-services = "4.4.1"
 jupiter = "5.10.0"
 kotlin = "1.9.22"
@@ -41,7 +43,9 @@ androidx-dataStore = { group = "androidx.datastore", name = "datastore", version
 androidx-dataStore-preference = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidx-dataStore" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
 androidx-fragment-testing = { group = "androidx.fragment", name = "fragment-testing", version.ref = "androidx-fragment" }
-androidx-hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0" }
+androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
+androidx-glance-appwidget-testing = { group = "androidx.glance", name = "glance-appwidget-testing", version.ref = "glance" }
+androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "glance" }
 androidx-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-extensions", version = "2.2.0" }
 androidx-lifecycle-java8 = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-liveData = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidx-lifecycle" }
@@ -84,14 +88,16 @@ coroutine-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutine
 coroutine-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutine" }
 coroutine-playServices = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutine" }
 coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutine" }
+androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "androidx-hilt" }
+androidx-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidx-hilt" }
+androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "androidx-hilt" }
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger" }
 dagger-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger" }
 dagger-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "dagger" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "dagger" }
-dagger-hilt-work = { module = "androidx.hilt:hilt-work", version = "1.2.0" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
-firebase-bom = "com.google.firebase:firebase-bom:32.7.4"
+firebase-bom = "com.google.firebase:firebase-bom:32.8.0"
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 junit-junit4 = { module = "junit:junit", version = "4.13.2" }
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "jupiter" }

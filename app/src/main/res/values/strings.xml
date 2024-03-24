@@ -94,4 +94,8 @@
 
     <string name="error_no_browser_installed">Unable to open in any browser on your device</string>
 
+    <!--   Widget -->
+    <string name="dashboard_widget_description">View your failing pipelines</string>
+    <string name="dashboard_widget_title_green">All Green</string>
+    <string name="dashboard_widget_title_red">%s Red</string>
 </resources>

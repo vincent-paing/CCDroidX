@@ -160,6 +160,10 @@ dependencies {
 
   implementation(libs.accompanist)
 
+  implementation(libs.androidx.glance.appwidget)
+  testImplementation(libs.androidx.glance.appwidget.testing)
+  implementation(libs.androidx.glance.material3)
+
   implementation(libs.androidx.hilt.navigation)
   implementation(libs.compose.destinations.core)
   ksp(libs.compose.destinations.ksp)
@@ -200,9 +204,10 @@ dependencies {
   implementation(libs.permissionFlow.android)
 
   implementation(libs.dagger.hilt.android)
-  implementation(libs.dagger.hilt.work)
   ksp(libs.dagger.hilt.compiler)
   ksp(libs.dagger.hilt.android.compiler)
+  implementation(libs.androidx.hilt.work)
+  ksp(libs.androidx.hilt.compiler)
   androidTestImplementation(libs.dagger.hilt.android.testing)
   kspAndroidTest(libs.dagger.hilt.compiler)
   kspAndroidTest(libs.dagger.hilt.android.compiler)

@@ -111,7 +111,7 @@ jobs:
           path: '**/build/reports/androidTests/managedDevice/debug/flavors'
 
   screenshotTest:
-    runs-on: macos-latest
+    runs-on: macos-14
     env:
       CCDROIDX_RELEASE_KEYSTORE_PASSWORD: ${{ secrets.CCDROIDX_RELEASE_KEYSTORE_PASSWORD }}
       CCDROIDX_RELEASE_KEY_ALIAS: ${{ secrets.CCDROIDX_RELEASE_KEY_ALIAS }}

@@ -2,9 +2,9 @@
     android:description="@string/dashboard_widget_description"
     android:initialLayout="@layout/glance_default_loading_layout"
     android:minWidth="100dp"
-    android:minHeight="150dp"
+    android:minHeight="120dp"
     android:previewImage="@drawable/dashboard_widget_preview"
     android:resizeMode="horizontal|vertical"
     android:targetCellWidth="2"
-    android:targetCellHeight="3"
+    android:targetCellHeight="2"
     android:widgetCategory="home_screen" />

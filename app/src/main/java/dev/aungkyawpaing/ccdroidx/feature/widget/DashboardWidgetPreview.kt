@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,39 +39,46 @@ fun DashboardWidgetPreview() {
   Mdc3Theme {
     Column(
       modifier = Modifier
-        .size(150.dp, 225.dp)
-        .background(MaterialTheme.colorScheme.background)
+        .size(150.dp, 200.dp)
+        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
     ) {
 
       Row(
         modifier = Modifier
-          .fillMaxWidth()
-          .background(MaterialTheme.colorScheme.primary),
+          .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
       ) {
         val title = "2 Red"
         Image(
-          Icons.Filled.Refresh,
+          painterResource(id = R.drawable.ic_notification),
           null,
-          colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+          colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
           modifier = Modifier
-            .size(48.dp)
-            .padding(12.dp)
+            .size(36.dp)
+            .padding(8.dp)
         )
 
         Text(
           "3 Red",
-          style = MaterialTheme.typography.titleMedium,
-          color = MaterialTheme.colorScheme.onPrimary
+          style = MaterialTheme.typography.titleSmall,
+          color = MaterialTheme.colorScheme.onSurface,
+          modifier = Modifier.weight(1.0f)
+        )
+
+        Image(
+          Icons.Filled.Refresh,
+          null,
+          colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+          modifier = Modifier
+            .size(36.dp)
+            .padding(8.dp)
         )
       }
 
       val exampleProjects = listOf(
-        "lisan/al-giab",
-        "anakin/sky-walker",
-        "answer/to-be-rich-is",
-        "ccdroidx/ccdroidx-pipeline",
-        "you-cant/see-this"
+        "failing/project",
+        "shown/here",
+        "just/glance"
       )
 
       LazyColumn(

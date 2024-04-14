@@ -22,20 +22,18 @@ import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
+import androidx.glance.appwidget.components.Scaffold
+import androidx.glance.appwidget.components.TitleBar
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
-import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
-import androidx.glance.layout.Row
-import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
-import androidx.glance.layout.size
 import androidx.glance.semantics.semantics
 import androidx.glance.semantics.testTag
 import androidx.glance.text.FontWeight
@@ -71,45 +69,27 @@ fun DashboardWidgetContent(failingProjects: List<Project>) {
   val context = LocalContext.current
 
   GlanceTheme {
-    Column(
-      modifier = GlanceModifier
-        .fillMaxSize()
-        .background(GlanceTheme.colors.background)
-    ) {
-
-      Row(
-        modifier = GlanceModifier
-          .fillMaxWidth()
-          .background(GlanceTheme.colors.primary)
-          .clickable(onClick = actionStartActivity(MainActivity::class.java)),
-        verticalAlignment = Alignment.CenterVertically
-      ) {
-        val title = if (failingProjects.isEmpty()) {
-          context.getString(R.string.dashboard_widget_title_green)
-        } else {
-          context.getString(R.string.dashboard_widget_title_red, failingProjects.size.toString())
-        }
-        val titleStyle = TextStyle(
-          color = GlanceTheme.colors.onPrimary,
-          fontSize = TextUnit(16.0f, TextUnitType.Sp),
-          fontWeight = FontWeight.Medium,
-        )
-        Image(
-          provider = ImageProvider(R.drawable.ic_refresh_24),
-          contentDescription = context.getString(R.string.menu_item_sync_project_status),
-          colorFilter = ColorFilter.tint(GlanceTheme.colors.onPrimary),
-          modifier = GlanceModifier.defaultWeight().size(48.dp).padding(12.dp)
-            .clickable(onClick = actionRunCallback<WidgetRefreshAction>())
-        )
-
-        Text(
-          text = title,
-          style = titleStyle,
-          modifier = GlanceModifier.fillMaxWidth()
-        )
-      }
-
-      LazyColumn(modifier = GlanceModifier.padding(8.dp)) {
+    Scaffold(
+      modifier = GlanceModifier.background(GlanceTheme.colors.widgetBackground),
+      titleBar = {
+        TitleBar(
+          startIcon = ImageProvider(R.drawable.ic_notification),
+          iconColor = GlanceTheme.colors.primary,
+          title = if (failingProjects.isEmpty()) {
+            context.getString(R.string.dashboard_widget_title_green)
+          } else {
+            context.getString(R.string.dashboard_widget_title_red, failingProjects.size.toString())
+          },
+          actions = {
+            Image(
+              provider = ImageProvider(R.drawable.ic_refresh_24),
+              contentDescription = context.getString(R.string.menu_item_sync_project_status),
+              colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
+              modifier = GlanceModifier.clickable(onClick = actionRunCallback<WidgetRefreshAction>())
+            )
+          })
+      }) {
+      LazyColumn {
         items(failingProjects) { project ->
           Column {
             Box(

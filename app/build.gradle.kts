@@ -160,6 +160,7 @@ dependencies {
 
   implementation(libs.accompanist)
 
+  implementation(libs.androidx.glance.testing)
   implementation(libs.androidx.glance.appwidget)
   testImplementation(libs.androidx.glance.appwidget.testing)
   implementation(libs.androidx.glance.material3)

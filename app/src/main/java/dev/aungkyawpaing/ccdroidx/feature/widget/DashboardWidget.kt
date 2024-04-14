@@ -36,6 +36,8 @@ import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
+import androidx.glance.semantics.semantics
+import androidx.glance.semantics.testTag
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
@@ -65,7 +67,7 @@ class DashboardWidget(
 }
 
 @Composable
-private fun DashboardWidgetContent(failingProjects: List<Project>) {
+fun DashboardWidgetContent(failingProjects: List<Project>) {
   val context = LocalContext.current
 
   GlanceTheme {
@@ -121,6 +123,9 @@ private fun DashboardWidgetContent(failingProjects: List<Project>) {
                     )
                   )
                 )
+                .semantics {
+                  this.testTag = "Project ${project.id} - row"
+                }
             ) {
               Text(
                 text = project.name,

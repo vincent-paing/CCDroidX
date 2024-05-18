@@ -17,8 +17,8 @@ firebase-crashlytics-gradle = "2.9.9"
 glance = "1.1.0-rc01"
 google-services = "4.4.1"
 jupiter = "5.10.0"
-kotlin = "1.9.22"
-kotlinx-coroutine = "1.8.0"
+kotlin = "2.0.0-RC3"
+kotlinx-coroutine = "1.8.1"
 mockk = "1.12.3"
 moshi = "1.14.0"
 okhttp = "5.0.0-alpha.12"
@@ -141,8 +141,9 @@ dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-ksp = { id = "com.google.devtools.ksp", version = "1.9.22-1.0.17" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version = "2.0.0-RC3-1.0.20" }
 kotlin-pracelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 wire = { id = "com.squareup.wire", version.ref = "wire" }
 

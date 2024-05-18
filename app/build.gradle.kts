@@ -6,6 +6,7 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.kotlin.pracelize)
+  alias(libs.plugins.kotlin.compose.compiler)
   alias(libs.plugins.dagger.hilt)
   alias(libs.plugins.wire)
   alias(libs.plugins.android.junit5)
@@ -101,10 +102,6 @@ android {
     unitTests {
       isIncludeAndroidResources = true
     }
-  }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.10"
   }
 
   kotlinOptions {

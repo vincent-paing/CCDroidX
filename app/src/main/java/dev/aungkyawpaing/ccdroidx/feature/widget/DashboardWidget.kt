@@ -34,6 +34,8 @@ import androidx.glance.layout.Column
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
+import androidx.glance.preview.ExperimentalGlancePreviewApi
+import androidx.glance.preview.Preview
 import androidx.glance.semantics.semantics
 import androidx.glance.semantics.testTag
 import androidx.glance.text.FontWeight
@@ -41,11 +43,13 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import dagger.hilt.android.AndroidEntryPoint
 import dev.aungkyawpaing.ccdroidx.R
+import dev.aungkyawpaing.ccdroidx.common.BuildState
 import dev.aungkyawpaing.ccdroidx.common.BuildStatus
 import dev.aungkyawpaing.ccdroidx.common.Project
 import dev.aungkyawpaing.ccdroidx.data.ProjectRepo
 import dev.aungkyawpaing.ccdroidx.feature.MainActivity
 import dev.aungkyawpaing.ccdroidx.feature.sync.SyncWorkerScheduler
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class DashboardWidget(
@@ -145,4 +149,30 @@ class DashboardWidgetReceiver : GlanceAppWidgetReceiver() {
 
   override val glanceAppWidget: GlanceAppWidget
     get() = DashboardWidget(projectRepo)
+}
+
+@OptIn(ExperimentalGlancePreviewApi::class)
+@Preview(widthDp = 150, heightDp = 200)
+@Composable
+fun DashboardWidgetContentPreview() {
+  val projects = listOf(
+    "failing/project",
+    "shown/here",
+    "just/glance"
+  ).mapIndexed { index, name ->
+    Project(
+      id = index.toLong(),
+      name = name,
+      activity = BuildState.SLEEPING,
+      lastBuildStatus = BuildStatus.FAILURE,
+      lastBuildTime = ZonedDateTime.now(),
+      nextBuildTime = null,
+      webUrl = "https://example.com/$name",
+      feedUrl = "https://www.example.com/cc.xml",
+      isMuted = false,
+      mutedUntil = null,
+      lastBuildLabel = null
+    )
+  }
+  DashboardWidgetContent(projects)
 }

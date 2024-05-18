@@ -164,6 +164,8 @@ dependencies {
   implementation(libs.androidx.glance.appwidget)
   testImplementation(libs.androidx.glance.appwidget.testing)
   implementation(libs.androidx.glance.material3)
+  debugImplementation(libs.androidx.glance.preview)
+  debugImplementation(libs.androidx.glance.appwidget.preview)
 
   implementation(libs.androidx.hilt.navigation)
   implementation(libs.compose.destinations.core)

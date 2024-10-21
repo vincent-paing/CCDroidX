@@ -155,14 +155,14 @@ dependencies {
   kspTest(libs.dagger.hilt.compiler)
   kspTest(libs.dagger.hilt.android.compiler)
 
+  testImplementation(platform(libs.junit.junit5.bom))
   testImplementation(libs.junit.jupiter.api)
   testRuntimeOnly(libs.junit.jupiter.engine)
   testImplementation(libs.junit.jupiter.params)
   testImplementation(libs.junit.junit4)
   testRuntimeOnly(libs.junit.jupiter.vintageEngine)
+  androidTestImplementation(platform(libs.junit.junit5.bom))
   androidTestImplementation(libs.junit.jupiter.api)
-  androidTestImplementation(libs.androidJunit5.core)
-  androidTestRuntimeOnly(libs.androidJunit5.runner)
 
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.androidx.test.runner)

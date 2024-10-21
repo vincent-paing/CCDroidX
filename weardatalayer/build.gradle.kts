@@ -61,12 +61,12 @@ dependencies {
 
   implementation(libs.androidx.wear.playservices)
 
+  testImplementation(platform(libs.junit.junit5.bom))
   testImplementation(libs.junit.jupiter.api)
   testRuntimeOnly(libs.junit.jupiter.engine)
   testImplementation(libs.junit.jupiter.params)
   testImplementation(libs.junit.junit4)
   testRuntimeOnly(libs.junit.jupiter.vintageEngine)
+  androidTestImplementation(platform(libs.junit.junit5.bom))
   androidTestImplementation(libs.junit.jupiter.api)
-  androidTestImplementation(libs.androidJunit5.core)
-  androidTestRuntimeOnly(libs.androidJunit5.runner)
 }

@@ -1,7 +1,6 @@
 package dev.aungkyawpaing.ccdroidx.feature
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -54,10 +53,9 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  @SuppressLint("MissingSuperCall")
-  override fun onNewIntent(intent: Intent?) {
+  override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
-    handleIntent(intent ?: return)
+    handleIntent(intent)
   }
 
   private fun handleIntent(intent: Intent) {

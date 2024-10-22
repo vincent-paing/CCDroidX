@@ -82,7 +82,7 @@ jobs:
         run: |
           TMP_GOOGLE_SERVICE_JSON_DIR="${RUNNER_TEMP}"/play
           mkdir "${TMP_GOOGLE_SERVICE_JSON_DIR}"
-          echo $GOOGLE_SERVICE_JSON | base64 -D > "${TMP_GOOGLE_SERVICE_JSON_DIR}"/google-services.json
+          echo $GOOGLE_SERVICE_JSON | base64 -di > "${TMP_GOOGLE_SERVICE_JSON_DIR}"/google-services.json
           mv "${TMP_GOOGLE_SERVICE_JSON_DIR}"/google-services.json app/google-services.json
 
       - name: Set up JDK 17

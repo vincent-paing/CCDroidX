@@ -59,7 +59,7 @@ jobs:
           path: '**/build/reports/tests/test*UnitTest'
 
   androidTest:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     env:
       CCDROIDX_RELEASE_KEYSTORE_PASSWORD: ${{ secrets.CCDROIDX_RELEASE_KEYSTORE_PASSWORD }}
       CCDROIDX_RELEASE_KEY_ALIAS: ${{ secrets.CCDROIDX_RELEASE_KEY_ALIAS }}

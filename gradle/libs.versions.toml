@@ -1,5 +1,5 @@
 [versions]
-android-plugin = "8.4.2"
+android-plugin = "8.7.1"
 androidx-dataStore = "1.1.1"
 androidx-fragment = "1.8.4"
 androidx-lifecycle = "2.8.6"
@@ -97,7 +97,7 @@ dagger-hilt-android-testing = { group = "com.google.dagger", name = "hilt-androi
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "dagger" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
-firebase-bom = "com.google.firebase:firebase-bom:33.4.0"
+firebase-bom = "com.google.firebase:firebase-bom:33.5.0"
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 junit-junit4 = { module = "junit:junit", version = "4.13.2" }
 junit-junit5-bom = { module = "org.junit:junit-bom", version.ref = "junit5" }

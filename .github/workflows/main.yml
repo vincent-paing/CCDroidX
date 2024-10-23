@@ -102,7 +102,10 @@ jobs:
 
       - name: Run Android Test
         run: ./gradlew testDevicesGroupFlossDebugAndroidTest --no-parallel --max-workers=1
-          -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
+          -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
+          -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
+          -Pandroid.experimental.testOptions.managedDevices.maxConcurrentDevices=1
+          -Pandroid.experimental.testOptions.managedDevices.setupTimeoutMinutes=180
 
       - name: Upload Android test reports
         uses: actions/upload-artifact@v3
